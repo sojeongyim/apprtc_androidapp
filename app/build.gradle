@@ -1,7 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 26
+
+    repositories {
+        jcenter()
+    }
 
     sourceSets.main {
         jniLibs.srcDir 'libs'
@@ -12,7 +16,7 @@ android {
     defaultConfig {
         applicationId "xyz.pulse9.sinabro"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 26
 
         versionCode 15663
         versionName "r15663"
@@ -37,12 +41,21 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation "com.google.firebase:firebase-database:16.0.1"
     //noinspection GradleCompatible
-    implementation 'com.android.support:appcompat-v7:23.4.0'
+    implementation 'com.android.support:appcompat-v7:26.4.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     compile files('libs/audio_device_java.jar')
     compile files('libs/autobanh.jar')
     compile files('libs/base_java.jar')
     compile files('libs/libjingle_peerconnection.jar')
 
+    //facebook login
+    implementation 'com.facebook.android:facebook-login:[4,5)'
+
+    //timeline recycleerview
+    compile 'com.android.support:recyclerview-v7:26.0.+'
+    //cardview
+    compile 'com.android.support:cardview-v7:26.0.+'
+
+    compile 'com.android.support:design:26.0.2'
 }
 apply plugin: 'com.google.gms.google-services'

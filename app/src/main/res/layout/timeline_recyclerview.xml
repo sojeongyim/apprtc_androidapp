@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".TimelineActivity">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="top">
+
+        <ImageButton
+            android:id="@+id/setting"
+            android:layout_width="33dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            app:srcCompat="@android:drawable/ic_menu_manage" />
+
+        <TextView
+            android:id="@+id/timeline_text"
+            android:layout_width="276dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="시나브로 스토리" />
+
+        <ImageButton
+            android:id="@+id/notice"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            app:srcCompat="@android:drawable/btn_default" />
+
+    </android.support.v7.widget.LinearLayoutCompat>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/timeline_recyclerview"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"/>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom">
+
+        <ImageButton
+            android:id="@+id/plustutor"
+            android:layout_width="71dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            app:srcCompat="@android:drawable/btn_plus" />
+
+        <ImageButton
+            android:id="@+id/home"
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            app:srcCompat="@android:drawable/btn_default" />
+
+        <ImageButton
+            android:id="@+id/chatting"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            app:srcCompat="@android:drawable/sym_action_chat" />
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+</android.support.design.widget.CoordinatorLayout>

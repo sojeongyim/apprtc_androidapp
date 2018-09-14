@@ -20,7 +20,8 @@
     <application
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name">
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
 
         <activity android:name=".ChattingActivity" android:theme="@style/Theme.AppCompat.Light">
 
@@ -64,6 +65,37 @@
             android:label="@string/app_name"
             android:screenOrientation="fullUser"
             android:theme="@style/CallActivityTheme" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/settings_name" />
+
+        <activity
+        android:name=".TimelineActivity"
+        android:label="@string/settings_name" />
+
+        <activity android:name=".ProfileListActivity"/>
+        <activity android:name=".AppSettingActivity"/>
+
+        <!--facebook,chrome-->
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+        <!--facebook,chrome-->
     </application>
 
 </manifest>
