@@ -168,12 +168,12 @@ public class ConnectActivity extends Activity {
       connectToRoom(room, true, loopback, useValuesFromIntent, runTimeMs);
     }
   }
-
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.connect_menu, menu);
-    return true;
-  }
+//
+//  @Override
+//  public boolean onCreateOptionsMenu(Menu menu) {
+//    getMenuInflater().inflate(R.menu.connect_menu, menu);
+//    return true;
+//  }
 
   @Override
   public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
