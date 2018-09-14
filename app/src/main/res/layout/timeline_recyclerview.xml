@@ -54,27 +54,33 @@
 
         <ImageButton
             android:id="@+id/plustutor"
-            android:layout_width="71dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="#00ffffff"
-            app:srcCompat="@android:drawable/btn_plus" />
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
+            android:padding="5dp"
+            app:srcCompat="@drawable/plustutor" />
 
         <ImageButton
             android:id="@+id/home"
-            android:layout_width="84dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="#00ffffff"
-            app:srcCompat="@android:drawable/btn_default" />
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
+            android:padding="5dp"
+            app:srcCompat="@drawable/home" />
 
         <ImageButton
             android:id="@+id/chatting"
-            android:layout_width="96dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="#00ffffff"
-            app:srcCompat="@android:drawable/sym_action_chat" />
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
+            android:padding="5dp"
+            app:srcCompat="@drawable/message" />
 
     </android.support.v7.widget.LinearLayoutCompat>
 
