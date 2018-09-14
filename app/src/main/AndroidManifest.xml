@@ -43,11 +43,11 @@
 
         <data
             android:scheme="https"
-            android:host="appr.tc"
+            android:host="apprtcv3.appspot.com"
             />
         <data
             android:scheme="http"
-            android:host="appr.tc"
+            android:host="apprtcv3.appspot.com"
             />
       </intent-filter>
     </activity>
