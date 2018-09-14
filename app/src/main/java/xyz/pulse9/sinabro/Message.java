@@ -13,6 +13,10 @@ public class Message {
         this.nickName = nickName;
         this.contents = contents;
     }
+
+    public String getMessage() {
+        return contents;
+    }
 }
 
 
