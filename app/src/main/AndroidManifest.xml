@@ -22,14 +22,9 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".ChattingActivity" android:theme="@style/Theme.AppCompat.Light">
-
-        </activity>
-
         <activity
-            android:name=".SplashActivity"
-            android:theme="@style/splashTheme">
+            android:name=".MainActivity"
+            android:label="@string/title_activity_chat_list">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,6 +33,14 @@
             </intent-filter>
 
         </activity>
+
+        <activity
+            android:name=".ChattingActivity"
+            android:theme="@style/Theme.AppCompat.Light">
+        </activity>
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/splashTheme" />
         <activity
             android:name=".ConnectActivity"
             android:label="@string/app_name"
@@ -65,17 +68,15 @@
             android:label="@string/app_name"
             android:screenOrientation="fullUser"
             android:theme="@style/CallActivityTheme" />
-
         <activity
             android:name=".LoginActivity"
             android:label="@string/settings_name" />
-
         <activity
-        android:name=".TimelineActivity"
-        android:label="@string/settings_name" />
+            android:name=".TimelineActivity"
+            android:label="@string/settings_name" />
+        <activity android:name=".ProfileListActivity" />
+        <activity android:name=".AppSettingActivity" />
 
-        <activity android:name=".ProfileListActivity"/>
-        <activity android:name=".AppSettingActivity"/>
 
         <!--facebook,chrome-->
         <meta-data android:name="com.facebook.sdk.ApplicationId"
