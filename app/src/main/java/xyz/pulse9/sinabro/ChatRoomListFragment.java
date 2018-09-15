@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class ChatRoomListFragment extends Fragment{
     private DatabaseReference myDatabase;
     Button testBtn;
 
+    final String TAG = "ChatRoomListFrag";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -72,18 +74,7 @@ public class ChatRoomListFragment extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         chatRoomAdapter = new ChatRoomAdapter(this.getActivity().getApplicationContext(),R.layout.chat_room);
 
-        testBtn = (Button)getView().findViewById(R.id.button22);
-
-        testBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ChattingActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-        final ListView listView = (ListView)getView().findViewById(R.id.chatListview);
+        final ListView listView = (ListView)getView().findViewById(R.id.chat_list);
         listView.setAdapter(chatRoomAdapter);
         listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         chatRoomAdapter.registerDataSetObserver(new DataSetObserver() {
@@ -94,16 +85,17 @@ public class ChatRoomListFragment extends Fragment{
             }
         });
 
-        myDatabase= FirebaseDatabase.getInstance().getReference("message").child("abcd");
+        myDatabase= FirebaseDatabase.getInstance().getReference("message");
 
         myDatabase.addChildEventListener(new ChildEventListener() {
+            String Title;
+
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String contents = dataSnapshot.child("contents").getValue().toString();
-                String sender = dataSnapshot.child("sender").getValue().toString();
-                String receiver = dataSnapshot.child("receiver").getValue().toString();
-                Message mMessage = new Message(sender,receiver, contents);
-//                chatAdapter.add(mMessage);
+                Title = dataSnapshot.getRef().getKey();
+                ChatRoom chatRoom = new ChatRoom(Title,Title);
+                chatRoomAdapter.add(chatRoom);
+
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

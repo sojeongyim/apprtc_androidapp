@@ -67,7 +67,6 @@ public class ChatRoomAdapter extends ArrayAdapter {
         TextView msgText = (TextView) row.findViewById(R.id.firstLine);
         msgText.setText(chatRoom.getReceiver());
         boolean message_left = true;
-        msgText.setBackground(this.getContext().getResources().getDrawable( (message_left ? R.drawable.word_resize2 : R.drawable.transpose2 )));
         LinearLayout chatMessageContainer = (LinearLayout)row.findViewById(R.id.textLinear);
 
         return row;

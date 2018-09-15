@@ -17,6 +17,12 @@ public class ChatRoom {
         this.Title = title;
         this.ProfileUri = profileUri;
     }
+    public ChatRoom(String receiver, String title)
+    {
+        this.Receiver = receiver;
+        this.Title = title;
+        this.ProfileUri = null;
+    }
 
     public String getReceiver() {
         return Receiver;
