@@ -1,5 +1,6 @@
 package xyz.pulse9.sinabro;
 
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -24,9 +24,13 @@ public class ChattingActivity extends AppCompatActivity {
 
     final String TAG= "ChattingActivity";
     ChatAdapter chatAdapter;
+    String chatroomname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Intent intent = getIntent();
+        chatroomname = intent.getStringExtra("chatroomname");
 
         chatAdapter = new ChatAdapter(this.getApplicationContext(),R.layout.chat_message);
         super.onCreate(savedInstanceState);
@@ -47,7 +51,7 @@ public class ChattingActivity extends AppCompatActivity {
 
 
 
-        myDatabase= FirebaseDatabase.getInstance().getReference("message").child("abcd");
+        myDatabase= FirebaseDatabase.getInstance().getReference("message").child(chatroomname);
 
         myDatabase.addChildEventListener(new ChildEventListener() {
             @Override
@@ -104,7 +108,7 @@ public class ChattingActivity extends AppCompatActivity {
         EditText sendMsg= (EditText)findViewById(R.id.sendMsg);
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("message/abcd");
+        DatabaseReference ref = database.getReference("message").child(chatroomname);
 
         Message mMessage = new Message("jangmin",sendMsg.getText().toString());
         ref.push().setValue(mMessage);

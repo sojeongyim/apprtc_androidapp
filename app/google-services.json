@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1037096835253-9hpi5v7mjvn62m21l1qp9nt70h1obrrv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "xyz.pulse9.sinabro",
+            "certificate_hash": "badec32a5481fe3a7944a007abac8293098ecf1a"
+          }
+        },
+        {
           "client_id": "1037096835253-7achsuk7tf8jc86m9i4cdl1kpjop3ee7.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1037096835253-7achsuk7tf8jc86m9i4cdl1kpjop3ee7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

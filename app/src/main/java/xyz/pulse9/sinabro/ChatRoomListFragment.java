@@ -22,7 +22,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -31,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
  * Use the {@link ChatRoomListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class ChatRoomListFragment extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,7 +75,6 @@ public class ChatRoomListFragment extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         chatRoomAdapter = new ChatRoomAdapter(this.getActivity().getApplicationContext(),R.layout.chat_room);
 
-
         final ListView listView = (ListView)getView().findViewById(R.id.chat_list);
         listView.setAdapter(chatRoomAdapter);
         listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
@@ -91,8 +90,9 @@ public class ChatRoomListFragment extends Fragment{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d(TAG, chatRoomAdapter.getItem(i).getTitle());
+                String roomname = chatRoomAdapter.getItem(i).getRoomName();
                 Intent intent = new Intent(getActivity(), ChattingActivity.class);
+                intent.putExtra("chatroomname", roomname);
                 startActivity(intent);
             }
         });
@@ -100,14 +100,15 @@ public class ChatRoomListFragment extends Fragment{
         myDatabase= FirebaseDatabase.getInstance().getReference("message");
 
         myDatabase.addChildEventListener(new ChildEventListener() {
-            String Title;
+            String roomname;
+            String title;
+            String receiver;
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Title = dataSnapshot.getRef().getKey();
-                ChatRoom chatRoom = new ChatRoom(Title,Title);
+                roomname = dataSnapshot.getRef().getKey();
+                ChatRoom chatRoom = new ChatRoom(roomname,roomname, title);
                 chatRoomAdapter.add(chatRoom);
-
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -191,3 +192,4 @@ public class ChatRoomListFragment extends Fragment{
         void onFragmentInteraction(Uri uri);
     }
 }
+
