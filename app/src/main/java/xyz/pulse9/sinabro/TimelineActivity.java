@@ -68,7 +68,7 @@ public class TimelineActivity extends AppCompatActivity {
         plustutor_butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TimelineActivity.this, ProfileListActivity.class);
+                Intent intent = new Intent(TimelineActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
