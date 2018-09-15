@@ -6,25 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ChattingActivity">
 
-    <TextView
-        android:id="@+id/chatText"
-        android:layout_width="157dp"
-        android:layout_height="134dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:hint="Message Will be Place"
-        android:layout_alignParentLeft="true" />
-
     <EditText
         android:id="@+id/sendMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="32dp"
+        android:layout_toLeftOf="@+id/sendButton"
         android:layout_toStartOf="@+id/sendButton"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:layout_toLeftOf="@+id/sendButton" />
+        android:hint="Type Here"
+        android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/sendButton"
@@ -42,8 +34,8 @@
     <ListView
         android:id="@+id/chatListview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="409dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
 </RelativeLayout>
