@@ -52,9 +52,9 @@ public class ChattingActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String contents = dataSnapshot.child("contents").getValue().toString();
-                String nickname = dataSnapshot.child("nickName").getValue().toString();
-
-                Message mMessage = new Message(nickname, contents);
+                String sender = dataSnapshot.child("sender").getValue().toString();
+                String receiver = dataSnapshot.child("receiver").getValue().toString();
+                Message mMessage = new Message(sender,receiver, contents);
                 chatAdapter.add(mMessage);
             }
             @Override
@@ -108,7 +108,6 @@ public class ChattingActivity extends AppCompatActivity {
         Message mMessage = new Message("jangmin",sendMsg.getText().toString());
         ref.push().setValue(mMessage);
 
-        chatAdapter.add(mMessage);
         sendMsg.setText("");
     }
 }
