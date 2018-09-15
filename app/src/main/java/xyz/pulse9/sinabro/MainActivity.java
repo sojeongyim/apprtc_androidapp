@@ -1,5 +1,6 @@
 package xyz.pulse9.sinabro;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,10 +9,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements ChatRoomListFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, TeacherlistFragment.OnFragmentInteractionListener{
 
+    Button testbtn ;
     private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -33,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
                     fragment = new TeacherlistFragment();
                     loadFragment(fragment);
 
-
                     return true;
             }
             return false;
@@ -45,10 +48,20 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadFragment(new ChatRoomListFragment());
+        loadFragment(new TimelineFragment());
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setSelectedItemId(R.id.navigation_timeline);
+
+        testbtn = (Button) findViewById(R.id.button2);
+        testbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ConnectActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadFragment(Fragment fragment) {

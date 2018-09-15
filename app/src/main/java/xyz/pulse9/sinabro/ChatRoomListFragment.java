@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -74,6 +75,7 @@ public class ChatRoomListFragment extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         chatRoomAdapter = new ChatRoomAdapter(this.getActivity().getApplicationContext(),R.layout.chat_room);
 
+
         final ListView listView = (ListView)getView().findViewById(R.id.chat_list);
         listView.setAdapter(chatRoomAdapter);
         listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
@@ -82,6 +84,16 @@ public class ChatRoomListFragment extends Fragment{
             public void onChanged() {
                 super.onChanged();
                 listView.setSelection(chatRoomAdapter.getCount()-1);
+            }
+        });
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d(TAG, chatRoomAdapter.getItem(i).getTitle());
+                Intent intent = new Intent(getActivity(), ChattingActivity.class);
+                startActivity(intent);
             }
         });
 

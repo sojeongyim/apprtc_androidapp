@@ -24,6 +24,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -31,14 +33,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
-import java.io.IOException;
-import java.lang.RuntimeException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
-import xyz.pulse9.sinabro.PeerConnectionClient.DataChannelParameters;
-import xyz.pulse9.sinabro.PeerConnectionClient.PeerConnectionParameters;
 import org.webrtc.Camera1Enumerator;
 import org.webrtc.Camera2Enumerator;
 import org.webrtc.CameraEnumerator;
@@ -55,6 +50,14 @@ import org.webrtc.SurfaceViewRenderer;
 import org.webrtc.VideoCapturer;
 import org.webrtc.VideoFileRenderer;
 import org.webrtc.VideoRenderer;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import xyz.pulse9.sinabro.PeerConnectionClient.DataChannelParameters;
+import xyz.pulse9.sinabro.PeerConnectionClient.PeerConnectionParameters;
 
 /**
  * Activity for peer connection call setup, call waiting
@@ -182,6 +185,15 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
 
     // Set window styles for fullscreen-window size. Needs to be done before
     // adding content.
+    // {"android.permission.MODIFY_AUDIO_SETTINGS",
+    //      "android.permission.RECORD_AUDIO", "android.permission.INTERNET"};
+
+
+
+
+
+
+
     requestWindowFeature(Window.FEATURE_NO_TITLE);
     getWindow().addFlags(LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_KEEP_SCREEN_ON
         | LayoutParams.FLAG_DISMISS_KEYGUARD | LayoutParams.FLAG_SHOW_WHEN_LOCKED

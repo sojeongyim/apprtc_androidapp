@@ -10,14 +10,18 @@
 
 package xyz.pulse9.sinabro;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -94,6 +98,14 @@ public class ConnectActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    if (ContextCompat.checkSelfPermission(this,
+            Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED)
+    {
+      ActivityCompat.requestPermissions(this,
+              new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.BLUETOOTH},
+              202);
+    }
     // Get setting keys.
     PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
