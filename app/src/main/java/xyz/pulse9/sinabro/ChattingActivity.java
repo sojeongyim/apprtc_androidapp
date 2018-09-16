@@ -21,16 +21,22 @@ import com.google.firebase.database.FirebaseDatabase;
 public class ChattingActivity extends AppCompatActivity {
 
     private DatabaseReference myDatabase;
+    private DatabaseReference userDatabase;
 
     final String TAG= "ChattingActivity";
     ChatAdapter chatAdapter;
     String chatroomname;
+    private String uid;
+    private String receiveruid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         Intent intent = getIntent();
         chatroomname = intent.getStringExtra("chatroomname");
+        uid = intent.getStringExtra("uid");
+        receiveruid = intent.getStringExtra("receiveruid");
+
 
         chatAdapter = new ChatAdapter(this.getApplicationContext(),R.layout.chat_message);
         super.onCreate(savedInstanceState);
@@ -49,18 +55,37 @@ public class ChattingActivity extends AppCompatActivity {
             }
         });
 
+        final String personA;
+        final String personB;
 
 
         myDatabase= FirebaseDatabase.getInstance().getReference("message").child(chatroomname);
+        personA = myDatabase.child("personA").getKey().toString();
+        personB = myDatabase.child("personB").getKey().toString();
+        userDatabase = FirebaseDatabase.getInstance().getReference("users");
 
         myDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String contents = dataSnapshot.child("contents").getValue().toString();
-                String sender = dataSnapshot.child("sender").getValue().toString();
-                String receiver = dataSnapshot.child("receiver").getValue().toString();
-                Message mMessage = new Message(sender,receiver, contents);
-                chatAdapter.add(mMessage);
+                Log.d("JANGMAN", dataSnapshot.getRef().getKey().toString());
+                if(dataSnapshot.getRef().getKey().toString() != "personA" && dataSnapshot.getRef().getKey().toString() != "personB") {
+
+                    String contents = dataSnapshot.child("sendDate").getValue().toString();
+                    String time = dataSnapshot.child("sendDate").getValue().toString();
+                    Message mMessage = new Message(personA, personB, contents);
+
+                    userDatabase.child(uid).child("rooms").child("chatroomname").child("receiver").setValue(receiveruid);
+                    userDatabase.child(uid).child("rooms").child("chatroomname").child("lastContents").setValue(contents);
+                    userDatabase.child(uid).child("rooms").child("chatroomname").child("time").setValue(time);
+
+                    userDatabase.child(receiveruid).child("rooms").child("chatroomname").child("receiver").setValue(receiveruid);
+                    userDatabase.child(receiveruid).child("rooms").child("chatroomname").child("lastContents").setValue(contents);
+                    userDatabase.child(receiveruid).child("rooms").child("chatroomname").child("time").setValue(time);
+
+                    chatAdapter.add(mMessage);
+                }
+
+
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -110,7 +135,7 @@ public class ChattingActivity extends AppCompatActivity {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("message").child(chatroomname);
 
-        Message mMessage = new Message("jangmin",sendMsg.getText().toString());
+        Message mMessage = new Message(uid, receiveruid, sendMsg.getText().toString());
         ref.push().setValue(mMessage);
 
         sendMsg.setText("");

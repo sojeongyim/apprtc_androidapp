@@ -4,23 +4,23 @@ import java.util.Calendar;
 
 public class Message {
     public String sendDate;
-    public String sender;
-    public String receiver;
+    public String personA;
+    public String personB;
     public String contents;
 
     public Message(String sender, String contents)
     {
         this.sendDate = Calendar.getInstance().getTime().toString();
-        this.receiver = "";
-        this.sender = sender;
+        this.personA = sender;
+        this.personB = "";
         this.contents = contents;
     }
 
     public Message(String sender, String receiver, String contents)
     {
         this.sendDate = Calendar.getInstance().getTime().toString();
-        this.receiver = receiver;
-        this.sender = sender;
+        this.personA = receiver;
+        this.personB = sender;
         this.contents = contents;
     }
 
@@ -28,13 +28,13 @@ public class Message {
         return contents;
     }
 
-    public String getSender()
+    public String getpersonA()
     {
-        return this.sender;
+        return this.personA;
     }
-    public String getReceiver()
+    public String getpersonB()
     {
-        return this.sender;
+        return this.personB;
     }
 }
 

@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,7 +38,8 @@ public class ChatRoomListFragment extends Fragment{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private DatabaseReference myDatabase;
+    private DatabaseReference userDatabase;
+    private DatabaseReference roomDatabase;
     Button testBtn;
 
     final String TAG = "ChatRoomListFrag";
@@ -44,7 +47,7 @@ public class ChatRoomListFragment extends Fragment{
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    FirebaseUser curuser;
     private OnFragmentInteractionListener mListener;
 
     ChatRoomAdapter chatRoomAdapter;
@@ -74,6 +77,8 @@ public class ChatRoomListFragment extends Fragment{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         chatRoomAdapter = new ChatRoomAdapter(this.getActivity().getApplicationContext(),R.layout.chat_room);
+        curuser = FirebaseAuth.getInstance().getCurrentUser();
+
 
         final ListView listView = (ListView)getView().findViewById(R.id.chat_list);
         listView.setAdapter(chatRoomAdapter);
@@ -93,20 +98,26 @@ public class ChatRoomListFragment extends Fragment{
                 String roomname = chatRoomAdapter.getItem(i).getRoomName();
                 Intent intent = new Intent(getActivity(), ChattingActivity.class);
                 intent.putExtra("chatroomname", roomname);
+//                intent.putExtra("receiveruid", chatRoomAdapter.getItem(i).getReceiver());
+                intent.putExtra("receiveruid", "receiver");
+                intent.putExtra("uid", curuser.getUid());
                 startActivity(intent);
             }
         });
 
-        myDatabase= FirebaseDatabase.getInstance().getReference("message");
+        userDatabase= FirebaseDatabase.getInstance().getReference("users").child(curuser.getUid()).child("rooms");
+        roomDatabase= FirebaseDatabase.getInstance().getReference("message");
 
-        myDatabase.addChildEventListener(new ChildEventListener() {
+        roomDatabase.addChildEventListener(new ChildEventListener() {
             String roomname;
             String title;
             String receiver;
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d("JCHAT", "Something is adde");
                 roomname = dataSnapshot.getRef().getKey();
+                Log.d("JCHAT", "Something is adde : " + roomname);
                 ChatRoom chatRoom = new ChatRoom(roomname,roomname, title);
                 chatRoomAdapter.add(chatRoom);
             }

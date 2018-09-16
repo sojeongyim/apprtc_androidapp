@@ -15,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "1037096835253-9hpi5v7mjvn62m21l1qp9nt70h1obrrv.apps.googleusercontent.com",
+          "client_id": "1037096835253-p3n9l0qg2ejothiagbpvddcje85o27b6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "xyz.pulse9.sinabro",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "1037096835253-7achsuk7tf8jc86m9i4cdl1kpjop3ee7.apps.googleusercontent.com",
+          "client_id": "1037096835253-1dp1uhddqb9bkgbit7d76rlm4or31nff.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCJr2_5KYaj_sXzZ1JytIGHY2TkrfWSRoI"
+          "current_key": "AIzaSyCJP32o_io8ZJGO7cQfrcL16jOIiQ_y60s"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1037096835253-7achsuk7tf8jc86m9i4cdl1kpjop3ee7.apps.googleusercontent.com",
+              "client_id": "1037096835253-1dp1uhddqb9bkgbit7d76rlm4or31nff.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

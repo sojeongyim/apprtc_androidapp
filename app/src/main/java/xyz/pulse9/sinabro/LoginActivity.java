@@ -31,13 +31,11 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
     SignInButton googleBtn;
 
     private FirebaseAuth mAuth;
-    View mProgressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mProgressView = findViewById(R.id.login_progress);
         mAuth = FirebaseAuth.getInstance();
 
         googleBtn = findViewById(R.id.sign_in_button);
@@ -61,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-
 
     }
 
