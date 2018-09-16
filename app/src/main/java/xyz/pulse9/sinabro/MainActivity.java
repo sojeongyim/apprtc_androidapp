@@ -82,15 +82,14 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
             @Override
             public void onClick(View view) {
 //                FirebaseAuth.getInstance().signOut();
-//
 //                Log.d(TAG, "u - " + FirebaseAuth.getInstance().getCurrentUser());
-
-//
 //                Intent intent = new Intent(MainActivity.this, ConnectActivity.class);
+
                 Intent intent = new Intent(MainActivity.this, ChattingActivity.class);
                 intent.putExtra("chatroomname", "abcd");
                 intent.putExtra("uid", curuser.getUid());
                 intent.putExtra("receiveruid", "zzzkkw");
+
 //                chatroomname = intent.getStringExtra("chatroomname");
 //                uid = intent.getStringExtra("uid");
 //                receiveruid = intent.getStringExtra("receiveruid");

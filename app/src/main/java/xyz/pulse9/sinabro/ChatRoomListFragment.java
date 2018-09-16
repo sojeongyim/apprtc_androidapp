@@ -115,18 +115,17 @@ public class ChatRoomListFragment extends Fragment{
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 roomname = dataSnapshot.getRef().getKey();
-                Log.d("ZXCVB", roomname);
+                receiver = dataSnapshot.child("receiver").getValue().toString();
+                title = dataSnapshot.child("lastContents").getValue().toString();
+                lastTime = dataSnapshot.child("time").getValue().toString();
 
-//                receiver = dataSnapshot.child(roomname).getValue().toString();
-                receiver = dataSnapshot.getRef().child(roomname).child("receiver").getKey().toString();
-                Log.d("ZXCVB", "receiver : "+roomname);
-                title = dataSnapshot.getRef().child(roomname).child("lastContents").getKey().toString();
-                lastTime = dataSnapshot.getRef().child(roomname).child("time").getKey().toString();
                 ChatRoom chatRoom = new ChatRoom(roomname,receiver, title, lastTime);
                 chatRoomAdapter.add(chatRoom);
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                chatRoomAdapter.getItem(1).
 
             }
             @Override

@@ -42,6 +42,11 @@ public class ChatRoomAdapter extends ArrayAdapter {
     }
 
 
+    public void refresh(String roomName, String Title, String Time)
+    {
+
+
+    }
     @Override
     public int getCount() {
         return ChatRooms.size();
@@ -68,8 +73,8 @@ public class ChatRoomAdapter extends ArrayAdapter {
         TextView msgText2 = (TextView) row.findViewById(R.id.secondLine);
         TextView msgText3 = (TextView) row.findViewById(R.id.textView2);
         msgText.setText(chatRoom.getReceiver());
-        msgText2.setText(chatRoom.getLastDate());
-        msgText3.setText(chatRoom.getTitle());
+        msgText2.setText(chatRoom.getTitle());
+        msgText3.setText(chatRoom.getLastDate());
         boolean message_left = true;
         LinearLayout chatMessageContainer = (LinearLayout)row.findViewById(R.id.textLinear);
 
