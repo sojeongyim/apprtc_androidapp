@@ -116,12 +116,14 @@ public class ChatRoomListFragment extends Fragment{
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String roomname = chatRoomAdapter.getItem(i).getRoomName();
 
-                Intent intent = new Intent(getActivity(), ChattingActivity.class);
+//                Intent intent = new Intent(getActivity(), ChattingActivity.class);
+                Intent intent = new Intent(getActivity(), ConnectActivity.class);
                 intent.putExtra("chatroomname", roomname);
 //                intent.putExtra("receiveruid", chatRoomAdapter.getItem(i).getReceiver());
                 intent.putExtra("receiveruid", "receiver");
                 intent.putExtra("uid", curuser.getUid());
                 startActivityForResult(intent, 3000);
+
 //                startActivity(intent);
             }
         });
