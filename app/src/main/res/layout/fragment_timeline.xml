@@ -5,9 +5,82 @@
     android:layout_height="match_parent"
     tools:context=".TimelineFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/testback"
+        android:id="@+id/timelineback">
 
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="top"
+            android:background="#00ffffff"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/setting"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="#00ffffff"
+                android:scaleType="fitCenter"
+                android:src="@drawable/settings" />
+
+            <TextView
+                android:id="@+id/timeline_text"
+                android:layout_width="276dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:fontFamily="casual"
+                android:gravity="center_vertical"
+                android:text="시나브로 스토리"
+                android:textAlignment="center"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/notice"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="#00ffffff"
+                android:scaleType="fitCenter"
+                android:src="@drawable/bell" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="40dp"
+            android:background="#00ffffff">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/view" />
+
+            <LinearLayout
+                android:id="@+id/layoutDots"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dots_height"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/dots_margin_bottom"
+                android:gravity="center"
+                android:orientation="horizontal"></LinearLayout>
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_above="@id/layoutDots"
+                android:alpha=".5"
+                android:background="@android:color/white" />
+
+        </RelativeLayout>
+    </LinearLayout>
 </FrameLayout>

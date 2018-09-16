@@ -36,10 +36,10 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-        if(isLoggedIn){
-            Intent intent = new Intent(LoginActivity.this,TimelineActivity.class);
-            startActivity(intent);
-        }
+//        if(isLoggedIn){
+//            Intent intent = new Intent(LoginActivity.this,TimelineActivity.class);
+//            startActivity(intent);
+//        }
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -47,11 +47,11 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
-                        Log.v("result",object.toString());
-                        setResult(RESULT_OK);
-                        Intent intent = new Intent(LoginActivity.this,TimelineActivity.class);
-                        startActivity(intent);
-                        finish();
+//                        Log.v("result",object.toString());
+//                        setResult(RESULT_OK);
+//                        Intent intent = new Intent(LoginActivity.this,TimelineActivity.class);
+//                        startActivity(intent);
+//                        finish();
                     }
                 });
 

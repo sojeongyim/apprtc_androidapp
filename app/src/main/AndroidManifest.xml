@@ -24,7 +24,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_chat_list">
+            android:label="@string/title_activity_chat_list"
+            android:theme="@style/AppTheme">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -74,7 +75,7 @@
         <activity
             android:name=".TimelineActivity"
             android:label="@string/settings_name" />
-        <activity android:name=".ProfileListActivity" />
+
         <activity android:name=".AppSettingActivity" />
 
 
