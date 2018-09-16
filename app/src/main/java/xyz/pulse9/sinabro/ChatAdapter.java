@@ -31,49 +31,28 @@ public class ChatAdapter extends ArrayAdapter {
 
 
     public ChatAdapter(Context context, int textViewResourceId) {
-
         super(context, textViewResourceId);
-
     }
-
-
 
     //@Override
-
     public void add(Message object){
-
         msgs.add(object);
-
         super.add(object);
-
     }
 
 
-
     @Override
-
     public int getCount() {
-
         return msgs.size();
-
     }
 
-
-
     @Override
-
     public Message getItem(int index) {
-
         return (Message) msgs.get(index);
-
     }
 
-
-
     @Override
-
     public View getView(int position, View convertView, ViewGroup parent) {
-
         View row = convertView;
         if (row == null) {
             // inflator를 생성하여, chatting_message.xml을 읽어서 View객체로 생성한다.
@@ -113,13 +92,9 @@ public class ChatAdapter extends ArrayAdapter {
         chatMessageContainer.setGravity(align);
 
 
-
-
         msgText.setTextColor(Color.parseColor("#000000"));
         return row;
-
     }
-
 }
 
 

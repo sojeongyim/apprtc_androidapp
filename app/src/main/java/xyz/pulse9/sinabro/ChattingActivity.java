@@ -37,6 +37,8 @@ public class ChattingActivity extends AppCompatActivity {
         uid = intent.getStringExtra("uid");
         receiveruid = intent.getStringExtra("receiveruid");
 
+        myDatabase= FirebaseDatabase.getInstance().getReference("message").child(chatroomname);
+        userDatabase = FirebaseDatabase.getInstance().getReference("users");
 
         chatAdapter = new ChatAdapter(this.getApplicationContext(),R.layout.chat_message);
         super.onCreate(savedInstanceState);
@@ -55,30 +57,20 @@ public class ChattingActivity extends AppCompatActivity {
             }
         });
 
-        final String personA;
-        final String personB;
-
-
-        myDatabase= FirebaseDatabase.getInstance().getReference("message").child(chatroomname);
-        personA = myDatabase.child("personA").getKey().toString();
-        personB = myDatabase.child("personB").getKey().toString();
-        userDatabase = FirebaseDatabase.getInstance().getReference("users");
-
         myDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.d("JANGMAN", dataSnapshot.getRef().getKey().toString());
-                if(dataSnapshot.getRef().getKey().toString() != "personA" && dataSnapshot.getRef().getKey().toString() != "personB") {
+                if(!dataSnapshot.getRef().getKey().toString().equals("personA") && !dataSnapshot.getRef().getKey().toString().equals("personB")) {
 
-                    String contents = dataSnapshot.child("sendDate").getValue().toString();
+                    String contents = dataSnapshot.child("contents").getValue().toString();
                     String time = dataSnapshot.child("sendDate").getValue().toString();
-                    Message mMessage = new Message(personA, personB, contents);
+                    Message mMessage = new Message(uid, contents);
 
-                    userDatabase.child(uid).child("rooms").child("chatroomname").child("receiver").setValue(receiveruid);
-                    userDatabase.child(uid).child("rooms").child("chatroomname").child("lastContents").setValue(contents);
-                    userDatabase.child(uid).child("rooms").child("chatroomname").child("time").setValue(time);
+                    userDatabase.child(uid).child("rooms").child(chatroomname).child("receiver").setValue(receiveruid);
+                    userDatabase.child(uid).child("rooms").child(chatroomname).child("lastContents").setValue(contents);
+                    userDatabase.child(uid).child("rooms").child(chatroomname).child("time").setValue(time);
 
-                    userDatabase.child(receiveruid).child("rooms").child("chatroomname").child("receiver").setValue(receiveruid);
+                    userDatabase.child(receiveruid).child("rooms").child("chatroomname").child("receiver").setValue(uid);
                     userDatabase.child(receiveruid).child("rooms").child("chatroomname").child("lastContents").setValue(contents);
                     userDatabase.child(receiveruid).child("rooms").child("chatroomname").child("time").setValue(time);
 
@@ -105,27 +97,6 @@ public class ChattingActivity extends AppCompatActivity {
             }
         });
 
-
-
-//        myDatabase.addValueEventListener(new ValueEventListener() {
-//
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                chatText.setText(dataSnapshot.getValue().toString());
-//                for (DataSnapshot child : dataSnapshot.getChildren()) {
-////                    chatText.setText(dataSnapshot.getChildren().toString());
-////                    chatText.setText(chatText.getText().toString()+child.child("contents").getValue().toString());
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                chatText.setText("CANCELLED");
-//
-//            }
-//        });
-
     }
 
     public void sendMessage(View view)
@@ -135,7 +106,7 @@ public class ChattingActivity extends AppCompatActivity {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("message").child(chatroomname);
 
-        Message mMessage = new Message(uid, receiveruid, sendMsg.getText().toString());
+        Message mMessage = new Message(uid, sendMsg.getText().toString());
         ref.push().setValue(mMessage);
 
         sendMsg.setText("");

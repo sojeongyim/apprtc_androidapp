@@ -10,14 +10,15 @@ public class ChatRoom {
     private String Receiver;
     private String Title;
     private Uri ProfileUri;
-    private Date LastDate;
+    private String LastDate;
 
 
-    public ChatRoom(String RoomName, String receiver, String title)
+    public ChatRoom(String RoomName, String receiver, String title, String LastDate)
     {
         this.RoomName = RoomName;
         this.Receiver = receiver;
         this.Title = title;
+        this.LastDate=LastDate;
     }
 
     public ChatRoom(String receiver, String title, Uri profileUri)
@@ -51,7 +52,7 @@ public class ChatRoom {
         return ProfileUri;
     }
 
-    public Date getLastDate() {
+    public String getLastDate() {
         return LastDate;
     }
 }

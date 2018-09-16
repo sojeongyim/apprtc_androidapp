@@ -39,7 +39,6 @@ public class ChatRoomListFragment extends Fragment{
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private DatabaseReference userDatabase;
-    private DatabaseReference roomDatabase;
     Button testBtn;
 
     final String TAG = "ChatRoomListFrag";
@@ -106,19 +105,24 @@ public class ChatRoomListFragment extends Fragment{
         });
 
         userDatabase= FirebaseDatabase.getInstance().getReference("users").child(curuser.getUid()).child("rooms");
-        roomDatabase= FirebaseDatabase.getInstance().getReference("message");
 
-        roomDatabase.addChildEventListener(new ChildEventListener() {
+        userDatabase.addChildEventListener(new ChildEventListener() {
             String roomname;
             String title;
             String receiver;
+            String lastTime;
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.d("JCHAT", "Something is adde");
                 roomname = dataSnapshot.getRef().getKey();
-                Log.d("JCHAT", "Something is adde : " + roomname);
-                ChatRoom chatRoom = new ChatRoom(roomname,roomname, title);
+                Log.d("ZXCVB", roomname);
+
+//                receiver = dataSnapshot.child(roomname).getValue().toString();
+                receiver = dataSnapshot.getRef().child(roomname).child("receiver").getKey().toString();
+                Log.d("ZXCVB", "receiver : "+roomname);
+                title = dataSnapshot.getRef().child(roomname).child("lastContents").getKey().toString();
+                lastTime = dataSnapshot.getRef().child(roomname).child("time").getKey().toString();
+                ChatRoom chatRoom = new ChatRoom(roomname,receiver, title, lastTime);
                 chatRoomAdapter.add(chatRoom);
             }
             @Override

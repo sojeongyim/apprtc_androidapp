@@ -65,7 +65,11 @@ public class ChatRoomAdapter extends ArrayAdapter {
 
         // Inflater를 이용해서 생성한 View에, ChatMessage를 삽입한다.
         TextView msgText = (TextView) row.findViewById(R.id.firstLine);
+        TextView msgText2 = (TextView) row.findViewById(R.id.secondLine);
+        TextView msgText3 = (TextView) row.findViewById(R.id.textView2);
         msgText.setText(chatRoom.getReceiver());
+        msgText2.setText(chatRoom.getLastDate());
+        msgText3.setText(chatRoom.getTitle());
         boolean message_left = true;
         LinearLayout chatMessageContainer = (LinearLayout)row.findViewById(R.id.textLinear);
 

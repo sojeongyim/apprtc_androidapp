@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users");
-        FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
 
         String uid = curuser.getUid();
 
@@ -81,13 +81,21 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         testbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-
-                Log.d(TAG, "u - " + FirebaseAuth.getInstance().getCurrentUser());
+//                FirebaseAuth.getInstance().signOut();
+//
+//                Log.d(TAG, "u - " + FirebaseAuth.getInstance().getCurrentUser());
 
 //
 //                Intent intent = new Intent(MainActivity.this, ConnectActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, ChattingActivity.class);
+                intent.putExtra("chatroomname", "abcd");
+                intent.putExtra("uid", curuser.getUid());
+                intent.putExtra("receiveruid", "zzzkkw");
+//                chatroomname = intent.getStringExtra("chatroomname");
+//                uid = intent.getStringExtra("uid");
+//                receiveruid = intent.getStringExtra("receiveruid");
+
+                startActivity(intent);
             }
         });
     }
