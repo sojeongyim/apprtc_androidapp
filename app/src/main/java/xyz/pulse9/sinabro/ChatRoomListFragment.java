@@ -24,6 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -48,7 +50,7 @@ public class ChatRoomListFragment extends Fragment{
     private String mParam2;
     FirebaseUser curuser;
     private OnFragmentInteractionListener mListener;
-
+    public ListView listView;
     ChatRoomAdapter chatRoomAdapter;
 
     public ChatRoomListFragment() {
@@ -74,12 +76,30 @@ public class ChatRoomListFragment extends Fragment{
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK)
+        {
+            switch (requestCode)
+            {
+                case 3000:
+//
+//                    chatRoomAdapter.refresh(data.getStringExtra("roomname"), data.getStringExtra("title"), data.getStringExtra("time"));
+//                    chatRoomAdapter.notifyDataSetChanged();
+//                    listView.setAdapter(chatRoomAdapter);
+                    break;
+            }
+
+        }
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         chatRoomAdapter = new ChatRoomAdapter(this.getActivity().getApplicationContext(),R.layout.chat_room);
         curuser = FirebaseAuth.getInstance().getCurrentUser();
 
 
-        final ListView listView = (ListView)getView().findViewById(R.id.chat_list);
+        listView = (ListView)getView().findViewById(R.id.chat_list);
         listView.setAdapter(chatRoomAdapter);
         listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         chatRoomAdapter.registerDataSetObserver(new DataSetObserver() {
@@ -95,12 +115,14 @@ public class ChatRoomListFragment extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String roomname = chatRoomAdapter.getItem(i).getRoomName();
+
                 Intent intent = new Intent(getActivity(), ChattingActivity.class);
                 intent.putExtra("chatroomname", roomname);
 //                intent.putExtra("receiveruid", chatRoomAdapter.getItem(i).getReceiver());
                 intent.putExtra("receiveruid", "receiver");
                 intent.putExtra("uid", curuser.getUid());
-                startActivity(intent);
+                startActivityForResult(intent, 3000);
+//                startActivity(intent);
             }
         });
 
@@ -124,8 +146,14 @@ public class ChatRoomListFragment extends Fragment{
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                roomname = dataSnapshot.getRef().getKey();
+                title = dataSnapshot.child("lastContents").getValue().toString();
+                lastTime = dataSnapshot.child("time").getValue().toString();
+                chatRoomAdapter.refresh(roomname, title, lastTime);
+                chatRoomAdapter.notifyDataSetChanged();
+                listView.setAdapter(chatRoomAdapter);
 
-                chatRoomAdapter.getItem(1).
+                Log.d("jangmin",roomname);
 
             }
             @Override
@@ -141,10 +169,6 @@ public class ChatRoomListFragment extends Fragment{
 
             }
         });
-
-
-
-
         super.onActivityCreated(savedInstanceState);
     }
 

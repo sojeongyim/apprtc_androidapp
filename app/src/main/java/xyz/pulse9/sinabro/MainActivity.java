@@ -102,7 +102,8 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.flContainer, fragment);
-        transaction.addToBackStack(null);
+//        transaction.add(R.id.flContainer, fragment);
+//        transaction.addToBackStack(null);
         transaction.commit();
     }
 

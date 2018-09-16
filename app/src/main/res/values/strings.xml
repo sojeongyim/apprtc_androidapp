@@ -29,6 +29,9 @@
     <string name="add_favorite_description">Add favorite</string>
     <string name="format_description">%1$dx%2$d @ %3$d fps</string>
 
+    <string name="ChattingBottomSheetMenu1"> Planing Conference </string>
+    <string name="ChattingBottomSheetMenu2"> Start Conference </string>
+
     <!-- Settings strings. -->
     <string name="pref_room_key">room_preference</string>
     <string name="pref_room_list_key">room_list_preference</string>

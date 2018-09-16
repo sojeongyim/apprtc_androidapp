@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -28,6 +29,7 @@ public class ChattingActivity extends AppCompatActivity {
     String chatroomname;
     private String uid;
     private String receiveruid;
+    Button vidBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +77,16 @@ public class ChattingActivity extends AppCompatActivity {
                     userDatabase.child(receiveruid).child("rooms").child("chatroomname").child("time").setValue(time);
 
                     chatAdapter.add(mMessage);
+
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("roomname",chatroomname);
+                    resultIntent.putExtra("title", contents);
+                    resultIntent.putExtra("time", time);
+                    setResult(RESULT_OK,resultIntent);
                 }
-
-
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
@@ -94,6 +99,17 @@ public class ChattingActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+
+
+        vidBtn = (Button)findViewById(R.id.vidBtn);
+        vidBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BottomSheetDialog bottomSheetDialog = BottomSheetDialog.getInstance();
+                bottomSheetDialog.show(getSupportFragmentManager(),"bottomSheet");
             }
         });
 

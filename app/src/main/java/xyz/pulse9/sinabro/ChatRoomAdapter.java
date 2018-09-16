@@ -24,7 +24,7 @@ import java.util.List;
 
 public class ChatRoomAdapter extends ArrayAdapter {
 
-    List ChatRooms = new ArrayList();
+    List<ChatRoom> ChatRooms = new ArrayList<ChatRoom>();
 
     public ChatRoomAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
@@ -42,10 +42,16 @@ public class ChatRoomAdapter extends ArrayAdapter {
     }
 
 
-    public void refresh(String roomName, String Title, String Time)
+    public void refresh(String roomName, String title, String Time)
     {
-
-
+        for(ChatRoom k : ChatRooms)
+        {
+            if(k.getRoomName().equals(roomName))
+            {
+                k.setTitle(title);
+                k.setTime(Time);
+            }
+        }
     }
     @Override
     public int getCount() {

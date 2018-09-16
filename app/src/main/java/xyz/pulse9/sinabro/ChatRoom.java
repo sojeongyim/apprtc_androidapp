@@ -55,4 +55,12 @@ public class ChatRoom {
     public String getLastDate() {
         return LastDate;
     }
+
+    public void setTitle(String title) {
+        this.Title = title;
+    }
+
+    public void setTime(String time) {
+        this.LastDate = time;
+    }
 }
