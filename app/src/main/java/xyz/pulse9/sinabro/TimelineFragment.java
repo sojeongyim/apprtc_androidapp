@@ -1,12 +1,19 @@
 package xyz.pulse9.sinabro;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 
 /**
@@ -22,6 +29,7 @@ public class TimelineFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private ViewPager mViewPager;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -31,6 +39,35 @@ public class TimelineFragment extends Fragment {
 
     public TimelineFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ImageButton setting_butt = (ImageButton)getView().findViewById(R.id.setting);
+        ImageButton notice_butt = (ImageButton) getView().findViewById(R.id.notice);
+
+        setting_butt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AppSettingActivity.class);
+                startActivity(intent);
+            }
+        });
+        notice_butt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ChatRoomListFragment llf = new ChatRoomListFragment();
+                ft.replace(R.id.flContainer, llf);
+                ft.commit();
+            }
+        });
+
+        mViewPager = (ViewPager) getView().findViewById(R.id.container);
+        final ViewPager viewPager = (ViewPager) getView().findViewById(R.id.pager);
     }
 
     /**

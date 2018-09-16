@@ -5,9 +5,66 @@
     android:layout_height="match_parent"
     tools:context=".TimelineFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="50dp"
+        android:layout_gravity="top"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/setting"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            android:scaleType="fitCenter"
+            android:src="@drawable/settings" />
+
+        <TextView
+            android:id="@+id/timeline_text"
+            android:layout_width="276dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:fontFamily="casual"
+            android:text="시나브로 스토리"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/notice"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            android:scaleType="fitCenter"
+            android:src="@drawable/bell" />
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewcontainer"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </RelativeLayout>
+
 
 </FrameLayout>
