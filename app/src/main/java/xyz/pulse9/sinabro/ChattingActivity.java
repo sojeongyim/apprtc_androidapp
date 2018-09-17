@@ -21,16 +21,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
-
-
 
 public class ChattingActivity extends AppCompatActivity {
 
@@ -54,7 +50,6 @@ public class ChattingActivity extends AppCompatActivity {
 
         myDatabase= FirebaseDatabase.getInstance().getReference("message").child(chatroomname);
         userDatabase = FirebaseDatabase.getInstance().getReference("users");
-
         chatAdapter = new ChatAdapter(this.getApplicationContext(),R.layout.chat_message);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
@@ -114,8 +109,6 @@ public class ChattingActivity extends AppCompatActivity {
 
             }
         });
-
-
 
         vidBtn = (Button)findViewById(R.id.vidBtn);
         vidBtn.setOnClickListener(new View.OnClickListener() {

@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatRoomAdapter extends ArrayAdapter {
-
     List<ChatRoom> ChatRooms = new ArrayList<ChatRoom>();
 
     public ChatRoomAdapter(Context context, int textViewResourceId) {
@@ -40,7 +39,6 @@ public class ChatRoomAdapter extends ArrayAdapter {
         ChatRooms.remove(object);
         super.remove(object);
     }
-
 
     public void refresh(String roomName, String title, String Time)
     {

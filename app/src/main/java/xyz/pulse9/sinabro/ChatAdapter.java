@@ -90,29 +90,3 @@ public class ChatAdapter extends ArrayAdapter {
     }
 }
 
-
-//
-//        LinearLayout chatMessageContainer = (LinearLayout)row.findViewById(R.id.textLinear);
-//
-//        int align;
-//
-//        if(message_left) {
-//
-//            align = Gravity.LEFT;
-//
-//            message_left = false;
-//
-//        }else{
-//
-//            align = Gravity.RIGHT;
-//
-//            message_left=true;
-//
-//        }
-//
-//        chatMessageContainer.setGravity(align);
-//
-//        return row;
-
-
-

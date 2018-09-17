@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.view.Window;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment;
-
             switch (item.getItemId()) {
                 case R.id.navigation_timeline:
                     fragment = new TimelineFragment();
@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
                 case R.id.navigation_teachers:
                     fragment = new TeacherlistFragment();
                     loadFragment(fragment);
-
                     return true;
             }
             return false;
@@ -53,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -102,8 +102,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.flContainer, fragment);
-//        transaction.add(R.id.flContainer, fragment);
-//        transaction.addToBackStack(null);
         transaction.commit();
     }
 

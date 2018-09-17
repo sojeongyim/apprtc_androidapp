@@ -15,7 +15,6 @@ public class Message {
     private String Date;
     private boolean chk;
 
-
     public Message(String sender, String contents)
     {
         this.type=0;

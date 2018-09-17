@@ -3,7 +3,12 @@ package xyz.pulse9.sinabro;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +27,7 @@ public class TeacherlistFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private ViewPager mViewPager;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -31,6 +37,51 @@ public class TeacherlistFragment extends Fragment {
 
     public TeacherlistFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Toolbar toolbar = (Toolbar) getView().findViewById(R.id.toolbar);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+
+        mViewPager = (ViewPager) getView().findViewById(R.id.container);
+        TabLayout tabLayout = (TabLayout) getView().findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user1));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user2));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user3));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user4));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user5));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user6));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user7));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user8));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user9));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user10));
+
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        final ViewPager viewPager = (ViewPager) getView().findViewById(R.id.pager);
+        final mPagerAdapter adapter = new mPagerAdapter
+                (getFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
     }
 
     /**

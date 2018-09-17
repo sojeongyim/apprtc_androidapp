@@ -27,7 +27,6 @@ public class ChatRoom {
         this.Title = title;
         this.ProfileUri = profileUri;
     }
-
     public ChatRoom(String receiver, String title)
     {
         this.Receiver = receiver;
@@ -37,17 +36,12 @@ public class ChatRoom {
     public String getRoomName() {
         return RoomName;
     }
-
     public String getReceiver() {
         return Receiver;
     }
-
-
     public String getTitle() {
         return Title;
     }
-
-
     public Uri getProfileUri() {
         return ProfileUri;
     }

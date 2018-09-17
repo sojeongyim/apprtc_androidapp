@@ -100,6 +100,7 @@ public class ChatRoomListFragment extends Fragment{
 
 
         listView = (ListView)getView().findViewById(R.id.chat_list);
+
         listView.setAdapter(chatRoomAdapter);
         listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         chatRoomAdapter.registerDataSetObserver(new DataSetObserver() {
@@ -171,6 +172,7 @@ public class ChatRoomListFragment extends Fragment{
 
             }
         });
+
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -232,4 +234,3 @@ public class ChatRoomListFragment extends Fragment{
         void onFragmentInteraction(Uri uri);
     }
 }
-
