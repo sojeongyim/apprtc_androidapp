@@ -27,12 +27,6 @@
             android:label="@string/title_activity_chat_list"
             android:theme="@style/AppTheme">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
         </activity>
 
         <activity
@@ -71,10 +65,16 @@
             android:theme="@style/CallActivityTheme" />
         <activity
             android:name=".LoginActivity"
-            android:label="@string/settings_name" />
-        <activity
-            android:name=".TimelineActivity"
-            android:label="@string/settings_name" />
+            android:label="login">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
 
         <activity android:name=".AppSettingActivity" />
 

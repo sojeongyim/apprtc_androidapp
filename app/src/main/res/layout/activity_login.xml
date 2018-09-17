@@ -36,10 +36,24 @@
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp" />
 
-        <Button
-            android:id="@+id/google_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Google" />
+        <!--<Button-->
+            <!--android:id="@+id/google_login"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Google" />-->
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
+
+    <!--<ProgressBar-->
+        <!--android:id="@+id/login_progress"-->
+        <!--style="?android:attr/progressBarStyleLarge"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:visibility="gone" />-->
+
 </android.support.constraint.ConstraintLayout>
