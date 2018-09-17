@@ -1,5 +1,8 @@
 package xyz.pulse9.sinabro;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -10,6 +13,19 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class BottomSheetDialog extends BottomSheetDialogFragment implements View.OnClickListener{
+
+    public interface PollButtonClickListener extends View.OnClickListener{
+        void onAnyButtonClick(Object data);
+    }
+
+    private PollButtonClickListener listener;
+
+    public void setListener(PollButtonClickListener listner)
+    {
+        this.listener=listner;
+
+    }
+
 
     public static BottomSheetDialog getInstance() { return new BottomSheetDialog(); }
 
@@ -27,20 +43,18 @@ public class BottomSheetDialog extends BottomSheetDialogFragment implements View
         cloudLo = (LinearLayout) view.findViewById(R.id.cloudLo);
         bluetoothLo = (LinearLayout) view.findViewById(R.id.bluetoothLo);
 
-        msgLo.setOnClickListener(this);
-        emailLo.setOnClickListener(this);
-        cloudLo.setOnClickListener(this);
-        bluetoothLo.setOnClickListener(this);
+        msgLo.setOnClickListener(listener);
+        emailLo.setOnClickListener(listener);
+        cloudLo.setOnClickListener(listener);
+        bluetoothLo.setOnClickListener(listener);
         return view;
     }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.msgLo:
-                ConnectActivity k = new ConnectActivity();
-//                k.connectToRoom("1234");
-//                Toast.makeText(getContext(),"@string/ChattingBottomSheetMenu1",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"@string/ChattingBottomSheetMenu2",Toast.LENGTH_SHORT).show();
+
                 break;
             case R.id.emailLo:
                 Toast.makeText(getContext(),"@string/ChattingBottomSheetMenu2",Toast.LENGTH_SHORT).show();

@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -75,56 +76,20 @@ public class ConnectActivity extends AppCompatActivity {
 //////////////////////////////////////////////////////////////////////////////////JangminEnd
 
 
-  private static final int CONNECTION_REQUEST = 1;
-  private static final int REMOVE_FAVORITE_INDEX = 0;
-  private static boolean commandLineRun = false;
-
-  private ImageButton addFavoriteButton;
-  private ListView roomListView;
   private SharedPreferences sharedPref;
-  private String keyprefVideoCallEnabled;
-  private String keyprefScreencapture;
-  private String keyprefCamera2;
   private String keyprefResolution;
   private String keyprefFps;
-  private String keyprefCaptureQualitySlider;
   private String keyprefVideoBitrateType;
   private String keyprefVideoBitrateValue;
-  private String keyprefVideoCodec;
   private String keyprefAudioBitrateType;
   private String keyprefAudioBitrateValue;
-  private String keyprefAudioCodec;
-  private String keyprefHwCodecAcceleration;
-  private String keyprefCaptureToTexture;
-  private String keyprefFlexfec;
-  private String keyprefNoAudioProcessingPipeline;
-  private String keyprefAecDump;
-  private String keyprefOpenSLES;
-  private String keyprefDisableBuiltInAec;
-  private String keyprefDisableBuiltInAgc;
-  private String keyprefDisableBuiltInNs;
-  private String keyprefEnableLevelControl;
-  private String keyprefDisableWebRtcAGCAndHPF;
-  private String keyprefDisplayHud;
-  private String keyprefTracing;
   private String keyprefRoomServerUrl;
-  private String keyprefRoom;
-  private String keyprefRoomList;
-  private ArrayList<String> roomList;
-  private String keyprefEnableDataChannel;
-  private String keyprefOrdered;
-  private String keyprefMaxRetransmitTimeMs;
-  private String keyprefMaxRetransmits;
-  private String keyprefDataProtocol;
-  private String keyprefNegotiated;
-  private String keyprefDataId;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_chatting);
-////////////////////////////////////////////////////////////////////////////////// JangminStart
 
     Intent intent2 = getIntent();
     chatroomname = intent2.getStringExtra("chatroomname");
@@ -203,9 +168,28 @@ public class ConnectActivity extends AppCompatActivity {
     vidBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        connectToRoom("12345ab");
-        BottomSheetDialog bottomSheetDialog = BottomSheetDialog.getInstance();
+//        connectToRoom("12345ab");
+        final BottomSheetDialog bottomSheetDialog = BottomSheetDialog.getInstance();
         bottomSheetDialog.show(getSupportFragmentManager(), "bottomSheet");
+        bottomSheetDialog.setListener(new BottomSheetDialog.PollButtonClickListener() {
+          @Override
+          public void onClick(View view) {
+            Log.d("onAnyButton",view.toString());
+            switch (view.getId())
+            {
+              case R.id.msgLo:
+                connectToRoom("abcde");
+                break;
+              case R.id.emailLo:
+                break;
+            }
+            bottomSheetDialog.dismiss();
+          }
+
+          @Override
+          public void onAnyButtonClick(Object data) {
+          }
+        });
       }
     });
 
@@ -219,45 +203,17 @@ public class ConnectActivity extends AppCompatActivity {
               new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.BLUETOOTH},
               202);
     }
+
     // Get setting keys.
     PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-    keyprefVideoCallEnabled = getString(R.string.pref_videocall_key);
-    keyprefScreencapture = getString(R.string.pref_screencapture_key);
-    keyprefCamera2 = getString(R.string.pref_camera2_key);
     keyprefResolution = getString(R.string.pref_resolution_key);
     keyprefFps = getString(R.string.pref_fps_key);
-    keyprefCaptureQualitySlider = getString(R.string.pref_capturequalityslider_key);
     keyprefVideoBitrateType = getString(R.string.pref_maxvideobitrate_key);
     keyprefVideoBitrateValue = getString(R.string.pref_maxvideobitratevalue_key);
-    keyprefVideoCodec = getString(R.string.pref_videocodec_key);
-    keyprefHwCodecAcceleration = getString(R.string.pref_hwcodec_key);
-    keyprefCaptureToTexture = getString(R.string.pref_capturetotexture_key);
-    keyprefFlexfec = getString(R.string.pref_flexfec_key);
     keyprefAudioBitrateType = getString(R.string.pref_startaudiobitrate_key);
     keyprefAudioBitrateValue = getString(R.string.pref_startaudiobitratevalue_key);
-    keyprefAudioCodec = getString(R.string.pref_audiocodec_key);
-    keyprefNoAudioProcessingPipeline = getString(R.string.pref_noaudioprocessing_key);
-    keyprefAecDump = getString(R.string.pref_aecdump_key);
-    keyprefOpenSLES = getString(R.string.pref_opensles_key);
-    keyprefDisableBuiltInAec = getString(R.string.pref_disable_built_in_aec_key);
-    keyprefDisableBuiltInAgc = getString(R.string.pref_disable_built_in_agc_key);
-    keyprefDisableBuiltInNs = getString(R.string.pref_disable_built_in_ns_key);
-    keyprefEnableLevelControl = getString(R.string.pref_enable_level_control_key);
-    keyprefDisableWebRtcAGCAndHPF = getString(R.string.pref_disable_webrtc_agc_and_hpf_key);
-    keyprefDisplayHud = getString(R.string.pref_displayhud_key);
-    keyprefTracing = getString(R.string.pref_tracing_key);
     keyprefRoomServerUrl = getString(R.string.pref_room_server_url_key);
-    keyprefRoom = getString(R.string.pref_room_key);
-    keyprefRoomList = getString(R.string.pref_room_list_key);
-    keyprefEnableDataChannel = getString(R.string.pref_enable_datachannel_key);
-    keyprefOrdered = getString(R.string.pref_ordered_key);
-    keyprefMaxRetransmitTimeMs = getString(R.string.pref_max_retransmit_time_ms_key);
-    keyprefMaxRetransmits = getString(R.string.pref_max_retransmits_key);
-    keyprefDataProtocol = getString(R.string.pref_data_protocol_key);
-    keyprefNegotiated = getString(R.string.pref_negotiated_key);
-    keyprefDataId = getString(R.string.pref_data_id_key);
-
   }
 
 
@@ -297,15 +253,6 @@ public class ConnectActivity extends AppCompatActivity {
 //    }
   }
 
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode == CONNECTION_REQUEST && commandLineRun) {
-      Log.d(TAG, "Return: " + resultCode);
-      setResult(resultCode);
-      commandLineRun = false;
-      finish();
-    }
-  }
 
   /**
    * Get a value from the shared preference or from the intent, if it does not
@@ -576,7 +523,7 @@ public class ConnectActivity extends AppCompatActivity {
       }
 
 
-      startActivityForResult(intent, CONNECTION_REQUEST);
+      startActivity(intent);
     }
   }
 
@@ -612,4 +559,5 @@ public class ConnectActivity extends AppCompatActivity {
 
     sendMsg.setText("");
   }
+
 }
