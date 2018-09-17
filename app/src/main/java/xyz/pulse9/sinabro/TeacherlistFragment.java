@@ -58,6 +58,7 @@ public class TeacherlistFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user8));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user9));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user10));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user11));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         final ViewPager viewPager = (ViewPager) getView().findViewById(R.id.pager);

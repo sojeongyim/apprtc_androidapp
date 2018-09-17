@@ -91,4 +91,11 @@ public class TabFragment extends Fragment {
             return inflater.inflate(R.layout.tab_fragment_10, container, false);
         }
     }
+    public static class TabFragment11 extends Fragment {
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.tab_fragment_11, container, false);
+        }
+    }
 }

@@ -50,6 +50,9 @@ public class mPagerAdapter extends FragmentStatePagerAdapter {
             case 9:
                 TabFragment.TabFragment10 tab10 = new TabFragment.TabFragment10();
                 return tab10;
+            case 10:
+                TabFragment.TabFragment11 tab11 = new TabFragment.TabFragment11();
+                return tab11;
             default:
                 return null;
         }
