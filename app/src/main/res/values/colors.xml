@@ -2,7 +2,11 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#d6f456</color>
+    <color name="colorAccent">#00ffffff</color>
+    <color name="cursorColor">#d6f456</color>
+    <color name="nomalColor">#00ffffff</color>
+    <color name="lineOnTouch">#00ffffff</color>
+
 
     <!-- Screens background color-->
     <color name="bg_screen1">#f64c73</color>

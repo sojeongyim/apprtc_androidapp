@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_bg"
-    tools:context="xyz.pulse9.sinabro.LoginActivity">
+    tools:context="xyz.pulse9.sinabro.LoginActivity"
+    android:theme="@style/EditTheme">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,45 +17,74 @@
         tools:layout_editor_absoluteY="0dp">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/login_logo"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="top|center_horizontal"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="80dp"
-            android:layout_marginRight="80dp"
-            android:layout_marginTop="40dp"
-            android:layout_weight="4"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="90dp"
+            android:layout_marginRight="90dp"
+            android:layout_marginTop="50dp"
+            android:layout_weight="2.5"
             app:srcCompat="@drawable/login_logo" />
+
 
         <EditText
             android:id="@+id/UserID"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_weight="1"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_weight="0.6"
             android:ems="10"
-            android:fontFamily="@font/myriad-pro-light"
+            android:fontFamily="@font/myriad_pro_light"
+            android:hint="h e l l o @ n i c e a p p . c o  "
             android:inputType="textPersonName"
             android:singleLine="false"
-            android:text="hello@niceapp.co"
             android:textAlignment="center"
-            android:textColor="@color/sianbro_gray_color" />
+            android:textColor="@color/sianbro_gray_color"
+            android:textColorHint="@color/sianbro_gray_color" />
 
-        <EditText
-            android:id="@+id/Password"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="0.7"
             android:layout_marginBottom="20dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:fontFamily="@font/myriad-pro-light"
-            android:inputType="textPassword"
-            android:text="password"
-            android:textAlignment="center"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp">
+
+            <EditText
+                android:id="@+id/Password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/login_edittext"
+                android:ems="10"
+                android:fontFamily="@font/myriad_pro_light"
+                android:hint="password"
+                android:inputType="textPassword"
+                android:textAlignment="center"
+                android:textColor="@color/sianbro_gray_color"
+                android:textColorHint="@color/sianbro_gray_color" />
+
+            <Button
+                android:id="@+id/login_normal"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right|center_vertical"
+                android:background="#00ffffff" />
+        </FrameLayout>
+
+
+        <Button
+            android:id="@+id/goto_mail"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.2"
+            android:background="#00ffffff"
+            android:fontFamily="@font/myriad_pro_regular"
+            android:text="F o r g o t     P a s s w o r d ?"
             android:textColor="@color/sianbro_gray_color" />
 
         <LinearLayout
@@ -62,14 +92,19 @@
             android:layout_height="0dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:layout_weight="0.5"
             android:orientation="horizontal">
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/facebook_login"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp" />
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/google_login"
@@ -81,14 +116,23 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/textlogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/myriad_pro_regular"
+            android:text="P a s s w o r d l e s s   A u t h e n t i o n"
+            android:textAlignment="center"
+            android:textColor="@color/sianbro_gray_color" />
+
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/pulse9_logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="120dp"
             android:layout_marginRight="120dp"
-            android:layout_marginTop="30dp"
-            android:layout_weight="0.2"
+            android:layout_marginTop="40dp"
+            android:layout_weight="0.03"
             app:srcCompat="@drawable/pulse9_logo" />
 
     </LinearLayout>
