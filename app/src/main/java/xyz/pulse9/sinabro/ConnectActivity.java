@@ -60,9 +60,6 @@ import org.json.JSONException;
  */
 public class ConnectActivity extends AppCompatActivity {
 
-
-////////////////////////////////////////////////////////////////////////////////// JangminStart
-
   private DatabaseReference myDatabase;
   private DatabaseReference userDatabase;
 
@@ -72,8 +69,6 @@ public class ConnectActivity extends AppCompatActivity {
   private String uid;
   private String receiveruid;
   Button vidBtn;
-
-//////////////////////////////////////////////////////////////////////////////////JangminEnd
 
 
   private SharedPreferences sharedPref;
@@ -181,6 +176,9 @@ public class ConnectActivity extends AppCompatActivity {
                 connectToRoom("abcde");
                 break;
               case R.id.emailLo:
+                Log.d("test", "Its in Onclick");
+                Message tmp = new Message(1);
+                chatAdapter.add(tmp);
                 break;
             }
             bottomSheetDialog.dismiss();
@@ -258,8 +256,7 @@ public class ConnectActivity extends AppCompatActivity {
    * Get a value from the shared preference or from the intent, if it does not
    * exist the default is used.
    */
-  private String sharedPrefGetString(
-          int attributeId, String intentName, int defaultId, boolean useFromIntent) {
+  private String sharedPrefGetString(int attributeId, String intentName, int defaultId, boolean useFromIntent) {
     String defaultValue = getString(defaultId);
     if (useFromIntent) {
       String value = getIntent().getStringExtra(intentName);
@@ -277,8 +274,7 @@ public class ConnectActivity extends AppCompatActivity {
    * Get a value from the shared preference or from the intent, if it does not
    * exist the default is used.
    */
-  private boolean sharedPrefGetBoolean(
-          int attributeId, String intentName, int defaultId, boolean useFromIntent) {
+  private boolean sharedPrefGetBoolean(int attributeId, String intentName, int defaultId, boolean useFromIntent) {
     boolean defaultValue = Boolean.valueOf(getString(defaultId));
     if (useFromIntent) {
       return getIntent().getBooleanExtra(intentName, defaultValue);
@@ -292,8 +288,7 @@ public class ConnectActivity extends AppCompatActivity {
    * Get a value from the shared preference or from the intent, if it does not
    * exist the default is used.
    */
-  private int sharedPrefGetInteger(
-          int attributeId, String intentName, int defaultId, boolean useFromIntent) {
+  private int sharedPrefGetInteger(int attributeId, String intentName, int defaultId, boolean useFromIntent) {
     String defaultString = getString(defaultId);
     int defaultValue = Integer.parseInt(defaultString);
     if (useFromIntent) {

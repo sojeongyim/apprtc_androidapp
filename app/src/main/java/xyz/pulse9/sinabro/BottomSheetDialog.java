@@ -40,13 +40,9 @@ public class BottomSheetDialog extends BottomSheetDialogFragment implements View
         View view = inflater.inflate(R.layout.bottom_sheet_dialog, container,false);
         msgLo = (LinearLayout) view.findViewById(R.id.msgLo);
         emailLo = (LinearLayout) view.findViewById(R.id.emailLo);
-        cloudLo = (LinearLayout) view.findViewById(R.id.cloudLo);
-        bluetoothLo = (LinearLayout) view.findViewById(R.id.bluetoothLo);
 
         msgLo.setOnClickListener(listener);
         emailLo.setOnClickListener(listener);
-        cloudLo.setOnClickListener(listener);
-        bluetoothLo.setOnClickListener(listener);
         return view;
     }
     @Override

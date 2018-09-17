@@ -3,23 +3,84 @@ import java.util.Calendar;
 
 
 public class Message {
-    public String sendDate;
-    public String sender;
-    public String contents;
+
+    private int type;
+
+    private String sendDate;
+    private String sender;
+    private String contents;
+
+
+    private String Caller;
+    private String Date;
+    private boolean chk;
+
 
     public Message(String sender, String contents)
     {
+        this.type=0;
         this.sender = sender;
         this.contents = contents;
         this.sendDate = Calendar.getInstance().getTime().toString();
     }
-
-    public String getMessage() {
-        return contents;
+    public Message(int type)
+    {
+        this.type=1;
     }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getSendDate() {
+        return sendDate;
+    }
+
+    public void setSendDate(String sendDate) {
+        this.sendDate = sendDate;
+    }
+
     public String getSender() {
         return sender;
     }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public String getCaller() {
+        return Caller;
+    }
+
+    public void setCaller(String caller) {
+        Caller = caller;
+    }
+
+    public String getDate() {
+        return Date;
+    }
+
+    public void setDate(String date) {
+        Date = date;
+    }
+
+    public boolean isChk() {
+        return chk;
+    }
+
+    public void setChk(boolean chk) {
+        this.chk = chk;
+    }
 }
-
-
