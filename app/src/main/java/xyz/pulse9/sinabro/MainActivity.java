@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class MainActivity extends AppCompatActivity implements ChatRoomListFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, TeacherlistFragment.OnFragmentInteractionListener{
 
     final String TAG = "MainActivity";
-    Button testbtn ;
+//    Button testbtn ;
     private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -62,14 +62,11 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
 
         String uid = curuser.getUid();
-
-        if(ref.child(uid)==null)
-        {
-            String email = curuser.getEmail();
-            String nickname = curuser.getDisplayName();
-            ref.child(uid).child("email").setValue(email);
-            ref.child(uid).child("nickname").setValue(nickname);
-        }
+        Log.d(TAG, "uid : "+uid);
+        String email = curuser.getEmail();
+        String nickname = curuser.getDisplayName();
+        ref.child(uid).child("email").setValue(email);
+        ref.child(uid).child("nickname").setValue(nickname);
 
         loadFragment(new TimelineFragment());
         mTextMessage = (TextView) findViewById(R.id.message);
@@ -77,26 +74,26 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_timeline);
 
-        testbtn = (Button) findViewById(R.id.button2);
-        testbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//        testbtn = (Button) findViewById(R.id.button2);
+//        testbtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
 //                FirebaseAuth.getInstance().signOut();
 //                Log.d(TAG, "u - " + FirebaseAuth.getInstance().getCurrentUser());
 //                Intent intent = new Intent(MainActivity.this, ConnectActivity.class);
 
-                Intent intent = new Intent(MainActivity.this, ChattingActivity.class);
-                intent.putExtra("chatroomname", "abcd");
-                intent.putExtra("uid", curuser.getUid());
-                intent.putExtra("receiveruid", "zzzkkw");
+//                Intent intent = new Intent(MainActivity.this, ChattingActivity.class);
+//                intent.putExtra("chatroomname", "abcd");
+//                intent.putExtra("uid", curuser.getUid());
+//                intent.putExtra("receiveruid", "zzzkkw");
 
 //                chatroomname = intent.getStringExtra("chatroomname");
 //                uid = intent.getStringExtra("uid");
 //                receiveruid = intent.getStringExtra("receiveruid");
 
-                startActivity(intent);
-            }
-        });
+//                startActivity(intent);
+//            }
+//        });
     }
 
     private void loadFragment(Fragment fragment) {

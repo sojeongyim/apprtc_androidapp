@@ -42,7 +42,7 @@ import java.util.Arrays;
 public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
 
     private CallbackManager callbackManager;
-    final String TAG = "FIREBASEAUTHJ";
+    final String TAG = "Jangmin_AUTH";
     final int RC_SIGN_IN = 222;
     GoogleSignInClient mGoogleSignInClient;
     SignInButton googleBtn;
@@ -56,9 +56,11 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_login);
+
         mAuth = FirebaseAuth.getInstance();
+
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -87,57 +89,46 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         callbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) findViewById(R.id.facebook_login);
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
 
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
+
         boolean isLoggedIn;
         isLoggedIn = accessToken != null && !accessToken.isExpired();
-        if (isLoggedIn)
+        Log.d(TAG, "isLoggedIn" + isLoggedIn);
 
+        if (isLoggedIn)
         {
+            Log.d(TAG, "Token : " +accessToken.getToken());
+            Log.d(TAG, "UID : " +accessToken.getUserId());
+            handleFacebookAccessToken(accessToken);
+
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
         }
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
+        LoginButton loginButton = (LoginButton) findViewById(R.id.facebook_login);
+        loginButton.setReadPermissions("email", "public_profile");
+        CallbackManager mCallbackManager = CallbackManager.Factory.create();
+        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        Log.v("result", object.toString());
-                        setResult(RESULT_OK);
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
+                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
-
+                Log.d(TAG, "facebook:onCancel");
+                // ...
             }
 
             @Override
             public void onError(FacebookException error) {
-
+                Log.d(TAG, "facebook:onError", error);
+                // ...
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-
-    }
-
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
 
     }
 
@@ -162,16 +153,6 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
 
     }
 
-    private void updateUI(FirebaseUser curuser) {
-        if (curuser != null) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Log.d(TAG, "Auth Failed");
-        }
-    }
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
@@ -192,6 +173,32 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
                 });
     }
 
+    private void updateUI(FirebaseUser curuser) {
+        if (curuser != null) {
+            Log.d(TAG, "Auth Successed");
+            Log.d(TAG, "curuser : " + curuser.getProviderId());
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else
+        {
+            Log.d(TAG, "Auth Failed");
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+
+    }
+
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+
+    }
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
 
@@ -213,10 +220,10 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
                             updateUI(null);
                         }
 
+                        // ...
                     }
                 });
     }
-
 
 }
 
