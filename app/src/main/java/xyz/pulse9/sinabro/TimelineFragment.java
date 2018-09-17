@@ -3,6 +3,7 @@ package xyz.pulse9.sinabro;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -14,6 +15,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 
 
 /**
@@ -41,11 +45,10 @@ public class TimelineFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private ViewPager viewPager;
-    private MyViewPagerAdapter myViewPagerAdapter;
-    private LinearLayout dotsLayout;
-    private TextView[] dots;
-    private int[] layouts;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private ArrayList<MyData> myDataset;
 
 
     // TODO: Rename and change types of parameters
@@ -61,28 +64,42 @@ public class TimelineFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mRecyclerView = (RecyclerView) getView().findViewById(R.id.timeline_recyclerview);
 
-        Drawable alpha = ((LinearLayout)getView().findViewById(R.id.timelineback)).getBackground();
-        alpha.setAlpha(50);
-        viewPager = (ViewPager) getView().findViewById(R.id.view_pager);
-        dotsLayout = (LinearLayout) getView().findViewById(R.id.layoutDots);
-        // layouts of all welcome sliders
-        // add few more layouts if you want
-        layouts = new int[]{
-                R.layout.timeline1,
-                R.layout.timeline2,
-                R.layout.timeline3,
-                R.layout.timeline4};
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
 
-        // adding bottom dots
-        addBottomDots(0);
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // making notification bar transparent
-        changeStatusBarColor();
+        // specify an adapter (see also next example)
+        myDataset = new ArrayList<>();
+        mAdapter = new MyAdapter(myDataset);
+        mRecyclerView.setAdapter(mAdapter);
 
-        myViewPagerAdapter = new MyViewPagerAdapter();
-        viewPager.setAdapter(myViewPagerAdapter);
-        viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+        myDataset.add(new MyData("I’m Korean-American living in Seoul.  But a few years ago a serendipitous event inspired me to get back into Korea where my roots are. As a Korean-American, I learned Korean as second language so that I understand how difficult it is to get fluent in Korean.  Such a hard-earning skill.\n" +
+                "I have better understanding of how the language can be taught as compared to the native speakers. (No worries, I’m super fluent in Korean!)\n" +
+                "If you believe that I can be of help to you or if you would like to learn more about me.\n" +
+                "Just leave me a message.",R.drawable.timeline01));
+        myDataset.add(new MyData("I’m a huge people-person and spent several years in overseas like Singapore and Hong Kong. There is nothing greater than finding opportunities for smart people to do awesome things, and teaching in Sina-bro is a fantastic process that I feel lucky to participate in.\n" +
+                "When I’m not working, I am usually with my friends hanging out, who love to run and exercise even more than I do. I’m much a kid at heart, love to cook, watch football, play guitar, and travel whenever I can.\n" +
+                "I love meeting new people and get inspired by them, so please feel free to say hello and share a story with me.I’m much thrilled to get a call from who I can share my story.\n" +
+                "Let’s get to know each other!",R.drawable.timeline02));
+        myDataset.add(new MyData("#It's no surprise that I am tutoring in Sina-bro which rewards me for helping people realize their potential and setting them on their way to achieving great things.\n" +
+                "After 10+ years in teaching industry, I get as excited today as I did back then when seeing both myself and students prosper.\n" +
+                "Truly partnering with my students to help them think differently and coaching the talent I work with to attain the unattainable is what motivates me to continuously improve in this ever evolving industry.\n" +
+                "I’m also focused on putting my passions and skills to good use by supporting people and projects that I really care about whether it’s giving some time to the great language skills or driving key diversity initiatives at Korean people to creating greater cultural awareness.\n" +
+                "I'm interested in hearing your stories.",R.drawable.timeline03));
+        myDataset.add(new MyData("#I love traveling the world and eating my way through the places I visit. In my spare time, I’m searching for travel deals or hang out with the new friends from Sina-bro.\n" +
+                "I’m fluent in English, and am always looking to brush up my language skills over coffee or drinks. If you challenge me to Say Wars trivia, I will win. I’m also obsessed with Music. Connect with me for networking and more.\n",R.drawable.timeline04));
+        myDataset.add(new MyData("One of my favorite things is connecting with people who have a passion for working in a self-managed organization and who genuinely love wowing their internal and external customers. For me, it’s all about discovering people’s dreams and matching them with careers that will allow them to grow and do their very best work, Getting to be yourself both inside and outside of work is where it’s at!\n" +
+                "Outside of the office, I’m committed to education and tutor at Sina-bro.\n" +
+                "I can be contacted directly at 00@gmail.com, text me!\n",R.drawable.timeline05));
+//        Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/HelveticaNeueLTPro-Lt.otf"); //asset > fonts 폴더 내 폰트파일 적용
+//        myDataset.(typeFace);
+
 
 
         ImageButton setting_butt = (ImageButton) getView().findViewById(R.id.setting);
@@ -108,99 +125,6 @@ public class TimelineFragment extends Fragment {
             }
         });
 
-
-    }
-
-    private void addBottomDots(int currentPage) {
-        dots = new TextView[layouts.length];
-
-        int[] colorsActive = getResources().getIntArray(R.array.array_dot_active);
-        int[] colorsInactive = getResources().getIntArray(R.array.array_dot_inactive);
-
-        dotsLayout.removeAllViews();
-        for (int i = 0; i < dots.length; i++) {
-            dots[i] = new TextView(getActivity());
-            dots[i].setText(Html.fromHtml("&#8226;"));
-            dots[i].setTextSize(35);
-            dots[i].setTextColor(colorsInactive[currentPage]);
-            dotsLayout.addView(dots[i]);
-        }
-
-        if (dots.length > 0)
-            dots[currentPage].setTextColor(colorsActive[currentPage]);
-    }
-
-    private int getItem(int i) {
-        return viewPager.getCurrentItem() + i;
-    }
-
-
-    //  viewpager change listener
-    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
-
-        @Override
-        public void onPageSelected(int position) {
-            addBottomDots(position);
-
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-
-        }
-    };
-
-    /**
-     * Making notification bar transparent
-     */
-    private void changeStatusBarColor() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getActivity().getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
-    }
-
-    /**
-     * View pager adapter
-     */
-    public class MyViewPagerAdapter extends PagerAdapter {
-        private LayoutInflater layoutInflater;
-
-        public MyViewPagerAdapter() {
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            View view = layoutInflater.inflate(layouts[position], container, false);
-            container.addView(view);
-
-            return view;
-        }
-
-        @Override
-        public int getCount() {
-            return layouts.length;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object obj) {
-            return view == obj;
-        }
-
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            View view = (View) object;
-            container.removeView(view);
-        }
 
     }
 
@@ -281,3 +205,62 @@ public class TimelineFragment extends Fragment {
 }
 
 
+class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+    private ArrayList<MyData> mDataset;
+
+    // Provide a reference to the views for each data item
+    // Complex data items may need more than one view per item, and
+    // you provide access to all the views for a data item in a view holder
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+        public ImageView mImageView;
+        public TextView mTextView;
+
+        public ViewHolder(View view) {
+            super(view);
+            mImageView = (ImageView)view.findViewById(R.id.image);
+            mTextView = (TextView)view.findViewById(R.id.textview);
+        }
+    }
+
+    // Provide a suitable constructor (depends on the kind of dataset)
+    public MyAdapter(ArrayList<MyData> myDataset) {
+        mDataset = myDataset;
+    }
+
+    // Create new views (invoked by the layout manager)
+    @Override
+    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                   int viewType) {
+        // create a new view
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.timeline_onelayout, parent, false);
+        // set the view's size, margins, paddings and layout parameters
+        ViewHolder vh = new ViewHolder(v);
+        return vh;
+    }
+
+    // Replace the contents of a view (invoked by the layout manager)
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        // - get element from your dataset at this position
+        // - replace the contents of the view with that element
+        holder.mTextView.setText(mDataset.get(position).text);
+        holder.mImageView.setImageResource(mDataset.get(position).img);
+    }
+
+    // Return the size of your dataset (invoked by the layout manager)
+    @Override
+    public int getItemCount() {
+        return mDataset.size();
+    }
+}
+
+class MyData{
+    public String text;
+    public int img;
+    public MyData(String text, int img){
+        this.text = text;
+        this.img = img;
+    }
+}
