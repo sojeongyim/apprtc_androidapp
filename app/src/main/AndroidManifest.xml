@@ -65,6 +65,7 @@
             android:theme="@style/CallActivityTheme" />
         <activity
             android:name=".LoginActivity"
+
             android:label="login">
 
             <intent-filter>
@@ -74,6 +75,7 @@
             </intent-filter>
 
         </activity>
+
 
 
         <activity android:name=".AppSettingActivity" />

@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -39,11 +40,13 @@ public class TimelineFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private int[] layouts;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -58,6 +61,7 @@ public class TimelineFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         Drawable alpha = ((LinearLayout)getView().findViewById(R.id.timelineback)).getBackground();
         alpha.setAlpha(50);
         viewPager = (ViewPager) getView().findViewById(R.id.view_pager);
@@ -82,6 +86,7 @@ public class TimelineFragment extends Fragment {
 
 
         ImageButton setting_butt = (ImageButton) getView().findViewById(R.id.setting);
+
         ImageButton notice_butt = (ImageButton) getView().findViewById(R.id.notice);
 
         setting_butt.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +107,7 @@ public class TimelineFragment extends Fragment {
                 ft.commit();
             }
         });
+
 
     }
 
@@ -195,6 +201,7 @@ public class TimelineFragment extends Fragment {
             View view = (View) object;
             container.removeView(view);
         }
+
     }
 
     /**
