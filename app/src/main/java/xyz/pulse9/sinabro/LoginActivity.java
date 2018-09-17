@@ -3,11 +3,9 @@ package xyz.pulse9.sinabro;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -15,8 +13,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -33,10 +29,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
-
-import org.json.JSONObject;
-
-import java.util.Arrays;
 
 
 public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
@@ -74,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
             }
         }
 
-        googleBtn = findViewById(R.id.sign_in_button);
+        googleBtn = findViewById(R.id.google_login);
         googleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
