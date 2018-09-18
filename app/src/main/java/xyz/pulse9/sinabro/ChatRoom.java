@@ -12,6 +12,16 @@ public class ChatRoom {
     private Uri ProfileUri;
     private String time;
 
+    public String getReceiverNick() {
+        return receiverNick;
+    }
+
+    public void setReceiverNick(String receiverNick) {
+        this.receiverNick = receiverNick;
+    }
+
+    private String receiverNick;
+
 
 
 //

@@ -128,7 +128,6 @@ public class ChatRoomListFragment extends Fragment{
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.d("JMWHAT", "WHTHAPPENEND3");
                 roomname = dataSnapshot.getRef().getKey();
                 title = dataSnapshot.child("title").getValue().toString();
                 lastTime = dataSnapshot.child("lastDate").getValue().toString();

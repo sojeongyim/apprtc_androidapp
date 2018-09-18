@@ -1,25 +1,22 @@
 package xyz.pulse9.sinabro;
 
 import android.content.Context;
-
-import android.graphics.Color;
-
-import android.view.Gravity;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
-
 import android.view.View;
-
 import android.view.ViewGroup;
-
 import android.widget.ArrayAdapter;
-
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import xyz.pulse9.sinabro.Message;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 public class ChatRoomAdapter extends ArrayAdapter {
@@ -70,13 +67,31 @@ public class ChatRoomAdapter extends ArrayAdapter {
             row = inflater.inflate(R.layout.chat_room, parent, false);
         }
         // Array List에 들어 있는 채팅 문자열을 읽어
-        ChatRoom chatRoom = (ChatRoom) ChatRooms.get(position);
+        final ChatRoom chatRoom = (ChatRoom) ChatRooms.get(position);
 
         // Inflater를 이용해서 생성한 View에, ChatMessage를 삽입한다.
-        TextView msgText = (TextView) row.findViewById(R.id.firstLine);
+        final TextView msgText = (TextView) row.findViewById(R.id.firstLine);
         TextView msgText2 = (TextView) row.findViewById(R.id.secondLine);
         TextView msgText3 = (TextView) row.findViewById(R.id.textView2);
-        msgText.setText(chatRoom.getReceiver());
+
+
+
+        DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference("users").child(chatRoom.getReceiver());
+
+        userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                msgText.setText(dataSnapshot.child("nickname").getValue().toString());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
         msgText2.setText(chatRoom.getTitle());
         msgText3.setText(chatRoom.getLastDate());
         boolean message_left = true;
