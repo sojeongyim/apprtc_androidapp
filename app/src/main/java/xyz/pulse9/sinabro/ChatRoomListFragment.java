@@ -118,7 +118,6 @@ public class ChatRoomListFragment extends Fragment{
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
                 roomname = dataSnapshot.getRef().getKey();
                 receiver = dataSnapshot.child("receiver").getValue().toString();
                 title = dataSnapshot.child("title").getValue().toString();
@@ -134,8 +133,7 @@ public class ChatRoomListFragment extends Fragment{
                 chatRoomAdapter.refresh(roomname, title, lastTime);
                 chatRoomAdapter.notifyDataSetChanged();
                 listView.setAdapter(chatRoomAdapter);
-
-                Log.d("jangmin",roomname);
+                Log.d("jangmin","userDatabase On ChildChanged");
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {

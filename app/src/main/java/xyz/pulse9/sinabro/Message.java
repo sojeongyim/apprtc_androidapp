@@ -12,8 +12,17 @@ public class Message {
 
 
     private String Caller;
+    private String Receiver;
     private String Date;
     private boolean chk;
+
+    public String getReceiver() {
+        return Receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        Receiver = receiver;
+    }
 
     public Message(String sender, String contents)
     {

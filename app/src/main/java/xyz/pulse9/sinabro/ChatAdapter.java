@@ -8,11 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +35,7 @@ public class ChatAdapter extends ArrayAdapter {
     public void add(Message object) {
 
         msgs.add(object);
-        Log.d("test", "Its adds " +object.getType());
+        Log.d("test", "Its adds " + object.getType());
 
         super.add(object);
     }
@@ -61,97 +64,81 @@ public class ChatAdapter extends ArrayAdapter {
         inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
-        Message msg = msgs.get(position);
+        final Message msg = msgs.get(position);
         Log.d("test", "Its type isaaa " + viewType);
 
         switch (viewType) {
             case ITEM_VIEW_TYPE_MSG:
                 final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
 
-                                // Array List에 들어 있는 채팅 문자열을 읽어
+                // Array List에 들어 있는 채팅 문자열을 읽어
                 boolean message_left = true;
                 convertView = inflater.inflate(R.layout.chat_message,
                         parent, false);
                 TextView titleTextView = (TextView) convertView.findViewById(R.id.contentsTxt);
                 titleTextView.setText(msg.getContents());
 
-                Log.d("ChatAdapter", "mgs - Get Sender : " + msg.getSender());
-                Log.d("ChatAdapter", "curuser Get Uid : " + curuser.getUid());
-
-                if(msg.getSender().equals(curuser.getUid()))
-                {
-                    message_left=true;
-                }
-                else
-                {
-                    message_left=false;
+                if (msg.getSender().equals(curuser.getUid())) {
+                    message_left = true;
+                } else {
+                    message_left = false;
                 }
 
                 titleTextView.setBackground(this.getContext().getResources().getDrawable((message_left ? R.drawable.word_resize2 : R.drawable.transpose2)));
                 titleTextView.setTextColor(Color.parseColor("#000000"));
 
-                LinearLayout chatMessageContainer = (LinearLayout)convertView.findViewById(R.id.textLinear);
+                LinearLayout chatMessageContainer = (LinearLayout) convertView.findViewById(R.id.textLinear);
 
                 int align;
 
                 // Inflater를 이용해서 생성한 View에, ChatMessage를 삽입한다.
-                if(message_left) {
+                if (message_left) {
                     TextView msgText = (TextView) convertView.findViewById(R.id.contentsTxt);
                     align = Gravity.LEFT;
-                }else{
+                } else {
                     align = Gravity.RIGHT;
                 }
                 chatMessageContainer.setGravity(align);
                 break;
 
             case ITEM_VIEW_TYPE_CALL:
-                Log.d("test", "in Switch " + viewType);
+                convertView = inflater.inflate(R.layout.chat_videocall, parent, false);
 
-                convertView = inflater.inflate(R.layout.chat_videocall,
-                        parent, false);
-                TextView caller = convertView.findViewById(R.id.VideoCall);
+                final DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference("users");
+
+                final Button acceptBtn = convertView.findViewById(R.id.acceptBtn);
+                final Button denyBtn= convertView.findViewById(R.id.denyBtn);
+                final Button resultBtn= convertView.findViewById(R.id.resultBtn);
+                resultBtn.setEnabled(false);
+
+                acceptBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        acceptBtn.setVisibility(View.GONE);
+                        denyBtn.setVisibility(View.GONE);
+                        resultBtn.setText("Accepted");
+                        resultBtn.setVisibility(View.VISIBLE);
+
+                        userDatabase.child(msg.getCaller()).child("Alarm").push().setValue(msg.getDate());
+                        userDatabase.child(msg.getReceiver()).child("Alarm").push().setValue(msg.getDate());
+                    }
+                });
+
+                denyBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        denyBtn.setVisibility(View.GONE);
+                        acceptBtn.setVisibility(View.GONE);
+                        resultBtn.setText("Denied");
+                        resultBtn.setVisibility(View.VISIBLE);
+                    }
+                });
+
                 TextView date = convertView.findViewById(R.id.dataTime);
-
-                caller.setText(msg.getCaller());
                 date.setText(msg.getDate());
-
                 break;
         }
         return convertView;
     }
 }
-
-
-//
-//
-//    Message msg = (Message) msgs.get(position);
-//
-//    // Inflater를 이용해서 생성한 View에, ChatMessage를 삽입한다.
-//    TextView msgText = (TextView) row.findViewById(R.id.contentsTxt);
-//        msgText.setText(msg.getMessage());
-//
-//                // Array List에 들어 있는 채팅 문자열을 읽어
-//                boolean message_left = true;
-//
-//                Message msg = (Message) msgs.get(position);
-//                msgText.setBackground(this.getContext().getResources().getDrawable( (message_left ? R.drawable.word_resize2 : R.drawable.transpose2 )));
-//
-//                LinearLayout chatMessageContainer = (LinearLayout)row.findViewById(R.id.textLinear);
-//
-//                int align;
-//
-//                // Inflater를 이용해서 생성한 View에, ChatMessage를 삽입한다.
-//                if(message_left) {
-//
-//                TextView msgText = (TextView) row.findViewById(R.id.contentsTxt);
-//                align = Gravity.LEFT;
-//                msgText.setText(msg.getMessage());
-//                message_left = false;
-//                }else{
-//                align = Gravity.RIGHT;
-//                message_left=true;
-//                }
-//                chatMessageContainer.setGravity(align);
-//                msgText.setTextColor(Color.parseColor("#000000"));
-//
-//                return row;
