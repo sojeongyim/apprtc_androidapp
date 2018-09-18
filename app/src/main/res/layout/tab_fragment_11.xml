@@ -24,14 +24,14 @@
 
 
             <ImageView
-                android:id="@+id/imageView_user10"
+                android:id="@+id/imageView_user11"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="20dp"
                 android:layout_weight="2"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/user10" />
+                app:srcCompat="@drawable/user11" />
 
             <TextView
                 android:layout_width="135dp"
@@ -51,7 +51,7 @@
                 android:layout_gravity="center_vertical"
                 android:background="#00ffffff"
                 app:srcCompat="@drawable/heart"
-                android:id="@+id/user10_heart" />
+                android:id="@+id/user11_heart"/>
 
             <TextView
                 android:layout_width="wrap_content"

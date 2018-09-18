@@ -7,13 +7,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 
 /**
@@ -60,6 +62,7 @@ public class TeacherlistFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user8));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user9));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user10));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user11));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
@@ -85,18 +88,6 @@ public class TeacherlistFragment extends Fragment {
             }
         });
 
-
-        Button testbtn = getView().findViewById(R.id.startChat);
-        testbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ConnectActivity.class);
-                intent.putExtra("chatroomname", "none");
-                intent.putExtra("uid", "luzZy37nmveRpTavmzgAmvOemKw1");
-                intent.putExtra("receiveruid", "yrSf3cetwGU8PaBWsJ3aZ6kuKFi1");
-                startActivity(intent);
-            }
-        });
 
     }
 
