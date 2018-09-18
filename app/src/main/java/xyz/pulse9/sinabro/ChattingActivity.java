@@ -80,9 +80,9 @@ public class ChattingActivity extends AppCompatActivity {
                     userDatabase.child(uid).child("rooms").child(chatroomname).child("lastContents").setValue(contents);
                     userDatabase.child(uid).child("rooms").child(chatroomname).child("time").setValue(time);
 
-                    userDatabase.child(receiveruid).child("rooms").child("chatroomname").child("receiver").setValue(uid);
-                    userDatabase.child(receiveruid).child("rooms").child("chatroomname").child("lastContents").setValue(contents);
-                    userDatabase.child(receiveruid).child("rooms").child("chatroomname").child("time").setValue(time);
+                    userDatabase.child(receiveruid).child("rooms").child(chatroomname).child("receiver").setValue(uid);
+                    userDatabase.child(receiveruid).child("rooms").child(chatroomname).child("lastContents").setValue(contents);
+                    userDatabase.child(receiveruid).child("rooms").child(chatroomname).child("time").setValue(time);
 
                     chatAdapter.add(mMessage);
 

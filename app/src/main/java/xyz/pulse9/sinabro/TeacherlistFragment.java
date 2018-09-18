@@ -1,6 +1,7 @@
 package xyz.pulse9.sinabro;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 /**
@@ -28,7 +30,7 @@ public class TeacherlistFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ViewPager mViewPager;
-
+    private TabLayout tabLayout;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -46,8 +48,8 @@ public class TeacherlistFragment extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
-        mViewPager = (ViewPager) getView().findViewById(R.id.container);
-        TabLayout tabLayout = (TabLayout) getView().findViewById(R.id.tab_layout);
+        tabLayout = (TabLayout) getView().findViewById(R.id.tab_layout);
+
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user1));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user2));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user3));
@@ -60,15 +62,16 @@ public class TeacherlistFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user10));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        final ViewPager viewPager = (ViewPager) getView().findViewById(R.id.pager);
-        final mPagerAdapter adapter = new mPagerAdapter
-                (getFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+        mViewPager = (ViewPager) getView().findViewById(R.id.pager);
+        final mPagerAdapter adapter = new mPagerAdapter(getFragmentManager(), tabLayout.getTabCount());
+        mViewPager.setAdapter(adapter);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                mViewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -79,6 +82,19 @@ public class TeacherlistFragment extends Fragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+            }
+        });
+
+
+        Button testbtn = getView().findViewById(R.id.startChat);
+        testbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ConnectActivity.class);
+                intent.putExtra("chatroomname", "none");
+                intent.putExtra("uid", "luzZy37nmveRpTavmzgAmvOemKw1");
+                intent.putExtra("receiveruid", "yrSf3cetwGU8PaBWsJ3aZ6kuKFi1");
+                startActivity(intent);
             }
         });
 

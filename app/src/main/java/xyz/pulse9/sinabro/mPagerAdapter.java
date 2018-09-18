@@ -11,14 +11,15 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 public class mPagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
 
+
     public mPagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
     }
 
+
     @Override
     public Fragment getItem(int position) {
-
         switch (position) {
             case 0:
                 TabFragment.TabFragment1 tab1 = new TabFragment.TabFragment1();

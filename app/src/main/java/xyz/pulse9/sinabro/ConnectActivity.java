@@ -65,7 +65,7 @@ public class ConnectActivity extends AppCompatActivity {
 
   private final static String TAG = "ChattingActivity";
   ChatAdapter chatAdapter;
-  String chatroomname;
+  String chatroomname = "none";
   private String uid;
   private String receiveruid;
   Button vidBtn;
@@ -83,20 +83,18 @@ public class ConnectActivity extends AppCompatActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     setContentView(R.layout.activity_chatting);
 
     Intent intent2 = getIntent();
     chatroomname = intent2.getStringExtra("chatroomname");
+    if(!chatroomname.equals("none"))
+    {
+      initDB(chatroomname);
+    }
     uid = intent2.getStringExtra("uid");
     receiveruid = intent2.getStringExtra("receiveruid");
 
-    myDatabase = FirebaseDatabase.getInstance().getReference("message").child(chatroomname);
-    userDatabase = FirebaseDatabase.getInstance().getReference("users");
-
     chatAdapter = new ChatAdapter(this.getApplicationContext(), R.layout.chat_message);
-    setContentView(R.layout.activity_chatting);
-    Log.d("ChattingActivity", chatAdapter.toString());
     final ListView listView = (ListView) findViewById(R.id.chatListview);
     listView.setAdapter(chatAdapter);
     listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL); // 이게 필수
@@ -112,87 +110,41 @@ public class ConnectActivity extends AppCompatActivity {
     });
 
 
-    myDatabase.addChildEventListener(new ChildEventListener() {
-      @Override
-      public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-        if (!dataSnapshot.getRef().getKey().toString().equals("personA") && !dataSnapshot.getRef().getKey().toString().equals("personB")) {
-
-          String contents = dataSnapshot.child("contents").getValue().toString();
-          String time = dataSnapshot.child("sendDate").getValue().toString();
-          Message mMessage = new Message(uid, contents);
-
-          userDatabase.child(uid).child("rooms").child(chatroomname).child("receiver").setValue(receiveruid);
-          userDatabase.child(uid).child("rooms").child(chatroomname).child("lastContents").setValue(contents);
-          userDatabase.child(uid).child("rooms").child(chatroomname).child("time").setValue(time);
-
-          userDatabase.child(receiveruid).child("rooms").child("chatroomname").child("receiver").setValue(uid);
-          userDatabase.child(receiveruid).child("rooms").child("chatroomname").child("lastContents").setValue(contents);
-          userDatabase.child(receiveruid).child("rooms").child("chatroomname").child("time").setValue(time);
-
-          chatAdapter.add(mMessage);
-
-          Intent resultIntent = new Intent();
-          resultIntent.putExtra("roomname", chatroomname);
-          resultIntent.putExtra("title", contents);
-          resultIntent.putExtra("time", time);
-          setResult(RESULT_OK, resultIntent);
-        }
-      }
-
-      @Override
-      public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-      }
-
-      @Override
-      public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-      }
-
-      @Override
-      public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError databaseError) {
-
-      }
-    });
-
     vidBtn = (Button) findViewById(R.id.vidBtn);
     vidBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-//        connectToRoom("12345ab");
         final BottomSheetDialog bottomSheetDialog = BottomSheetDialog.getInstance();
         bottomSheetDialog.show(getSupportFragmentManager(), "bottomSheet");
         bottomSheetDialog.setListener(new BottomSheetDialog.PollButtonClickListener() {
           @Override
           public void onClick(View view) {
-            Log.d("onAnyButton",view.toString());
             switch (view.getId())
             {
               case R.id.msgLo:
                 connectToRoom("abcde");
                 break;
               case R.id.emailLo:
-                Log.d("test", "Its in Onclick");
-                Message tmp = new Message(1);
-                chatAdapter.add(tmp);
+                Message tmp = new Message(1, uid);
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                if(chatroomname.equals("none")) {
+                  Log.d(TAG, "You should chat atleast one sentences");
+                }
+                else {
+                  DatabaseReference ref = database.getReference("message").child(chatroomname);
+                  ref.push().setValue(tmp);
+                }
                 break;
             }
             bottomSheetDialog.dismiss();
           }
-
           @Override
           public void onAnyButtonClick(Object data) {
           }
         });
       }
     });
-
-//////////////////////////////////////////////////////////////////////////////////JangminEnd
-
 
     if (ContextCompat.checkSelfPermission(this,
             Manifest.permission.CAMERA)
@@ -547,12 +499,66 @@ public class ConnectActivity extends AppCompatActivity {
     EditText sendMsg = (EditText) findViewById(R.id.sendMsg);
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference ref = database.getReference("message").child(chatroomname);
-
     Message mMessage = new Message(uid, sendMsg.getText().toString());
+    DatabaseReference ref;
+    if(chatroomname.equals("none")) {
+      ref = database.getReference("message").push();
+      chatroomname = ref.getKey();
+      initDB(chatroomname);
+    }
+    ref = database.getReference("message").child(chatroomname);
     ref.push().setValue(mMessage);
-
     sendMsg.setText("");
   }
 
+  public void initDB(final String rommname)
+  {
+      myDatabase = FirebaseDatabase.getInstance().getReference("message").child(rommname);
+      userDatabase = FirebaseDatabase.getInstance().getReference("users");
+
+      myDatabase.addChildEventListener(new ChildEventListener() {
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+          String type = dataSnapshot.child("type").getValue().toString();
+          Message mMessage;
+          if (type.equals("0")) {
+            String contents = dataSnapshot.child("contents").getValue().toString();
+            String time = dataSnapshot.child("sendDate").getValue().toString();
+            String sender = dataSnapshot.child("sender").getValue().toString();
+            mMessage = new Message(sender, contents);
+
+            ChatRoom temp = new ChatRoom(receiveruid, contents, time);
+            userDatabase.child(uid).child("rooms").child(rommname).setValue(temp);
+            temp.setReceiver(uid);
+            userDatabase.child(receiveruid).child("rooms").child(rommname).setValue(temp);
+          } else {
+            String caller = dataSnapshot.child("caller").getValue().toString();
+            String date = dataSnapshot.child("date").getValue().toString();
+            mMessage = new Message(1, caller);
+            mMessage.setDate(date);
+          }
+          chatAdapter.add(mMessage);
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+      });
+  }
 }
