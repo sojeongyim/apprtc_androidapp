@@ -60,7 +60,7 @@
                 android:background="@drawable/login_edittext"
                 android:ems="10"
                 android:fontFamily="@font/myriad_pro_light"
-                android:hint="password"
+                android:hint="*******"
                 android:inputType="textPassword"
                 android:textAlignment="center"
                 android:textColor="@color/sianbro_gray_color"
