@@ -57,9 +57,9 @@ public class TabFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), ConnectActivity.class);
-                    intent.putExtra("chatroomname", "ToTeacher1");
+                    intent.putExtra("chatroomname", "none");
                     intent.putExtra("receiveruid", teacher1_token);  //intern1계정으로 전송
-                    intent.putExtra("uid", "yrSf3cetwGU8PaBWsJ3aZ6kuKFi1");  //uid 수정필요
+                    intent.putExtra("uid", uid);  //uid 수정필요
                     startActivity(intent);
                 }
             });
@@ -69,8 +69,6 @@ public class TabFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     userDatabase.child(teacher1_token).child("follower").push().setValue(uid);
-
-
                 }
             });
 
@@ -114,23 +112,29 @@ public class TabFragment extends Fragment {
     public static class TabFragment2 extends Fragment {
 
         private String teacher2_token ="luzZy37nmveRpTavmzgAmvOemKw1";////intern2계정
+        private String uid;
+        FirebaseUser curuser;
 
         @Override
         public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+
+            curuser = FirebaseAuth.getInstance().getCurrentUser();
+            uid = curuser.getUid();
+
             super.onActivityCreated(savedInstanceState);
             ImageView imageView_user2 = (ImageView) getView().findViewById(R.id.imageView_user2);
+
             imageView_user2.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), ConnectActivity.class);
-                    intent.putExtra("chatroomname", "ToTeacher2");
+                    intent.putExtra("chatroomname", "none");
                     intent.putExtra("receiveruid", teacher2_token);  //intern2계정으로 전송
-                    intent.putExtra("uid", "yrSf3cetwGU8PaBWsJ3aZ6kuKFi1");  //uid 수정필요
+                    intent.putExtra("uid", uid);  //uid 수정필요
                     startActivity(intent);
                 }
             });
-
         }
 
         @Override
@@ -142,10 +146,15 @@ public class TabFragment extends Fragment {
     public static class TabFragment3 extends Fragment {
 
         private String teacher3_token ="luzZy37nmveRpTavmzgAmvOemKw1";////intern2계정, 수정필요
+        private String uid;
+        FirebaseUser curuser;
 
         @Override
         public void onActivityCreated(@Nullable Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
+            curuser = FirebaseAuth.getInstance().getCurrentUser();
+            uid = curuser.getUid();
+
             ImageView imageView_user3 = (ImageView) getView().findViewById(R.id.imageView_user3);
             imageView_user3.setOnClickListener(new View.OnClickListener() {
 
@@ -154,7 +163,7 @@ public class TabFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), ConnectActivity.class);
                     intent.putExtra("chatroomname", "ToTeacher3");
                     intent.putExtra("receiveruid", teacher3_token);  //intern2계정으로 전송 수정필요
-                    intent.putExtra("uid", "yrSf3cetwGU8PaBWsJ3aZ6kuKFi1");  //uid 수정필요
+                    intent.putExtra("uid", uid);  //uid 수정필요
                     startActivity(intent);
                 }
             });

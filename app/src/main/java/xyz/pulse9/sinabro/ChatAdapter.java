@@ -2,6 +2,7 @@ package xyz.pulse9.sinabro;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,8 +15,11 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,13 +67,13 @@ public class ChatAdapter extends ArrayAdapter {
         LayoutInflater inflater;
         inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
 
         final Message msg = msgs.get(position);
         Log.d("test", "Its type isaaa " + viewType);
 
         switch (viewType) {
             case ITEM_VIEW_TYPE_MSG:
-                final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
 
                 // Array List에 들어 있는 채팅 문자열을 읽어
                 boolean message_left = true;
@@ -107,9 +111,23 @@ public class ChatAdapter extends ArrayAdapter {
                 final DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference("users");
 
                 final Button acceptBtn = convertView.findViewById(R.id.acceptBtn);
-                final Button denyBtn= convertView.findViewById(R.id.denyBtn);
-                final Button resultBtn= convertView.findViewById(R.id.resultBtn);
+                final Button denyBtn = convertView.findViewById(R.id.denyBtn);
+                final Button resultBtn = convertView.findViewById(R.id.resultBtn);
                 resultBtn.setEnabled(false);
+                if (msg.getChk()==1)
+                {
+                    acceptBtn.setVisibility(View.GONE);
+                    denyBtn.setVisibility(View.GONE);
+                    resultBtn.setText("Accepted");
+                    resultBtn.setVisibility(View.VISIBLE);
+                }
+                else if(msg.getChk()==2)
+                {
+                    denyBtn.setVisibility(View.GONE);
+                    acceptBtn.setVisibility(View.GONE);
+                    resultBtn.setText("Denied");
+                    resultBtn.setVisibility(View.VISIBLE);
+                }
 
                 acceptBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -119,9 +137,8 @@ public class ChatAdapter extends ArrayAdapter {
                         denyBtn.setVisibility(View.GONE);
                         resultBtn.setText("Accepted");
                         resultBtn.setVisibility(View.VISIBLE);
-
-                        userDatabase.child(msg.getCaller()).child("Alarm").push().setValue(msg.getDate());
-                        userDatabase.child(msg.getReceiver()).child("Alarm").push().setValue(msg.getDate());
+                        msg.setChk(1);
+                        userDatabase.child(curuser.getUid()).child("Alarm").push().setValue(msg.getDate());
                     }
                 });
 
@@ -132,6 +149,7 @@ public class ChatAdapter extends ArrayAdapter {
                         acceptBtn.setVisibility(View.GONE);
                         resultBtn.setText("Denied");
                         resultBtn.setVisibility(View.VISIBLE);
+                        msg.setChk(2);
                     }
                 });
 

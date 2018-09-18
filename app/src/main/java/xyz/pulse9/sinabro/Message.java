@@ -14,7 +14,9 @@ public class Message {
     private String Caller;
     private String Receiver;
     private String Date;
-    private boolean chk;
+    private int chk;
+
+    public int getChk(){return chk;}
 
     public String getReceiver() {
         return Receiver;
@@ -36,6 +38,7 @@ public class Message {
         this.Caller=Caller;
         this.type=type;
         this.Date=Calendar.getInstance().getTime().toString();
+        this.chk=0;
     }
     public Message(int type)
     {
@@ -90,11 +93,7 @@ public class Message {
         Date = date;
     }
 
-    public boolean isChk() {
-        return chk;
-    }
-
-    public void setChk(boolean chk) {
+    public void setChk(int chk) {
         this.chk = chk;
     }
 }
