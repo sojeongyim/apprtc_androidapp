@@ -6,11 +6,11 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class MyService extends FirebaseMessagingService {
-
-    final String TAG = "FCM";
-
     public MyService() {
     }
+
+
+    private final String TAG = "jangmin";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {

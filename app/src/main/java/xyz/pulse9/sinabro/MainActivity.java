@@ -1,5 +1,7 @@
 package xyz.pulse9.sinabro;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,12 +25,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-public class MainActivity extends AppCompatActivity implements ChatRoomListFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, TeacherlistFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements ChatRoomListFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, TeacherlistFragment.OnFragmentInteractionListener {
 
     final String TAG = "MainActivity";
-//    Button testbtn ;
+    //    Button testbtn ;
     private TextView mTextMessage;
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -58,13 +60,12 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users");
         final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
 
         final String uid = curuser.getUid();
-        Log.d(TAG, "uid : "+uid);
+        Log.d(TAG, "uid : " + uid);
         String email = curuser.getEmail();
         String nickname = curuser.getDisplayName();
         String token = FirebaseInstanceId.getInstance().getToken();
@@ -75,18 +76,21 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
 
 
 
+
+
+
         DatabaseReference useralarmDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid).child("Alarm");
         useralarmDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.d(TAG, "Alaram is added to "+uid);
+                Log.d(TAG, "Alaram is added to " + uid);
 
-                for(DataSnapshot data : dataSnapshot.getChildren())
-                {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
                     data.getValue();
                 }
 
             }
+
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -108,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
 
             }
         });
-
 
 
         loadFragment(new TimelineFragment());

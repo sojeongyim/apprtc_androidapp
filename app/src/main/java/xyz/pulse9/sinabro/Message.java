@@ -9,26 +9,28 @@ public class Message {
     private String sendDate;
     private String sender;
     private String contents;
+    private String receiver;
+
 
 
     private String Caller;
-    private String Receiver;
     private String Date;
     private int chk;
 
     public int getChk(){return chk;}
 
     public String getReceiver() {
-        return Receiver;
+        return receiver;
     }
 
     public void setReceiver(String receiver) {
-        Receiver = receiver;
+        receiver = receiver;
     }
 
-    public Message(String sender, String contents)
+    public Message(String sender, String receiver, String contents)
     {
         this.type=0;
+        this.receiver = receiver;
         this.sender = sender;
         this.contents = contents;
         this.sendDate = Calendar.getInstance().getTime().toString();

@@ -13,6 +13,8 @@ package xyz.pulse9.sinabro;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +27,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -503,7 +506,8 @@ public class ConnectActivity extends AppCompatActivity {
         if(!sendMsg.getText().equals("")) {
 
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            Message mMessage = new Message(uid, sendMsg.getText().toString());
+            Message mMessage = new Message(uid, receiveruid, sendMsg.getText().toString());
+            mMessage.setReceiver(receiveruid);
             DatabaseReference ref;
             if (chatroomname.equals("none")) {
                 ref = database.getReference("message").push();
@@ -525,16 +529,33 @@ public class ConnectActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String type = dataSnapshot.child("type").getValue().toString();
                 Message mMessage;
+                if(!dataSnapshot.child("sender").getValue().toString().equals(uid))
+                {
+                    NotificationCompat.Builder mBuilder =
+                            new NotificationCompat.Builder(ConnectActivity.this)
+                                    .setSmallIcon(R.drawable.com_facebook_button_icon)
+                                    .setContentTitle("Title")
+                                    .setContentText("Content")
+                                    .setDefaults(Notification.DEFAULT_SOUND)
+                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                    .setAutoCancel(true);
+                    NotificationManager mNotificationManager =
+                            (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+                    mNotificationManager.notify(0,mBuilder.build());
+
+                }
                 if (type.equals("0")) {
                     String contents = dataSnapshot.child("contents").getValue().toString();
                     String time = dataSnapshot.child("sendDate").getValue().toString();
                     String sender = dataSnapshot.child("sender").getValue().toString();
-                    mMessage = new Message(sender, contents);
+                    String receiver =dataSnapshot.child("receiver").getValue().toString();
+                    mMessage = new Message(sender, receiver, contents);
 
                     ChatRoom temp = new ChatRoom(receiveruid, contents, time);
                     userDatabase.child(uid).child("rooms").child(rommname).setValue(temp);
                     temp.setReceiver(uid);
                     userDatabase.child(receiveruid).child("rooms").child(rommname).setValue(temp);
+
                 } else {
                     String caller = dataSnapshot.child("caller").getValue().toString();
                     String date = dataSnapshot.child("date").getValue().toString();
