@@ -82,6 +82,8 @@ public class ChatRoomAdapter extends ArrayAdapter {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 msgText.setText(dataSnapshot.child("nickname").getValue().toString());
+                chatRoom.setReceiverNick(dataSnapshot.child("nickname").getValue().toString());
+
 
             }
 

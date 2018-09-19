@@ -103,6 +103,7 @@ public class ChatRoomListFragment extends Fragment{
                 Intent intent = new Intent(getActivity(), ConnectActivity.class);
                 intent.putExtra("chatroomname", roomname);
                 intent.putExtra("receiveruid", chatRoomAdapter.getItem(i).getReceiver());
+                intent.putExtra("receivernick", chatRoomAdapter.getItem(i).getReceiverNick());
                 intent.putExtra("uid", curuser.getUid());
                 startActivity(intent);
             }

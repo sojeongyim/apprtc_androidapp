@@ -34,6 +34,7 @@ import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -62,17 +63,20 @@ public class ConnectActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPref;
     private String keyprefResolution;
+    private TextView friendsid;
     private String keyprefFps;
     private String keyprefVideoBitrateType;
     private String keyprefVideoBitrateValue;
     private String keyprefAudioBitrateType;
     private String keyprefAudioBitrateValue;
     private String keyprefRoomServerUrl;
+    private String receivernick;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
+        friendsid = findViewById(R.id.friendId);
 
         Intent intent2 = getIntent();
         chatroomname = intent2.getStringExtra("chatroomname");
@@ -81,6 +85,9 @@ public class ConnectActivity extends AppCompatActivity {
         }
         uid = intent2.getStringExtra("uid");
         receiveruid = intent2.getStringExtra("receiveruid");
+        receivernick = intent2.getStringExtra("receivernick");
+
+        friendsid.setText(receivernick);
 
         chatAdapter = new ChatAdapter(this.getApplicationContext(), R.layout.chat_message);
         final ListView listView = (ListView) findViewById(R.id.chatListview);
@@ -540,21 +547,6 @@ public class ConnectActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String type = dataSnapshot.child("type").getValue().toString();
                 Message mMessage;
-                if(!dataSnapshot.child("sender").getValue().toString().equals(uid))
-                {
-                    NotificationCompat.Builder mBuilder =
-                            new NotificationCompat.Builder(ConnectActivity.this)
-                                    .setSmallIcon(R.drawable.com_facebook_button_icon)
-                                    .setContentTitle("Title")
-                                    .setContentText("Content")
-                                    .setDefaults(Notification.DEFAULT_SOUND)
-                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                    .setAutoCancel(true);
-                    NotificationManager mNotificationManager =
-                            (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-                    mNotificationManager.notify(0,mBuilder.build());
-
-                }
                 if (type.equals("0")) {
                     String contents = dataSnapshot.child("contents").getValue().toString();
                     String time = dataSnapshot.child("sendDate").getValue().toString();
