@@ -56,8 +56,11 @@
             android:screenOrientation="fullUser"
             android:theme="@style/CallActivityTheme" />
         <activity
-            android:name=".LoginActivity"
-            android:label="login">
+            android:name=".DateTimePicker" android:theme="@android:style/Theme.Dialog" />
+        <activity
+        android:name=".LoginActivity"
+        android:label="login">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+
+    >
+
+    <DatePicker
+
+        android:id="@+id/datepicker"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:calendarViewShown="false"
+
+        />
+
+    <TimePicker
+        android:id="@+id/timepicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TimePicker>
+
+    <TextView
+
+        android:id="@+id/txt_date"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:textSize="8pt"
+
+        android:text="date"
+
+        />
+    <TextView
+
+        android:id="@+id/txt_time"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:textSize="8pt"
+
+        android:text="time"
+
+        />
+
+    <Button
+
+        android:id="@+id/btnnow"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:text="확인"
+
+        />
+
+</LinearLayout>
+
