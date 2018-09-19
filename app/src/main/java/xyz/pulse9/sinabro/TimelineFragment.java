@@ -1,5 +1,6 @@
 package xyz.pulse9.sinabro;
 
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +27,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 
 
@@ -38,7 +40,7 @@ import java.util.ArrayList;
  * Use the {@link TimelineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TimelineFragment extends Fragment {
+public class TimelineFragment extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -58,6 +60,13 @@ public class TimelineFragment extends Fragment {
     public TimelineFragment() {
         // Required empty public constructor
     }
+//
+//    @Override
+//    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
+//        String time = "You picked the following time: "+hourOfDay+"h"+minute+"m"+second;
+//        timeTextView.setText(time);
+//    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -120,12 +129,27 @@ public class TimelineFragment extends Fragment {
                 ChatRoomListFragment llf = new ChatRoomListFragment();
                 ft.replace(R.id.flContainer, llf);
                 ft.commit();
+//                Calendar now = Calendar.getInstance();
+//                DatePickerDialog dpd = DatePickerDialog.newInstance(
+//                        (DatePickerDialog.OnDateSetListener) getActivity(),
+//                        now.get(Calendar.YEAR), // Initial year selection
+//                        now.get(Calendar.MONTH), // Initial month selection
+//                        now.get(Calendar.DAY_OF_MONTH) // Inital day selection
+//                );
+//                dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
+//                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
             }
         });
 
 
-    }
 
+    }
+//    @Override
+//    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+//        String date = "You picked the following date: "+dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
+////        dateTextView.setText(date);
+//        Log.e("sojeong")
+//    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -200,6 +224,7 @@ public class TimelineFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
 
 

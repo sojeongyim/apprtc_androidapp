@@ -31,11 +31,11 @@ public class Message {
         this.contents = contents;
         this.sendDate = Calendar.getInstance().getTime().toString();
     }
-    public Message(int type, String Caller)
+    public Message(int type, String Caller, String DateTime)
     {
         this.Caller=Caller;
         this.type=type;
-        this.Date=Calendar.getInstance().getTime().toString();
+        this.Date=DateTime;
     }
     public Message(int type)
     {

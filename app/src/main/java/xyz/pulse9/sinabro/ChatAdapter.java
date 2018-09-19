@@ -1,6 +1,7 @@
 package xyz.pulse9.sinabro;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.Gravity;
@@ -84,8 +85,8 @@ public class ChatAdapter extends ArrayAdapter {
                     message_left = false;
                 }
 
-                titleTextView.setBackground(this.getContext().getResources().getDrawable((message_left ? R.drawable.word_resize2 : R.drawable.transpose2)));
-                titleTextView.setTextColor(Color.parseColor("#000000"));
+                titleTextView.setBackground(this.getContext().getResources().getDrawable((message_left ? R.drawable.inbox_in_shot2 : R.drawable.inbox_out_shot2)));
+                titleTextView.setTextColor(Color.parseColor(message_left ? "#0f2013" : "#c7c7c7")); //sinabro_black  &  sinabro_gray
 
                 LinearLayout chatMessageContainer = (LinearLayout) convertView.findViewById(R.id.textLinear);
 
@@ -103,7 +104,6 @@ public class ChatAdapter extends ArrayAdapter {
 
             case ITEM_VIEW_TYPE_CALL:
                 convertView = inflater.inflate(R.layout.chat_videocall, parent, false);
-
                 final DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference("users");
 
                 final Button acceptBtn = convertView.findViewById(R.id.acceptBtn);

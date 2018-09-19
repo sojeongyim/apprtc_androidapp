@@ -11,7 +11,6 @@
 package xyz.pulse9.sinabro;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,26 +22,16 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.webkit.URLUtil;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -50,11 +39,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import org.json.JSONArray;
-import org.json.JSONException;
+import java.util.Calendar;
 
 /**
  * Handles the initial setup where the user selects which room to join.
@@ -69,7 +54,7 @@ public class ConnectActivity extends AppCompatActivity {
     String chatroomname = "none";
     private String uid;
     private String receiveruid;
-    Button vidBtn;
+    ImageButton vidBtn;
 
 
     private SharedPreferences sharedPref;
@@ -110,7 +95,7 @@ public class ConnectActivity extends AppCompatActivity {
         });
 
 
-        vidBtn = (Button) findViewById(R.id.vidBtn);
+        vidBtn = (ImageButton) findViewById(R.id.vidBtn);
         vidBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,17 +109,21 @@ public class ConnectActivity extends AppCompatActivity {
                                 connectToRoom(chatroomname);
                                 break;
                             case R.id.emailLo:
-                                Message tmp = new Message(1, uid);
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                if (chatroomname.equals("none"))
-                                {
-                                    Log.d(TAG, "You should chat atleast one sentences");
-                                }
-                                else
-                                    {
-                                    DatabaseReference ref = database.getReference("message").child(chatroomname);
-                                    ref.push().setValue(tmp);
-                                }
+//                                Message tmp = new Message(1, uid);
+//                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                //ss
+                                Intent intent = new Intent(ConnectActivity.this, DateTimePicker.class);
+                                startActivityForResult(intent, 1);
+                                //
+//                                if (chatroomname.equals("none"))
+//                                {
+//                                    Log.d(TAG, "You should chat atleast one sentences");
+//                                }
+//                                else
+//                                    {
+//                                    DatabaseReference ref = database.getReference("message").child(chatroomname);
+//                                    ref.push().setValue(tmp);
+//                                }
                                 break;
                         }
                         bottomSheetDialog.dismiss();
@@ -167,6 +156,28 @@ public class ConnectActivity extends AppCompatActivity {
         keyprefAudioBitrateType = getString(R.string.pref_startaudiobitrate_key);
         keyprefAudioBitrateValue = getString(R.string.pref_startaudiobitratevalue_key);
         keyprefRoomServerUrl = getString(R.string.pref_room_server_url_key);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                String result = data.getStringExtra("result");
+                Toast.makeText(ConnectActivity.this, result, Toast.LENGTH_SHORT).show();
+                Message tmp = new Message(1, uid,result);
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                if (chatroomname.equals("none"))
+                {
+                    Log.d(TAG, "You should chat atleast one sentences");
+                }
+                else
+                {
+                    DatabaseReference ref = database.getReference("message").child(chatroomname);
+                    ref.push().setValue(tmp);
+                }
+            }
+        }
+
     }
 
 
@@ -538,7 +549,7 @@ public class ConnectActivity extends AppCompatActivity {
                 } else {
                     String caller = dataSnapshot.child("caller").getValue().toString();
                     String date = dataSnapshot.child("date").getValue().toString();
-                    mMessage = new Message(1, caller);
+                    mMessage = new Message(1, caller, Calendar.getInstance().getTime().toString());
                     mMessage.setReceiver(receiveruid);
                     mMessage.setDate(date);
                     dataSnapshot.getRef().removeValue();
