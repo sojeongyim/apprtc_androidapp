@@ -11,8 +11,9 @@
         android:id="@+id/contentsTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="13dp"
-        android:layout_marginStart="13dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/inbox_in_shot2"
         android:text="heythere"
         android:textSize="12sp" />
 </LinearLayout>
