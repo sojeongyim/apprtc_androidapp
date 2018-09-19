@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="?android:attr/windowBackground"
-        app:layout_constraintBottom_toBottomOf="@id/flContainer"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/container"
-        app:menu="@menu/navigation" />
+    <!--<android.support.design.widget.BottomNavigationView-->
+    <!--android:id="@+id/navigation"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:background="?android:attr/windowBackground"-->
+    <!--app:layout_constraintBottom_toBottomOf="@id/flContainer"-->
+    <!--app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--app:layout_constraintRight_toRightOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@id/container"-->
+    <!--app:menu="@menu/navigation" />-->
+    <!---->
 
     <FrameLayout
         android:id="@+id/flContainer"
-        android:layout_width="0dp"
-        android:layout_height="521dp"
-        app:layout_constraintBottom_toTopOf="@+id/navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/container">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10">
 
     </FrameLayout>
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.design.widget.BottomNavigationView
+        app:layout_behavior="tech.thdev.app.view.BottomNavigationBehavior"
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+
+        android:background="@color/cardview_dark_background"
+        app:menu="@menu/navigation" />
+
+
+</LinearLayout>

@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment;
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -71,9 +70,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         ref.child(uid).child("nickname").setValue(nickname);
 
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-
-
-
         DatabaseReference useralarmDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid).child("Alarm");
         useralarmDatabase.addChildEventListener(new ChildEventListener() {
             @Override
@@ -97,12 +93,10 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
             }
         });
 
-        loadFragment(new TimelineFragment());
-
+//        loadFragment(new TimelineFragment());
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_teachers);
-
+        navigation.setSelectedItemId(R.id.navigation_timeline);
     }
 
     private void loadFragment(Fragment fragment) {

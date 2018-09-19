@@ -96,23 +96,47 @@
             android:layout_weight="0.5"
             android:orientation="horizontal">
 
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/facebook_login"
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/fakeGoogle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ggl"
+                    app:srcCompat="@drawable/ggl" />
+
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/google_login"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                </com.google.android.gms.common.SignInButton>
+            </FrameLayout>
+
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="10dp" />
+                android:layout_margin="5dp">
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/google_login"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/fakeFB"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fb"
+                    app:srcCompat="@drawable/fb" />
 
-            </com.google.android.gms.common.SignInButton>
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/facebook_login"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+            </FrameLayout>
 
         </LinearLayout>
 

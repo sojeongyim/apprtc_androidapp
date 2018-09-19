@@ -28,6 +28,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.webkit.URLUtil;
@@ -53,14 +55,21 @@ public class ConnectActivity extends AppCompatActivity {
     private DatabaseReference myDatabase;
     private DatabaseReference userDatabase;
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     private final static String TAG = "ConnectActivity";
     ChatAdapter chatAdapter;
     String chatroomname = "none";
     private String uid;
     private String receiveruid;
-    ImageButton vidBtn;
+    private ImageButton vidBtn;
+    private ImageButton backBtn;
+    private ImageButton sendBtn;
 
-
+    private EditText sendMsg;
     private SharedPreferences sharedPref;
     private String keyprefResolution;
     private TextView friendsid;
@@ -77,6 +86,36 @@ public class ConnectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
         friendsid = findViewById(R.id.friendId);
+        sendBtn = findViewById(R.id.sendButton);
+        sendMsg =findViewById(R.id.sendMsg);
+        sendBtn.setEnabled(false);
+        sendMsg.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                if(charSequence.toString().trim().length()==0){
+                    sendBtn.setEnabled(false);
+                } else {
+                    sendBtn.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         Intent intent2 = getIntent();
         chatroomname = intent2.getStringExtra("chatroomname");
@@ -165,21 +204,17 @@ public class ConnectActivity extends AppCompatActivity {
         keyprefAudioBitrateValue = getString(R.string.pref_startaudiobitratevalue_key);
         keyprefRoomServerUrl = getString(R.string.pref_room_server_url_key);
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 String result = data.getStringExtra("result");
                 Toast.makeText(ConnectActivity.this, result, Toast.LENGTH_SHORT).show();
-                Message tmp = new Message(1, uid,result);
+                Message tmp = new Message(1, uid, result);
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                if (chatroomname.equals("none"))
-                {
+                if (chatroomname.equals("none")) {
                     Log.d(TAG, "You should chat atleast one sentences");
-                }
-                else
-                {
+                } else {
                     DatabaseReference ref = database.getReference("message").child(chatroomname);
                     ref.push().setValue(tmp);
                 }
@@ -187,45 +222,16 @@ public class ConnectActivity extends AppCompatActivity {
         }
 
     }
-
-
     @Override
     public void onPause() {
         super.onPause();
-//    String room = roomEditText.getText().toString();
-//    String roomListJson = new JSONArray(roomList).toString();
-//    SharedPreferences.Editor editor = sharedPref.edit();
-//    editor.putString(keyprefRoom, "roomEditText");
-//    editor.putString(keyprefRoomList, roomListJson);
-//    editor.commit();
-    }
 
+    }
     @Override
     public void onResume() {
         super.onResume();
-//    String room = sharedPref.getString(keyprefRoom, "");
-////    roomEditText.setText(room);
-//    roomList = new ArrayList<String>();
-//    String roomListJson = sharedPref.getString(keyprefRoomList, null);
-//    if (roomListJson != null) {
-//      try {
-//        JSONArray jsonArray = new JSONArray(roomListJson);
-//        for (int i = 0; i < jsonArray.length(); i++) {
-//          roomList.add(jsonArray.get(i).toString());
-//        }
-//      } catch (JSONException e) {
-//        Log.e(TAG, "Failed to load room list: " + e.toString());
-//      }
-//    }
-//    adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, roomList);
-//    roomListView.setAdapter(adapter);
-//    if (adapter.getCount() > 0) {
-//      roomListView.requestFocus();
-//      roomListView.setItemChecked(0, true);
-//    }
+
     }
-
-
     /**
      * Get a value from the shared preference or from the intent, if it does not
      * exist the default is used.
@@ -518,22 +524,18 @@ public class ConnectActivity extends AppCompatActivity {
 
 
     public void sendMessage(View view) {
-        EditText sendMsg = (EditText) findViewById(R.id.sendMsg);
-        if(!sendMsg.getText().equals("")) {
-
-            final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            Message mMessage = new Message(uid, receiveruid, sendMsg.getText().toString());
-            mMessage.setReceiver(receiveruid);
-            DatabaseReference ref;
-            if (chatroomname.equals("none")) {
-                ref = database.getReference("message").push();
-                chatroomname = ref.getKey();
-                initDB(chatroomname);
-            }
-            ref = database.getReference("message").child(chatroomname);
-            ref.push().setValue(mMessage);
-            sendMsg.setText("");
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        Message mMessage = new Message(uid, receiveruid, sendMsg.getText().toString());
+        mMessage.setReceiver(receiveruid);
+        DatabaseReference ref;
+        if (chatroomname.equals("none")) {
+            ref = database.getReference("message").push();
+            chatroomname = ref.getKey();
+            initDB(chatroomname);
         }
+        ref = database.getReference("message").child(chatroomname);
+        ref.push().setValue(mMessage);
+        sendMsg.setText("");
     }
 
     public void initDB(final String rommname) {
@@ -549,7 +551,7 @@ public class ConnectActivity extends AppCompatActivity {
                     String contents = dataSnapshot.child("contents").getValue().toString();
                     String time = dataSnapshot.child("sendDate").getValue().toString();
                     String sender = dataSnapshot.child("sender").getValue().toString();
-                    String receiver =dataSnapshot.child("receiver").getValue().toString();
+                    String receiver = dataSnapshot.child("receiver").getValue().toString();
                     mMessage = new Message(sender, receiver, contents);
 
                     ChatRoom temp = new ChatRoom(receiveruid, contents, time);

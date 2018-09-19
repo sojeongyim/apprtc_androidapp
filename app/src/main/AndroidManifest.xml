@@ -25,19 +25,17 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".SplashActivity"
-            android:theme="@style/splashTheme" />
+        <!--<activity-->
+            <!--android:name=".SplashActivity"-->
+            <!--android:theme="@style/splashTheme" />-->
         <activity
             android:name=".ConnectActivity"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:host="apprtcv3.appspot.com"
                     android:scheme="https" />
@@ -60,27 +58,23 @@
         <activity
         android:name=".LoginActivity"
         android:label="login">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".AppSettingActivity" />
-
-        <!-- facebook,chrome -->
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-
         <activity
+
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
         <!--
              Set custom default icon. This is used when no icon is set for incoming notification messages.
              See README(https://goo.gl/l4GJaQ) for more.
