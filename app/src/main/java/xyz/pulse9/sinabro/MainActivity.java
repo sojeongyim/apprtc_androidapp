@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_timeline);
+        navigation.setSelectedItemId(R.id.navigation_teachers);
 
     }
 
