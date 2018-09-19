@@ -146,8 +146,6 @@ public class ConnectActivity extends AppCompatActivity {
             }
         });
 
-
-
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
