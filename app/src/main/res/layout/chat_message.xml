@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
-        android:background="@drawable/inbox_in_shot2"
         android:text="heythere"
         android:textSize="12sp" />
 </LinearLayout>

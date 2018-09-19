@@ -89,7 +89,7 @@ public class ChatAdapter extends ArrayAdapter {
                     message_left = false;
                 }
 
-                titleTextView.setBackground(this.getContext().getResources().getDrawable((message_left ? R.drawable.inbox_out_shot2: R.drawable.inbox_in_shot2 )));
+                titleTextView.setBackground(this.getContext().getResources().getDrawable((message_left ? R.drawable.inbox_out_shot_res2: R.drawable.inbox_in_shot_res2 )));
                 titleTextView.setTextColor(Color.parseColor(message_left ? "#0f2013" : "#c7c7c7")); //sinabro_black  &  sinabro_gray
 
                 LinearLayout chatMessageContainer = (LinearLayout) convertView.findViewById(R.id.textLinear);
