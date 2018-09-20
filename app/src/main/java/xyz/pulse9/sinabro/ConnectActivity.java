@@ -44,6 +44,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
@@ -123,12 +124,25 @@ public class ConnectActivity extends AppCompatActivity {
         });
 
         Intent intent2 = getIntent();
-
         uid = intent2.getStringExtra("uid");
-        receiveruid = intent2.getStringExtra("receiveruid");
-        receivernick = intent2.getStringExtra("receivernick");
-        receiverphoto = intent2.getStringExtra("receiverphoto");
         chatroomname = intent2.getStringExtra("chatroomname");
+        receiveruid = intent2.getStringExtra("receiveruid");
+
+
+        userDatabase = database.getReference("users");
+
+        userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("Its USERDB", " key " + dataSnapshot.getKey());
+                receivernick = dataSnapshot.child(receiveruid).child("nickname").getValue().toString();
+                receiverphoto = dataSnapshot.child(receiveruid).child("photo").getValue().toString();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         friendsid.setText(receivernick);
         if (!chatroomname.equals("none")) {
@@ -560,7 +574,7 @@ public class ConnectActivity extends AppCompatActivity {
                     String chk = dataSnapshot.child("chk").getValue().toString();
                     String date = dataSnapshot.child("date").getValue().toString();
                     mMessage.setDate(date);
-                    mMessage.setDate(chk);
+                    mMessage.setChk(chk);
                 }
 
                 ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, contents, time);
