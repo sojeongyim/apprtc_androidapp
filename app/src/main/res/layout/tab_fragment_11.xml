@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/testbackground">
+    android:background="@drawable/user5_back">
 
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="40dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="80dp"
@@ -36,12 +36,11 @@
                 app:srcCompat="@drawable/user11" />
 
             <TextView
-
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="3"
-                android:fontFamily="casual"
+                android:fontFamily="@font/aarial"
                 android:text="JAI YOO \nSeoul Korea"
                 android:textAlignment="center"
                 android:textStyle="bold" />
@@ -62,11 +61,14 @@
                     app:srcCompat="@drawable/heart" />
 
                 <TextView
+                    android:id="@+id/follower_num"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|fill_horizontal"
-                    android:text="16"
-                    android:textAlignment="center" />
+                    android:fontFamily="@font/aarial"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
             </FrameLayout>
 
 
@@ -79,7 +81,7 @@
             android:layout_weight="1"
             android:scaleType="fitXY"
 
-            android:src="@drawable/user01_profile" />
+            android:src="@drawable/user5_profile" />
 
 
     </android.support.v7.widget.LinearLayoutCompat>
