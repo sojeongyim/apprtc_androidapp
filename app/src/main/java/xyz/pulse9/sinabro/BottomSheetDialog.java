@@ -51,10 +51,10 @@ public class BottomSheetDialog extends BottomSheetDialogFragment implements View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.msgLo:
-                Toast.makeText(getContext(), "@string/ChattingBottomSheetMenu2", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "@string/ChattingBottomSheetMenu2", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.emailLo:
-                Toast.makeText(getContext(), "@string/ChattingBottomSheetMenu2", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "@string/ChattingBottomSheetMenu2", Toast.LENGTH_SHORT).show();
 
                 break;
         }

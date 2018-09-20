@@ -33,8 +33,8 @@ public class TeacherlistFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private ViewPager mViewPager;
     private TabLayout tabLayout;
-//    private Button left_arrow;
-//    private Button right_arrow;
+    private ImageButton left_arrow;
+    private ImageButton right_arrow;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -52,20 +52,20 @@ public class TeacherlistFragment extends Fragment {
         activity.setSupportActionBar(toolbar);
 
         tabLayout = (TabLayout) getView().findViewById(R.id.tab_layout);
-//        left_arrow =(Button)getView().findViewById(R.id.left_arrow);
-//        right_arrow =(Button)getView().findViewById(R.id.right_arrow);
+        left_arrow =(ImageButton)getView().findViewById(R.id.left_arrow);
+        right_arrow =(ImageButton)getView().findViewById(R.id.right_arrow);
 
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user1));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user2));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user3));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user4));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user5));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user6));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user7));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user8));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user9));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user10));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user11));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user5));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user6));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user7));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user8));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user9));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user10));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user11));
 
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
