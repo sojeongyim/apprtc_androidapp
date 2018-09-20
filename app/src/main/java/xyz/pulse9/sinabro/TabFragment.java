@@ -39,13 +39,39 @@ public class TabFragment extends Fragment {
 
 
     public static class TabFragment1 extends Fragment {
-
         private String teacher1_token ="Jhbg1lLcwJRP7HcwHwVQwzJDy1H2";////intern1계정
         private DatabaseReference userDatabase;
         DatabaseReference followerDB;
         private String uid;
         FirebaseUser curuser;
         TextView followertext;
+        String targetUID;
+        private String chatRoomname;
+
+
+        public void ischatExist(final String Userid)
+        {
+            chatRoomname = "none";
+            DatabaseReference myDB = FirebaseDatabase.getInstance().getReference("users").child(uid).child("rooms");
+            myDB.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot data : dataSnapshot.getChildren())
+                    {
+                        targetUID = data.child("receiver").getValue().toString();
+                        if(targetUID.equals(Userid))
+                        {
+                            chatRoomname = data.getKey().toString();
+                            Log.d("LISTOFTARGET", "it is Room name" + chatRoomname);
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
 
 
         @Override
@@ -56,6 +82,8 @@ public class TabFragment extends Fragment {
             uid = curuser.getUid();
             userDatabase = FirebaseDatabase.getInstance().getReference("users");
             followerDB = userDatabase.child(teacher1_token).child("follower");
+            ischatExist(teacher1_token);
+
 
             followertext =(TextView)getView().findViewById(R.id.follower_num);
             ImageView imageView_user1 = (ImageView) getView().findViewById(R.id.imageView_user1);
@@ -66,7 +94,7 @@ public class TabFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), ConnectActivity.class);
-                    intent.putExtra("chatroomname", "none");
+                    intent.putExtra("chatroomname", chatRoomname);
                     intent.putExtra("receiveruid", teacher1_token);  //intern1계정으로 전송
                     intent.putExtra("uid", uid);  //uid 수정필요
                     startActivity(intent);

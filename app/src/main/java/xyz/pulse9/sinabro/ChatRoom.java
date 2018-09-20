@@ -14,7 +14,7 @@ public class ChatRoom {
     private String time;
 
     public ChatRoom(String roomName, String receiver, String nickname, String photo, String lastcontents, String time) {
-        RoomName = roomName;
+        this.RoomName = roomName;
         this.receiver = receiver;
         this.nickname = nickname;
         this.photo = photo;

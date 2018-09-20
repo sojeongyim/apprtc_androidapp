@@ -83,7 +83,9 @@ public class ConnectActivity extends AppCompatActivity {
     private String keyprefAudioBitrateValue;
     private String keyprefRoomServerUrl;
     private String receivernick;
+    private String sendernick;
     private String receiverphoto;
+    private String senderphoto;
     private ListView listView;
 
     @Override
@@ -136,11 +138,10 @@ public class ConnectActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d("Its USERDB", " key " + dataSnapshot.getKey());
                 receivernick = dataSnapshot.child(receiveruid).child("nickname").getValue().toString();
+                sendernick = dataSnapshot.child(uid).child("nickname").getValue().toString();
                 receiverphoto = dataSnapshot.child(receiveruid).child("photo").getValue().toString();
-
-
+                senderphoto = dataSnapshot.child(uid).child("photo").getValue().toString();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -582,9 +583,15 @@ public class ConnectActivity extends AppCompatActivity {
                     mMessage.setDate(chk);
                 }
 
+                Log.d("FINALY", "1 : "+receivernick);
+                Log.d("FINALY", "2 : "+receiverphoto);
+                Log.d("FINALY", "3 : "+sendernick);
+                Log.d("FINALY", "4 : "+senderphoto);
                 ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, contents, time);
+                ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, contents, time);
+
                 userDatabase.child(uid).child("rooms").child(rommname).setValue(updateChatRoom);
-                userDatabase.child(receiveruid).child("rooms").child(rommname).setValue(updateChatRoom);
+                userDatabase.child(receiveruid).child("rooms").child(rommname).setValue(updateChatRoom2);
                 chatAdapter.add(mMessage);
             }
 

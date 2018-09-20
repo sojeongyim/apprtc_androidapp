@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_bg"
-    android:orientation="vertical"
     tools:context=".ConnectActivity">
 
     <FrameLayout
+        android:id="@+id/fl"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2.5">
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true">
+
 
         <TextView
             android:id="@+id/friendId"
@@ -37,42 +38,37 @@
             app:srcCompat="@drawable/left" />
     </FrameLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2.5"
-        android:background="@color/cardview_dark_background"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-    </LinearLayout>
-
     <ListView
         android:id="@+id/chatListview"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="20"
-        android:divider="@null"
-        android:dividerHeight="0dp"
+        android:layout_height="472dp"
+        android:layout_above="@id/ll"
+        android:layout_alignParentTop="true"
+        android:layout_below="@id/fl"
+        android:layout_marginTop="55dp"
         android:background="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
-        />
+        android:divider="@null"
+        android:dividerHeight="0dp" />
 
     <LinearLayout
+        android:id="@+id/ll"
+
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/vidBtn"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="3"
             android:background="#00ffffff"
-            android:scaleType="fitCenter"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
+            android:scaleType="fitCenter"
             app:srcCompat="@drawable/message_option" />
 
         <EditText
@@ -94,15 +90,14 @@
             android:id="@+id/sendButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_weight="3"
             android:background="#00ffffff"
             android:onClick="sendMessage"
-            android:scaleType="fitCenter"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
+            android:scaleType="fitCenter"
             app:srcCompat="@drawable/send" />
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

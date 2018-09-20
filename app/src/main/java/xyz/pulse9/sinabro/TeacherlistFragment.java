@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.provider.FirebaseInitProvider;
+
 public class TeacherlistFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,8 +33,8 @@ public class TeacherlistFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private ViewPager mViewPager;
     private TabLayout tabLayout;
-    private Button left_arrow;
-    private Button right_arrow;
+//    private Button left_arrow;
+//    private Button right_arrow;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -44,8 +52,8 @@ public class TeacherlistFragment extends Fragment {
         activity.setSupportActionBar(toolbar);
 
         tabLayout = (TabLayout) getView().findViewById(R.id.tab_layout);
-        left_arrow =(Button)getView().findViewById(R.id.left_arrow);
-        right_arrow =(Button)getView().findViewById(R.id.right_arrow);
+//        left_arrow =(Button)getView().findViewById(R.id.left_arrow);
+//        right_arrow =(Button)getView().findViewById(R.id.right_arrow);
 
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user1));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user2));
@@ -83,11 +91,11 @@ public class TeacherlistFragment extends Fragment {
 
             }
         });
-        left_arrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
+//        left_arrow.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//            }
+//        });
 
     }
 
@@ -115,4 +123,5 @@ public class TeacherlistFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
     }
+
 }
