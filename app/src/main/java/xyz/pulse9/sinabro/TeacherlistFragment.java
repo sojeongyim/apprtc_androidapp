@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 public class TeacherlistFragment extends Fragment {
@@ -24,6 +25,8 @@ public class TeacherlistFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private ViewPager mViewPager;
     private TabLayout tabLayout;
+    private Button left_arrow;
+    private Button right_arrow;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -41,18 +44,21 @@ public class TeacherlistFragment extends Fragment {
         activity.setSupportActionBar(toolbar);
 
         tabLayout = (TabLayout) getView().findViewById(R.id.tab_layout);
+        left_arrow =(Button)getView().findViewById(R.id.left_arrow);
+        right_arrow =(Button)getView().findViewById(R.id.right_arrow);
 
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user1));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user2));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user3));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user4));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user5));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user6));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user7));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user8));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user9));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user10));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user11));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user4));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user5));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user6));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user7));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user8));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user9));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user10));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user11));
+
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
@@ -77,7 +83,11 @@ public class TeacherlistFragment extends Fragment {
 
             }
         });
-
+        left_arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
 
     }
 
