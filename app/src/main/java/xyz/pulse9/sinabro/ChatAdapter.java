@@ -121,10 +121,8 @@ public class ChatAdapter extends ArrayAdapter {
                     acceptBtn.setVisibility(View.GONE);
                     resultBtn.setText("Accepted");
                     resultBtn.setVisibility(View.VISIBLE);
-
-
                 }
-                else
+                else if (msg.getChk().equals("2"))
                 {
                     denyBtn.setVisibility(View.GONE);
                     acceptBtn.setVisibility(View.GONE);

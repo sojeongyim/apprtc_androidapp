@@ -12,11 +12,13 @@
         android:layout_height="match_parent"
         android:background="@drawable/my_border"
         android:orientation="vertical"
+
+        android:gravity="center"
         >
 
         <TextView
             android:id="@+id/VideoCall"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/secondLine"
             android:layout_alignParentRight="true"
@@ -30,7 +32,7 @@
 
         <TextView
             android:id="@+id/dataTime"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/secondLine"
             android:layout_alignParentRight="true"
