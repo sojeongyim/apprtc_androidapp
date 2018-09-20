@@ -41,7 +41,6 @@ public class ChatRoomListFragment extends Fragment{
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private DatabaseReference userDatabase;
-    Button testBtn;
 
     final String TAG = "ChatRoomListFrag";
 
@@ -128,7 +127,6 @@ public class ChatRoomListFragment extends Fragment{
                 lastcontents = dataSnapshot.child("lastcontents").getValue().toString();
                 receiverphoto = dataSnapshot.child("photo").getValue().toString();
                 lastTime = dataSnapshot.child("time").getValue().toString();
-
                 ChatRoom chatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, lastcontents, lastTime);
                 chatRoomAdapter.add(chatRoom);
             }

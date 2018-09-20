@@ -137,7 +137,10 @@ public class ConnectActivity extends AppCompatActivity {
                 Log.d("Its USERDB", " key " + dataSnapshot.getKey());
                 receivernick = dataSnapshot.child(receiveruid).child("nickname").getValue().toString();
                 receiverphoto = dataSnapshot.child(receiveruid).child("photo").getValue().toString();
+
+
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -538,11 +541,11 @@ public class ConnectActivity extends AppCompatActivity {
 
     public void sendMessage(View view) {
         Message mMessage = new Message("0", uid, receiveruid);
+        mMessage.setPhoto(receiverphoto);
         mMessage.setContents(sendMsg.getText().toString());
 
         DatabaseReference ref;
         if (chatroomname.equals("none")) {
-            // It Duplicate Chatrooms
             ref = database.getReference("message").push();
             chatroomname = ref.getKey();
             initDB(chatroomname);
@@ -561,12 +564,14 @@ public class ConnectActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String type = dataSnapshot.child("type").getValue().toString();
                 String sender = dataSnapshot.child("sender").getValue().toString();
+                String photo = dataSnapshot.child("photo").getValue().toString();
                 String receiver = dataSnapshot.child("receiver").getValue().toString();
                 String time = dataSnapshot.child("sendDate").getValue().toString();
                 String contents = dataSnapshot.child("contents").getValue().toString();
 
                 Message mMessage;
                 mMessage = new Message(type, sender, receiver, time);
+                mMessage.setPhoto(photo);
                 mMessage.setContents(contents);
 
                 if (type.equals("1"))
@@ -574,7 +579,7 @@ public class ConnectActivity extends AppCompatActivity {
                     String chk = dataSnapshot.child("chk").getValue().toString();
                     String date = dataSnapshot.child("date").getValue().toString();
                     mMessage.setDate(date);
-                    mMessage.setChk(chk);
+                    mMessage.setDate(chk);
                 }
 
                 ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, contents, time);

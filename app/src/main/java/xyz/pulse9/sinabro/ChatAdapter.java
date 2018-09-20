@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -87,6 +89,12 @@ public class ChatAdapter extends ArrayAdapter {
                 chatMessageContainer = convertView.findViewById(R.id.textLinear);
                 chatMessageContainer.setGravity(align);
 
+                ImageView chatPhoto = convertView.findViewById(R.id.messagepic);
+                if(!message_left) {
+                    Picasso.get().load(msg.getPhoto())
+                            .transform(new CropCircleTransformation())
+                            .into(chatPhoto);
+                }
                 TextView titleTextView = (TextView) convertView.findViewById(R.id.contentsTxt);
                 titleTextView.setText(msg.getContents());
                 titleTextView.setBackground(this.getContext().getResources().getDrawable((message_left ? R.drawable.inbox_out_shot_res2 : R.drawable.inbox_in_shot_res2)));

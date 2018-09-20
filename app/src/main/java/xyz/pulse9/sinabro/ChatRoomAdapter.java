@@ -1,20 +1,14 @@
 package xyz.pulse9.sinabro;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,9 +57,12 @@ public class ChatRoomAdapter extends ArrayAdapter {
 
         final ChatRoom chatRoom = ChatRooms.get(position);
         final TextView msgText = (TextView) row.findViewById(R.id.firstLine);
+        ImageView userpic = row.findViewById(R.id.userpic);
+        Picasso.get().load(chatRoom.getPhoto())
+                .transform(new CropCircleTransformation())
+                .into(userpic);
         TextView msgText2 = (TextView) row.findViewById(R.id.secondLine);
-        TextView msgText3 = (TextView) row.findViewById(R.id.textView2);
-
+        TextView msgText3 = (TextView) row.findViewById(R.id.thirdLine);
         msgText.setText(chatRoom.getNickname());
         msgText2.setText(chatRoom.getLastcontents());
         msgText3.setText(chatRoom.getTime());

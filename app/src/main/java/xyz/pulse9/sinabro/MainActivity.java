@@ -79,10 +79,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         DatabaseReference ref = database.getReference("users");
         final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
         final String uid = curuser.getUid();
-//        ImageView testImg = findViewById(R.id.testImgV);
-//        Picasso.get().load("https://lh6.googleusercontent.com/-3_qN5O6SBqY/AAAAAAAAAAI/AAAAAAAAAAA/APUIFaNvq_pFyFyF2jiSboPHs8CzJV24uw/s96-c/photo.jpg")
-//                .transform(new CropCircleTransformation())
-//                .into(testImg);
 
         String photo = curuser.getPhotoUrl().toString();
         String email = curuser.getEmail();

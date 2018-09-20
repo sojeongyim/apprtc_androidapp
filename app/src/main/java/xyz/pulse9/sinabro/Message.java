@@ -6,7 +6,7 @@ public class Message {
 
     private String type;
     private String chk;
-
+    private String photo;
     private String sendDate;
     private String sender;
     private String contents;
@@ -85,6 +85,14 @@ public class Message {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }
 
