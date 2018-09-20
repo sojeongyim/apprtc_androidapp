@@ -1,35 +1,26 @@
 package xyz.pulse9.sinabro;
 
-import android.app.TimePickerDialog;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 /**
@@ -118,6 +109,11 @@ public class TimelineFragment extends Fragment{
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AppSettingActivity.class);
                 startActivity(intent);
+
+
+
+
+
             }
         });
         notice_butt.setOnClickListener(new View.OnClickListener() {
@@ -287,3 +283,7 @@ class MyData{
         this.img = img;
     }
 }
+
+
+
+

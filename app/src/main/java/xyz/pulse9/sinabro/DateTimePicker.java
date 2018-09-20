@@ -99,11 +99,11 @@ public class DateTimePicker extends Activity {
 
                 String result = null;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    result = String.format("%d년 %d월 %d일 %d시 %d분", mDate.getYear(),
+                    result = String.format("Date: %d . %d . %d   Time : %d : %d", mDate.getYear(),
 
                             mDate.getMonth() + 1, mDate.getDayOfMonth(), mTime.getHour(),mTime.getMinute());
                 }else{
-                    result = String.format("%d년 %d월 %d일 %d시 %d분", mDate.getYear(),
+                    result = String.format("Date: %d . %d . %d   Time : %d : %d", mDate.getYear(),
 
                             mDate.getMonth() + 1, mDate.getDayOfMonth(), mTime.getCurrentHour(),mTime.getCurrentMinute());
                 }

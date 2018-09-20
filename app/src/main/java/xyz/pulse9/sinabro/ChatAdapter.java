@@ -1,9 +1,10 @@
 package xyz.pulse9.sinabro;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,19 +17,20 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import static org.webrtc.ContextUtils.getApplicationContext;
 
 public class ChatAdapter extends ArrayAdapter {
 
     private static final String ITEM_VIEW_TYPE_MSG = "0";
     private static final String ITEM_VIEW_TYPE_CALL = "1";
+    private String DateTime = null;
 
     List<Message> msgs = new ArrayList();
 
@@ -77,6 +79,8 @@ public class ChatAdapter extends ArrayAdapter {
             align = Gravity.RIGHT;
         }
 
+
+
         switch (viewType) {
             case ITEM_VIEW_TYPE_MSG:
                 convertView = inflater.inflate(R.layout.chat_message,parent, false);
@@ -85,8 +89,8 @@ public class ChatAdapter extends ArrayAdapter {
 
                 TextView titleTextView = (TextView) convertView.findViewById(R.id.contentsTxt);
                 titleTextView.setText(msg.getContents());
-
                 titleTextView.setBackground(this.getContext().getResources().getDrawable((message_left ? R.drawable.inbox_out_shot_res2 : R.drawable.inbox_in_shot_res2)));
+
                 titleTextView.setTextColor(Color.parseColor(message_left ? "#0f2013" : "#c7c7c7")); //sinabro_black  &  sinabro_gray
                 break;
 
@@ -117,6 +121,8 @@ public class ChatAdapter extends ArrayAdapter {
                     acceptBtn.setVisibility(View.GONE);
                     resultBtn.setText("Accepted");
                     resultBtn.setVisibility(View.VISIBLE);
+
+
                 }
                 else
                 {
@@ -155,4 +161,9 @@ public class ChatAdapter extends ArrayAdapter {
 
         return convertView;
     }
+
+
 }
+
+
+

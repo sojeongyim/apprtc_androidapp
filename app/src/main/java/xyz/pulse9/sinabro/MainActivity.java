@@ -1,5 +1,9 @@
 package xyz.pulse9.sinabro;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
-
+import android.view.Window;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -22,8 +26,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity implements ChatRoomListFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, TeacherlistFragment.OnFragmentInteractionListener {
     final String TAG = "MainActivity";
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference("users");
+    final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
+    final String uid = curuser.getUid();
+    DatabaseReference useralarmDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid).child("Alarm");
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -66,14 +78,12 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users");
         final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
+        final String uid = curuser.getUid();
 //        ImageView testImg = findViewById(R.id.testImgV);
 //        Picasso.get().load("https://lh6.googleusercontent.com/-3_qN5O6SBqY/AAAAAAAAAAI/AAAAAAAAAAA/APUIFaNvq_pFyFyF2jiSboPHs8CzJV24uw/s96-c/photo.jpg")
 //                .transform(new CropCircleTransformation())
 //                .into(testImg);
 
-        Log.d(TAG, "Url : " +         curuser.getPhotoUrl());
-        final String uid = curuser.getUid();
-        Log.d(TAG, "uid : " + uid);
         String photo = curuser.getPhotoUrl().toString();
         String email = curuser.getEmail();
         String nickname = curuser.getDisplayName();
@@ -85,17 +95,45 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         ref.child(uid).child("photo").setValue(photo);
 
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        DatabaseReference useralarmDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid).child("Alarm");
+        final DatabaseReference useralarmDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid).child("Alarm");
         useralarmDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Log.d(TAG, "Alaram is added to " + uid);
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    data.getValue();
-                }
+                String DateTime = dataSnapshot.getValue().toString();
+                String AlarmId = dataSnapshot.getKey().toString();
+//                Log.d(TAG, "Alarm datetime is " + DateTime);
+
+                DateTime = DateTime.replaceAll(" " , "");
+                String[] parseDateTime = DateTime.split("\\.");
+                String[] parseTime = parseDateTime[2].split(":");
+                int year = Integer.parseInt(parseDateTime[0].substring(5));
+                int month = Integer.parseInt(parseDateTime[1]);
+                int date =Integer.parseInt(parseDateTime[2].substring(0,2));
+                int hour =Integer.parseInt(parseTime[1]);
+                int min =Integer.parseInt(parseTime[2]);
+//                Log.d(TAG, "year: " + year+"//month: "+month+"//date : "+date+"//hour: "+hour+"//min: "+min);
+//                new AlarmHATT(getApplicationContext()).Alarm(AlarmId,year,month,date,hour,min);
+                AlarmManager am = (AlarmManager)MainActivity.this.getSystemService(ALARM_SERVICE);
+                Intent intent = new Intent(MainActivity.this, PushInAppReceiver.class);
+
+                PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+
+                Calendar calendar = Calendar.getInstance();
+                //알람시간 calendar에 set해주기
+
+                calendar.set(year, month, date, hour, min, 0);
+
+                //알람 예약
+                am.set(AlarmManager.RTC, calendar.getTimeInMillis(), sender);
+
+                useralarmDatabase.child(AlarmId).removeValue();
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+
+
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
@@ -123,5 +161,29 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public class AlarmHATT {
+        private Context context;
+        public AlarmHATT(Context context) {
+            this.context=context;
+        }
+
+        public void Alarm(String id,int year,int month, int date,int hour, int min) {
+            AlarmManager am = (AlarmManager)MainActivity.this.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(MainActivity.this, PushInAppReceiver.class);
+
+            PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+
+            Calendar calendar = Calendar.getInstance();
+            //알람시간 calendar에 set해주기
+
+            calendar.set(year, month, date, hour, min, 0);
+
+            //알람 예약
+            am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+
+            useralarmDatabase.child(id).removeValue();
+        }
     }
 }
