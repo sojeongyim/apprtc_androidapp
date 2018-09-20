@@ -8,64 +8,64 @@ public class ChatRoom {
 
     private String RoomName;
     private String receiver;
-    private String title;
-    private Uri ProfileUri;
+    private String nickname;
+    private String photo;
+    private String lastcontents;
     private String time;
 
-    public String getReceiverNick() {
-        return receiverNick;
-    }
-
-    public void setReceiverNick(String receiverNick) {
-        this.receiverNick = receiverNick;
-    }
-
-    private String receiverNick;
-
-
-
-//
-//            userDatabase.child(uid).child("rooms").child(chatroomname).child("receiver").setValue(receiveruid);
-//            userDatabase.child(uid).child("rooms").child(chatroomname).child("lastContents").setValue(contents);
-//            userDatabase.child(uid).child("rooms").child(chatroomname).child("time").setValue(time);
-    public ChatRoom(String RoomName, String receiver, String title, String LastDate)
-    {
-        this.RoomName = RoomName;
+    public ChatRoom(String roomName, String receiver, String nickname, String photo, String lastcontents, String time) {
+        RoomName = roomName;
         this.receiver = receiver;
-        this.title = title;
-        this.time=LastDate;
-    }
-
-
-
-    public ChatRoom(String receiver, String title, String time)
-    {
-        this.receiver = receiver;
-        this.title = title;
+        this.nickname = nickname;
+        this.photo = photo;
+        this.lastcontents = lastcontents;
         this.time = time;
     }
+
     public String getRoomName() {
         return RoomName;
     }
+
+    public void setRoomName(String roomName) {
+        RoomName = roomName;
+    }
+
     public String getReceiver() {
         return receiver;
     }
-    public String getTitle() {
-        return title;
-    }
-    public Uri getProfileUri() {
-        return ProfileUri;
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
-    public String getLastDate() {
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getLastcontents() {
+        return lastcontents;
+    }
+
+    public void setLastcontents(String lastcontents) {
+        this.lastcontents = lastcontents;
+    }
+
+    public String getTime() {
         return time;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setReceiver(String receiver) {this.receiver = receiver;}
     public void setTime(String time) {
         this.time = time;
     }

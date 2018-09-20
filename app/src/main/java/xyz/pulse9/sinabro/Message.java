@@ -4,55 +4,47 @@ import java.util.Calendar;
 
 public class Message {
 
-    private int type;
+    private String type;
+    private String chk;
 
     private String sendDate;
     private String sender;
     private String contents;
     private String receiver;
+    private String date;
 
-
-
-    private String Caller;
-    private String Date;
-    private int chk;
-
-    public int getChk(){return chk;}
-
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(String receiver) {
-        receiver = receiver;
-    }
-
-    public Message(String sender, String receiver, String contents)
+    public Message(String type, String sender, String receiver, String sendDate)
     {
-        this.type=0;
-        this.receiver = receiver;
-        this.sender = sender;
-        this.contents = contents;
+        this.type=type;
+        this.sender=sender;
+        this.receiver=receiver;
+        this.sendDate=sendDate;
+    }
+
+    public Message(String type, String sender, String receiver)
+    {
+        this.type=type;
+        this.sender=sender;
+        this.receiver=receiver;
         this.sendDate = Calendar.getInstance().getTime().toString();
     }
-    public Message(int type, String Caller, String DateTime)
-    {
-        this.Caller=Caller;
-        this.type=type;
-        this.Date=Calendar.getInstance().getTime().toString();
-        this.chk=0;
-    }
-    public Message(int type)
-    {
-        this.type=1;
-    }
 
-    public int getType() {
+
+
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
+    }
+
+    public String getChk() {
+        return chk;
+    }
+
+    public void setChk(String chk) {
+        this.chk = chk;
     }
 
     public String getSendDate() {
@@ -79,23 +71,20 @@ public class Message {
         this.contents = contents;
     }
 
-    public String getCaller() {
-        return Caller;
+    public String getReceiver() {
+        return receiver;
     }
 
-    public void setCaller(String caller) {
-        Caller = caller;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public String getDate() {
-        return Date;
+        return date;
     }
 
     public void setDate(String date) {
-        Date = date;
-    }
-
-    public void setChk(int chk) {
-        this.chk = chk;
+        this.date = date;
     }
 }
+

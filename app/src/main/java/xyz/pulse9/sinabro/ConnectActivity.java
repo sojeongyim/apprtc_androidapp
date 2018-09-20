@@ -63,6 +63,8 @@ public class ConnectActivity extends AppCompatActivity {
     private final static String TAG = "ConnectActivity";
     ChatAdapter chatAdapter;
     String chatroomname = "none";
+    FirebaseDatabase database;
+
     private String uid;
     private String receiveruid;
     private ImageButton vidBtn;
@@ -80,15 +82,18 @@ public class ConnectActivity extends AppCompatActivity {
     private String keyprefAudioBitrateValue;
     private String keyprefRoomServerUrl;
     private String receivernick;
+    private String receiverphoto;
+    private ListView listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        database = FirebaseDatabase.getInstance();
         setContentView(R.layout.activity_chatting);
         friendsid = findViewById(R.id.friendId);
         sendBtn = findViewById(R.id.sendButton);
-        sendMsg =findViewById(R.id.sendMsg);
         sendBtn.setEnabled(false);
+        sendMsg =findViewById(R.id.sendMsg);
         sendMsg.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -118,18 +123,20 @@ public class ConnectActivity extends AppCompatActivity {
         });
 
         Intent intent2 = getIntent();
-        chatroomname = intent2.getStringExtra("chatroomname");
-        if (!chatroomname.equals("none")) {
-            initDB(chatroomname);
-        }
+
         uid = intent2.getStringExtra("uid");
         receiveruid = intent2.getStringExtra("receiveruid");
         receivernick = intent2.getStringExtra("receivernick");
+        receiverphoto = intent2.getStringExtra("receiverphoto");
+        chatroomname = intent2.getStringExtra("chatroomname");
 
         friendsid.setText(receivernick);
+        if (!chatroomname.equals("none")) {
+            initDB(chatroomname);
+        }
 
         chatAdapter = new ChatAdapter(this.getApplicationContext(), R.layout.chat_message);
-        final ListView listView = (ListView) findViewById(R.id.chatListview);
+        listView = findViewById(R.id.chatListview);
         listView.setAdapter(chatAdapter);
         listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL); // 이게 필수
 
@@ -158,21 +165,8 @@ public class ConnectActivity extends AppCompatActivity {
                                 connectToRoom(chatroomname);
                                 break;
                             case R.id.emailLo:
-//                                Message tmp = new Message(1, uid);
-//                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                //ss
                                 Intent intent = new Intent(ConnectActivity.this, DateTimePicker.class);
                                 startActivityForResult(intent, 1);
-                                //
-//                                if (chatroomname.equals("none"))
-//                                {
-//                                    Log.d(TAG, "You should chat atleast one sentences");
-//                                }
-//                                else
-//                                    {
-//                                    DatabaseReference ref = database.getReference("message").child(chatroomname);
-//                                    ref.push().setValue(tmp);
-//                                }
                                 break;
                         }
                         bottomSheetDialog.dismiss();
@@ -209,15 +203,20 @@ public class ConnectActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 String result = data.getStringExtra("result");
-                Toast.makeText(ConnectActivity.this, result, Toast.LENGTH_SHORT).show();
-                Message tmp = new Message(1, uid, result);
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                Message tmp = new Message("1", uid, receiveruid);
+                tmp.setContents("Planing Conference");
+                tmp.setDate(result);
+                tmp.setChk("0");
+
+                DatabaseReference ref;
                 if (chatroomname.equals("none")) {
-                    Log.d(TAG, "You should chat atleast one sentences");
-                } else {
-                    DatabaseReference ref = database.getReference("message").child(chatroomname);
-                    ref.push().setValue(tmp);
+                    // It Duplicate Chatrooms
+                    ref = database.getReference("message").push();
+                    chatroomname = ref.getKey();
+                    initDB(chatroomname);
                 }
+                ref = database.getReference("message").child(chatroomname);
+                ref.push().setValue(tmp);
             }
         }
 
@@ -524,11 +523,12 @@ public class ConnectActivity extends AppCompatActivity {
 
 
     public void sendMessage(View view) {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        Message mMessage = new Message(uid, receiveruid, sendMsg.getText().toString());
-        mMessage.setReceiver(receiveruid);
+        Message mMessage = new Message("0", uid, receiveruid);
+        mMessage.setContents(sendMsg.getText().toString());
+
         DatabaseReference ref;
         if (chatroomname.equals("none")) {
+            // It Duplicate Chatrooms
             ref = database.getReference("message").push();
             chatroomname = ref.getKey();
             initDB(chatroomname);
@@ -539,34 +539,33 @@ public class ConnectActivity extends AppCompatActivity {
     }
 
     public void initDB(final String rommname) {
-        myDatabase = FirebaseDatabase.getInstance().getReference("message").child(rommname);
-        userDatabase = FirebaseDatabase.getInstance().getReference("users");
+        myDatabase = database.getReference("message").child(rommname);
+        userDatabase = database.getReference("users");
 
         myDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String type = dataSnapshot.child("type").getValue().toString();
+                String sender = dataSnapshot.child("sender").getValue().toString();
+                String receiver = dataSnapshot.child("receiver").getValue().toString();
+                String time = dataSnapshot.child("sendDate").getValue().toString();
+                String contents = dataSnapshot.child("contents").getValue().toString();
+
                 Message mMessage;
-                if (type.equals("0")) {
-                    String contents = dataSnapshot.child("contents").getValue().toString();
-                    String time = dataSnapshot.child("sendDate").getValue().toString();
-                    String sender = dataSnapshot.child("sender").getValue().toString();
-                    String receiver = dataSnapshot.child("receiver").getValue().toString();
-                    mMessage = new Message(sender, receiver, contents);
+                mMessage = new Message(type, sender, receiver, time);
+                mMessage.setContents(contents);
 
-                    ChatRoom temp = new ChatRoom(receiveruid, contents, time);
-                    userDatabase.child(uid).child("rooms").child(rommname).setValue(temp);
-                    temp.setReceiver(uid);
-                    userDatabase.child(receiveruid).child("rooms").child(rommname).setValue(temp);
-
-                } else {
-                    String caller = dataSnapshot.child("caller").getValue().toString();
+                if (type.equals("1"))
+                {
+                    String chk = dataSnapshot.child("chk").getValue().toString();
                     String date = dataSnapshot.child("date").getValue().toString();
-                    mMessage = new Message(1, caller, Calendar.getInstance().getTime().toString());
-                    mMessage.setReceiver(receiveruid);
                     mMessage.setDate(date);
-                    dataSnapshot.getRef().removeValue();
+                    mMessage.setDate(chk);
                 }
+
+                ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, contents, time);
+                userDatabase.child(uid).child("rooms").child(rommname).setValue(updateChatRoom);
+                userDatabase.child(receiveruid).child("rooms").child(rommname).setValue(updateChatRoom);
                 chatAdapter.add(mMessage);
             }
 

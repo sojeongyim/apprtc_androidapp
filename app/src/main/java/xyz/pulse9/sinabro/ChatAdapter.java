@@ -77,19 +77,19 @@ public class ChatAdapter extends ArrayAdapter {
             case ITEM_VIEW_TYPE_MSG:
 
                 // Array List에 들어 있는 채팅 문자열을 읽어
-                boolean message_left = true;
                 convertView = inflater.inflate(R.layout.chat_message,
                         parent, false);
                 TextView titleTextView = (TextView) convertView.findViewById(R.id.contentsTxt);
                 titleTextView.setText(msg.getContents());
 
+                boolean message_left = true;
                 if (msg.getSender().equals(curuser.getUid())) {
                     message_left = true;
                 } else {
                     message_left = false;
                 }
 
-                titleTextView.setBackground(this.getContext().getResources().getDrawable((message_left ? R.drawable.inbox_out_shot_res2: R.drawable.inbox_in_shot_res2 )));
+                titleTextView.setBackground(this.getContext().getResources().getDrawable((message_left ? R.drawable.inbox_out_shot_res2 : R.drawable.inbox_in_shot_res2)));
                 titleTextView.setTextColor(Color.parseColor(message_left ? "#0f2013" : "#c7c7c7")); //sinabro_black  &  sinabro_gray
 
                 LinearLayout chatMessageContainer = (LinearLayout) convertView.findViewById(R.id.textLinear);
@@ -98,7 +98,6 @@ public class ChatAdapter extends ArrayAdapter {
 
                 // Inflater를 이용해서 생성한 View에, ChatMessage를 삽입한다.
                 if (message_left) {
-                    TextView msgText = (TextView) convertView.findViewById(R.id.contentsTxt);
                     align = Gravity.LEFT;
                 } else {
                     align = Gravity.RIGHT;
@@ -114,16 +113,13 @@ public class ChatAdapter extends ArrayAdapter {
                 final Button denyBtn = convertView.findViewById(R.id.denyBtn);
                 final Button resultBtn = convertView.findViewById(R.id.resultBtn);
                 resultBtn.setEnabled(false);
-                if (msg.getChk()==1)
-                {
+                LinearLayout videoContainer = (LinearLayout) convertView.findViewById(R.id.video_layout);
+                if (msg.getChk() == 1) {
                     acceptBtn.setVisibility(View.GONE);
                     denyBtn.setVisibility(View.GONE);
                     resultBtn.setText("Accepted");
                     resultBtn.setVisibility(View.VISIBLE);
-                }
-
-                else if(msg.getChk()==2)
-                {
+                } else if (msg.getChk() == 2) {
                     denyBtn.setVisibility(View.GONE);
                     acceptBtn.setVisibility(View.GONE);
                     resultBtn.setText("Denied");
@@ -132,8 +128,7 @@ public class ChatAdapter extends ArrayAdapter {
 
                 acceptBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view)
-                    {
+                    public void onClick(View view) {
                         acceptBtn.setVisibility(View.GONE);
                         denyBtn.setVisibility(View.GONE);
                         resultBtn.setText("Accepted");
@@ -153,6 +148,24 @@ public class ChatAdapter extends ArrayAdapter {
                         msg.setChk(2);
                     }
                 });
+
+//
+//                boolean message2_left = true;
+//                if (msg.getSender().equals(curuser.getUid())) {
+//                    message2_left = true;
+//                } else {
+//                    message2_left = false;
+//                }
+//                int align2;
+//
+//                // Inflater를 이용해서 생성한 View에, ChatMessage를 삽입한다.
+//                if (message2_left) {
+//                    align2 = Gravity.LEFT;
+//                } else {
+//                    align2 = Gravity.RIGHT;
+//                }
+//                videoContainer.setGravity(align2);
+
 
                 TextView date = convertView.findViewById(R.id.dataTime);
                 date.setText(msg.getDate());

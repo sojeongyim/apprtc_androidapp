@@ -103,7 +103,8 @@ public class ChatRoomListFragment extends Fragment{
                 Intent intent = new Intent(getActivity(), ConnectActivity.class);
                 intent.putExtra("chatroomname", roomname);
                 intent.putExtra("receiveruid", chatRoomAdapter.getItem(i).getReceiver());
-                intent.putExtra("receivernick", chatRoomAdapter.getItem(i).getReceiverNick());
+                intent.putExtra("receivernick", chatRoomAdapter.getItem(i).getNickname());
+                intent.putExtra("receiverphoto", chatRoomAdapter.getItem(i).getPhoto());
                 intent.putExtra("uid", curuser.getUid());
                 startActivity(intent);
             }
@@ -112,29 +113,33 @@ public class ChatRoomListFragment extends Fragment{
         userDatabase= FirebaseDatabase.getInstance().getReference("users").child(curuser.getUid()).child("rooms");
 
         userDatabase.addChildEventListener(new ChildEventListener() {
-            String roomname;
-            String title;
-            String receiver;
+            String chatroomname;
+            String lastcontents;
+            String receiveruid;
             String lastTime;
+            String receivernick;
+            String receiverphoto;
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                roomname = dataSnapshot.getRef().getKey();
-                receiver = dataSnapshot.child("receiver").getValue().toString();
-                title = dataSnapshot.child("title").getValue().toString();
-                lastTime = dataSnapshot.child("lastDate").getValue().toString();
-                ChatRoom chatRoom = new ChatRoom(roomname,receiver, title, lastTime);
+                chatroomname = dataSnapshot.getRef().getKey();
+                receiveruid = dataSnapshot.child("receiver").getValue().toString();
+                receivernick = dataSnapshot.child("nickname").getValue().toString();
+                lastcontents = dataSnapshot.child("lastcontents").getValue().toString();
+                receiverphoto = dataSnapshot.child("photo").getValue().toString();
+                lastTime = dataSnapshot.child("time").getValue().toString();
+
+                ChatRoom chatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, lastcontents, lastTime);
                 chatRoomAdapter.add(chatRoom);
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                roomname = dataSnapshot.getRef().getKey();
-                title = dataSnapshot.child("title").getValue().toString();
+                chatroomname = dataSnapshot.getRef().getKey();
+                lastcontents = dataSnapshot.child("lastcontents").getValue().toString();
                 lastTime = dataSnapshot.child("lastDate").getValue().toString();
-                chatRoomAdapter.refresh(roomname, title, lastTime);
+                chatRoomAdapter.refresh(chatroomname, lastcontents, lastTime);
                 chatRoomAdapter.notifyDataSetChanged();
                 listView.setAdapter(chatRoomAdapter);
-                Log.d("jangmin","userDatabase On ChildChanged");
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
@@ -160,8 +165,6 @@ public class ChatRoomListFragment extends Fragment{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
 
     @Override
