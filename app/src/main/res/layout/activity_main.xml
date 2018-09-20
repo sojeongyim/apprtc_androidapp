@@ -29,15 +29,17 @@
     </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
-        app:layout_behavior="tech.thdev.app.view.BottomNavigationBehavior"
         android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="bottom"
-        android:layout_weight="1"
-
-        android:background="@color/cardview_dark_background"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:background="?android:attr/windowBackground"
         app:menu="@menu/navigation" />
 
 
 </LinearLayout>
+
+
+
+
