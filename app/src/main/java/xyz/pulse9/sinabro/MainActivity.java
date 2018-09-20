@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,7 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements ChatRoomListFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, TeacherlistFragment.OnFragmentInteractionListener {
     final String TAG = "MainActivity";
@@ -44,6 +43,15 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
                     fragment = new TeacherlistFragment();
                     loadFragment(fragment);
                     return true;
+                case R.id.navigation_saved:
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "토스트창에 출력될 문자", Toast.LENGTH_LONG);
+                    toast.show();
+                case R.id.navigation_profile:
+                    Toast toast2 = Toast.makeText(getApplicationContext(),
+                            "토스트창에 출력될 문자", Toast.LENGTH_LONG);
+                    toast2.show();
+
             }
             return false;
         }
