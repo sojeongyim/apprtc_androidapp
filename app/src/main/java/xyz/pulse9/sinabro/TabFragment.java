@@ -32,6 +32,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class TabFragment extends Fragment {
 
+
+
     public static class TabFragment1 extends Fragment {
 
         private String teacher1_token ="Jhbg1lLcwJRP7HcwHwVQwzJDy1H2";////intern1계정
@@ -67,7 +69,9 @@ public class TabFragment extends Fragment {
 
                 @Override
                 public void onClick(View view) {
-                    userDatabase.child(teacher1_token).child("follower").push().setValue(uid);
+//                    if(userDatabase.child(teacher1_token).child("follower").)
+                    userDatabase.child(teacher1_token).child("follower").push().child("id").setValue(uid);
+
                 }
             });
 
