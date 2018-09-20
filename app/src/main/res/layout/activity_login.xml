@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_bg"
+
     tools:context="xyz.pulse9.sinabro.LoginActivity"
     android:theme="@style/EditTheme">
 
@@ -12,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="56dp"
         tools:layout_editor_absoluteY="0dp">
