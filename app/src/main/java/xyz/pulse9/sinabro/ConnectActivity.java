@@ -12,8 +12,6 @@ package xyz.pulse9.sinabro;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,7 +23,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -37,7 +34,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -45,8 +41,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Calendar;
 
 /**
  * Handles the initial setup where the user selects which room to join.
@@ -182,8 +176,9 @@ public class ConnectActivity extends AppCompatActivity {
                                 connectToRoom(chatroomname);
                                 break;
                             case R.id.emailLo:
-                                Intent intent = new Intent(ConnectActivity.this, DateTimePicker.class);
+                                Intent intent = new Intent(ConnectActivity.this, mDatePicker.class);
                                 startActivityForResult(intent, 1);
+
                                 break;
                         }
                         bottomSheetDialog.dismiss();

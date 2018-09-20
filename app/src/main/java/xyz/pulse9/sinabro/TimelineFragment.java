@@ -85,12 +85,11 @@ public class TimelineFragment extends Fragment{
                 "When I’m not working, I am usually with my friends hanging out, who love to run and exercise even more than I do. I’m much a kid at heart, love to cook, watch football, play guitar, and travel whenever I can.\n" +
                 "I love meeting new people and get inspired by them, so please feel free to say hello and share a story with me.I’m much thrilled to get a call from who I can share my story.\n" +
                 "Let’s get to know each other!",R.drawable.timeline02));
-        myDataset.add(new MyData("#It's no surprise that I am tutoring in Sina-bro which rewards me for helping people realize their potential and setting them on their way to achieving great things.\n" +
+        myDataset.add(new MyData("It's no surprise that I am tutoring in Sina-bro which rewards me for helping people realize their potential and setting them on their way to achieving great things.\n" +
                 "After 10+ years in teaching industry, I get as excited today as I did back then when seeing both myself and students prosper.\n" +
-                "Truly partnering with my students to help them think differently and coaching the talent I work with to attain the unattainable is what motivates me to continuously improve in this ever evolving industry.\n" +
-                "I’m also focused on putting my passions and skills to good use by supporting people and projects that I really care about whether it’s giving some time to the great language skills or driving key diversity initiatives at Korean people to creating greater cultural awareness.\n" +
-                "I'm interested in hearing your stories.",R.drawable.timeline03));
-        myDataset.add(new MyData("#I love traveling the world and eating my way through the places I visit. In my spare time, I’m searching for travel deals or hang out with the new friends from Sina-bro.\n" +
+                "Truly partnering with my students to help them think differently and coaching the talent I work with to attain the unattainable is what motivates me to continuously improve in this ever evolving industry.\n"+
+                "I'm interested in hearing your stories.",R.drawable.timeline03)); //중간자름
+        myDataset.add(new MyData("I love traveling the world and eating my way through the places I visit. In my spare time, I’m searching for travel deals or hang out with the new friends from Sina-bro.\n" +
                 "I’m fluent in English, and am always looking to brush up my language skills over coffee or drinks. If you challenge me to Say Wars trivia, I will win. I’m also obsessed with Music. Connect with me for networking and more.\n",R.drawable.timeline04));
         myDataset.add(new MyData("One of my favorite things is connecting with people who have a passion for working in a self-managed organization and who genuinely love wowing their internal and external customers. For me, it’s all about discovering people’s dreams and matching them with careers that will allow them to grow and do their very best work, Getting to be yourself both inside and outside of work is where it’s at!\n" +
                 "Outside of the office, I’m committed to education and tutor at Sina-bro.\n" +

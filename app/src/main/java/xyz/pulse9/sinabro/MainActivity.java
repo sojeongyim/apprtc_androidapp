@@ -57,11 +57,11 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
                     return true;
                 case R.id.navigation_saved:
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "토스트창에 출력될 문자", Toast.LENGTH_LONG);
+                            "Coming soon", Toast.LENGTH_SHORT);
                     toast.show();
                 case R.id.navigation_profile:
                     Toast toast2 = Toast.makeText(getApplicationContext(),
-                            "토스트창에 출력될 문자", Toast.LENGTH_LONG);
+                            "Coming soon", Toast.LENGTH_SHORT);
                     toast2.show();
 
             }
