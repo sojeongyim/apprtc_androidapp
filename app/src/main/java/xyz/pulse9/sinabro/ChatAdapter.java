@@ -27,99 +27,99 @@ import java.util.List;
 
 public class ChatAdapter extends ArrayAdapter {
 
-    private static final int ITEM_VIEW_TYPE_MSG = 0;
-    private static final int ITEM_VIEW_TYPE_CALL = 1;
+    private static final String ITEM_VIEW_TYPE_MSG = "0";
+    private static final String ITEM_VIEW_TYPE_CALL = "1";
 
     List<Message> msgs = new ArrayList();
 
     public ChatAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
     }
-
-    //@Override
     public void add(Message object) {
-
         msgs.add(object);
-        Log.d("test", "Its adds " + object.getType());
-
         super.add(object);
     }
-
-
+    public String getType(int Pos) {
+        return msgs.get(Pos).getType();
+    }
     @Override
     public int getCount() {
         return msgs.size();
     }
-
     @Override
     public Message getItem(int index) {
         return (Message) msgs.get(index);
     }
-
-    @Override
-    public int getItemViewType(int position) {
-        return msgs.get(position).getType();
-    }
-
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        int viewType = getItemViewType(position);
         LayoutInflater inflater;
         inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
-
+        final String curuid = curuser.getUid();
+        LinearLayout chatMessageContainer;
         final Message msg = msgs.get(position);
-        Log.d("test", "Its type isaaa " + viewType);
+        String viewType = getType(position);
+
+
+        boolean message_left = true;
+        if (msg.getSender().equals(curuid))
+        {
+            message_left = true;
+        } else {
+            message_left = false;
+        }
+
+        int align;
+        if (message_left) {
+            align = Gravity.LEFT;
+        } else {
+            align = Gravity.RIGHT;
+        }
 
         switch (viewType) {
             case ITEM_VIEW_TYPE_MSG:
+                convertView = inflater.inflate(R.layout.chat_message,parent, false);
+                chatMessageContainer = convertView.findViewById(R.id.textLinear);
+                chatMessageContainer.setGravity(align);
 
-                // Array List에 들어 있는 채팅 문자열을 읽어
-                convertView = inflater.inflate(R.layout.chat_message,
-                        parent, false);
                 TextView titleTextView = (TextView) convertView.findViewById(R.id.contentsTxt);
                 titleTextView.setText(msg.getContents());
 
-                boolean message_left = true;
-                if (msg.getSender().equals(curuser.getUid())) {
-                    message_left = true;
-                } else {
-                    message_left = false;
-                }
-
                 titleTextView.setBackground(this.getContext().getResources().getDrawable((message_left ? R.drawable.inbox_out_shot_res2 : R.drawable.inbox_in_shot_res2)));
                 titleTextView.setTextColor(Color.parseColor(message_left ? "#0f2013" : "#c7c7c7")); //sinabro_black  &  sinabro_gray
-
-                LinearLayout chatMessageContainer = (LinearLayout) convertView.findViewById(R.id.textLinear);
-
-                int align;
-
-                // Inflater를 이용해서 생성한 View에, ChatMessage를 삽입한다.
-                if (message_left) {
-                    align = Gravity.LEFT;
-                } else {
-                    align = Gravity.RIGHT;
-                }
-                chatMessageContainer.setGravity(align);
                 break;
 
             case ITEM_VIEW_TYPE_CALL:
                 convertView = inflater.inflate(R.layout.chat_videocall, parent, false);
-                final DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference("users");
+                chatMessageContainer = convertView.findViewById(R.id.video_layout);
+                chatMessageContainer.setGravity(align);
 
+                final DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference("users");
                 final Button acceptBtn = convertView.findViewById(R.id.acceptBtn);
                 final Button denyBtn = convertView.findViewById(R.id.denyBtn);
                 final Button resultBtn = convertView.findViewById(R.id.resultBtn);
+
                 resultBtn.setEnabled(false);
-                LinearLayout videoContainer = (LinearLayout) convertView.findViewById(R.id.video_layout);
-                if (msg.getChk() == 1) {
+                // 0 for Nothing
+                // 1 for Another person Accepted
+                // 2 for Another Person denied
+                if (msg.getChk().equals("0") && msg.getSender().equals(curuid))
+                {
                     acceptBtn.setVisibility(View.GONE);
                     denyBtn.setVisibility(View.GONE);
+                    resultBtn.setText("Waiting .. ");
+                    resultBtn.setVisibility(View.VISIBLE);
+                }
+                else if (msg.getChk().equals("1"))
+                {
+                    denyBtn.setVisibility(View.GONE);
+                    acceptBtn.setVisibility(View.GONE);
                     resultBtn.setText("Accepted");
                     resultBtn.setVisibility(View.VISIBLE);
-                } else if (msg.getChk() == 2) {
+                }
+                else
+                {
                     denyBtn.setVisibility(View.GONE);
                     acceptBtn.setVisibility(View.GONE);
                     resultBtn.setText("Denied");
@@ -133,11 +133,11 @@ public class ChatAdapter extends ArrayAdapter {
                         denyBtn.setVisibility(View.GONE);
                         resultBtn.setText("Accepted");
                         resultBtn.setVisibility(View.VISIBLE);
-                        msg.setChk(1);
-                        userDatabase.child(curuser.getUid()).child("Alarm").push().setValue(msg.getDate());
+                        msg.setChk("1");
+                        userDatabase.child(curuid).child("Alarm").push().setValue(msg.getDate());
+                        userDatabase.child(msg.getReceiver()).child("Alarm").push().setValue(msg.getDate());
                     }
                 });
-
                 denyBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -145,32 +145,14 @@ public class ChatAdapter extends ArrayAdapter {
                         acceptBtn.setVisibility(View.GONE);
                         resultBtn.setText("Denied");
                         resultBtn.setVisibility(View.VISIBLE);
-                        msg.setChk(2);
+                        msg.setChk("2");
                     }
                 });
-
-//
-//                boolean message2_left = true;
-//                if (msg.getSender().equals(curuser.getUid())) {
-//                    message2_left = true;
-//                } else {
-//                    message2_left = false;
-//                }
-//                int align2;
-//
-//                // Inflater를 이용해서 생성한 View에, ChatMessage를 삽입한다.
-//                if (message2_left) {
-//                    align2 = Gravity.LEFT;
-//                } else {
-//                    align2 = Gravity.RIGHT;
-//                }
-//                videoContainer.setGravity(align2);
-
-
                 TextView date = convertView.findViewById(R.id.dataTime);
                 date.setText(msg.getDate());
                 break;
         }
+
         return convertView;
     }
 }

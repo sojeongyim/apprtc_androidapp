@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         ref.child(uid).child("email").setValue(email);
         ref.child(uid).child("token").setValue(token);
         ref.child(uid).child("nickname").setValue(nickname);
-        ref.child(uid).child("photo").setValue(nickname);
+        ref.child(uid).child("photo").setValue(photo);
 
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         DatabaseReference useralarmDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid).child("Alarm");

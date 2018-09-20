@@ -57,13 +57,13 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
         fb=findViewById(R.id.fakeFB);
         googleBtn = findViewById(R.id.google_login);
 
-        fb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                googleBtn.performClick();
-            }
-        });
-        ggl=findViewById(R.id.fakeGoogle);
+//        fb.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                googleBtn.performClick();
+//            }
+//        });
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -73,6 +73,15 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
         googleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                signIn();
+            }
+        });
+
+        ggl=findViewById(R.id.fakeGoogle);
+        ggl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("asdfasd", "HEL");
                 signIn();
             }
         });
@@ -192,7 +201,6 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
-
     }
 
 //    private void handleFacebookAccessToken(AccessToken token) {

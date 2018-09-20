@@ -107,6 +107,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/ggl"
+                    android:clickable="true"
                     app:srcCompat="@drawable/ggl" />
 
                 <com.google.android.gms.common.SignInButton
@@ -128,8 +129,8 @@
                     android:id="@+id/fakeFB"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/fb"
-                    app:srcCompat="@drawable/fb" />
+                    android:clickable="true"
+                    android:background="@drawable/fb" />
 
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/facebook_login"
