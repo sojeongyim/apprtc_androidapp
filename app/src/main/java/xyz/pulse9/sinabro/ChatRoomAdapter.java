@@ -81,8 +81,8 @@ public class ChatRoomAdapter extends ArrayAdapter {
         userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                msgText.setText(dataSnapshot.child("nickname").getValue().toString());
-                chatRoom.setReceiverNick(dataSnapshot.child("nickname").getValue().toString());
+//                msgText.setText(dataSnapshot.child("nickname").getValue().toString());
+//                chatRoom.setReceiverNick(dataSnapshot.child("nickname").getValue().toString());
 
 
             }

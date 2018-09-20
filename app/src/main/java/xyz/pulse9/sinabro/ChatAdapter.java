@@ -1,9 +1,10 @@
 package xyz.pulse9.sinabro;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,19 +17,20 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import static org.webrtc.ContextUtils.getApplicationContext;
 
 public class ChatAdapter extends ArrayAdapter {
 
     private static final int ITEM_VIEW_TYPE_MSG = 0;
     private static final int ITEM_VIEW_TYPE_CALL = 1;
+    private String DateTime = null;
 
     List<Message> msgs = new ArrayList();
 
@@ -72,6 +74,8 @@ public class ChatAdapter extends ArrayAdapter {
 
         final Message msg = msgs.get(position);
         Log.d("test", "Its type isaaa " + viewType);
+
+
 
         switch (viewType) {
             case ITEM_VIEW_TYPE_MSG:
@@ -122,6 +126,8 @@ public class ChatAdapter extends ArrayAdapter {
                     denyBtn.setVisibility(View.GONE);
                     resultBtn.setText("Accepted");
                     resultBtn.setVisibility(View.VISIBLE);
+
+
                 }
                 else if(msg.getChk()==2)
                 {
@@ -155,10 +161,15 @@ public class ChatAdapter extends ArrayAdapter {
                     }
                 });
 
-                TextView date = convertView.findViewById(R.id.dataTime);
+                TextView date = convertView.findViewById(R.id.dateTime);
                 date.setText(msg.getDate());
                 break;
         }
         return convertView;
     }
+
+
 }
+
+
+

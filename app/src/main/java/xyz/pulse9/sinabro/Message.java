@@ -39,7 +39,7 @@ public class Message {
     {
         this.Caller=Caller;
         this.type=type;
-        this.Date=Calendar.getInstance().getTime().toString();
+        this.Date=DateTime;
         this.chk=0;
     }
     public Message(int type)

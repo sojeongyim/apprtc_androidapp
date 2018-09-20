@@ -171,7 +171,7 @@ public class ConnectActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 String result = data.getStringExtra("result");
-                Toast.makeText(ConnectActivity.this, result, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ConnectActivity.this, result, Toast.LENGTH_SHORT).show();
                 Message tmp = new Message(1, uid,result);
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 if (chatroomname.equals("none"))
