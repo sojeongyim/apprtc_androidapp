@@ -95,7 +95,6 @@ public class ConnectActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -105,7 +104,6 @@ public class ConnectActivity extends AppCompatActivity {
                     sendBtn.setEnabled(true);
                 }
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
 
@@ -135,6 +133,7 @@ public class ConnectActivity extends AppCompatActivity {
                 sendernick = dataSnapshot.child(uid).child("nickname").getValue().toString();
                 receiverphoto = dataSnapshot.child(receiveruid).child("photo").getValue().toString();
                 senderphoto = dataSnapshot.child(uid).child("photo").getValue().toString();
+                friendsid.setText(receivernick);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -142,7 +141,6 @@ public class ConnectActivity extends AppCompatActivity {
             }
         });
 
-        friendsid.setText(receivernick);
         if (!chatroomname.equals("none")) {
             initDB(chatroomname);
         }
@@ -545,6 +543,13 @@ public class ConnectActivity extends AppCompatActivity {
             ref = database.getReference("message").push();
             chatroomname = ref.getKey();
             initDB(chatroomname);
+
+
+            ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, sendMsg.getText().toString(), mMessage.getSendDate());
+            ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, sendMsg.getText().toString(), mMessage.getSendDate());
+
+            userDatabase.child(uid).child("rooms").child(chatroomname).setValue(updateChatRoom);
+            userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(updateChatRoom2);
         }
         ref = database.getReference("message").child(chatroomname);
         ref.push().setValue(mMessage);
@@ -577,21 +582,18 @@ public class ConnectActivity extends AppCompatActivity {
                     mMessage.setDate(date);
                     mMessage.setDate(chk);
                 }
-
-                Log.d("FINALY", "1 : "+receivernick);
-                Log.d("FINALY", "2 : "+receiverphoto);
-                Log.d("FINALY", "3 : "+sendernick);
-                Log.d("FINALY", "4 : "+senderphoto);
-                ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, contents, time);
-                ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, contents, time);
-
-                userDatabase.child(uid).child("rooms").child(rommname).setValue(updateChatRoom);
-                userDatabase.child(receiveruid).child("rooms").child(rommname).setValue(updateChatRoom2);
                 chatAdapter.add(mMessage);
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String time = dataSnapshot.child("sendDate").getValue().toString();
+                String contents = dataSnapshot.child("contents").getValue().toString();
+                ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, contents, time);
+                ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, contents, time);
+
+                userDatabase.child(uid).child("rooms").child(rommname).setValue(updateChatRoom);
+                userDatabase.child(receiveruid).child("rooms").child(rommname).setValue(updateChatRoom2);
             }
 
             @Override
