@@ -136,7 +136,7 @@ public class ChatRoomListFragment extends Fragment{
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 chatroomname = dataSnapshot.getRef().getKey();
                 lastcontents = dataSnapshot.child("lastcontents").getValue().toString();
-                lastTime = dataSnapshot.child("lastDate").getValue().toString();
+                lastTime = dataSnapshot.child("time").getValue().toString();
                 chatRoomAdapter.refresh(chatroomname, lastcontents, lastTime);
                 chatRoomAdapter.notifyDataSetChanged();
                 listView.setAdapter(chatRoomAdapter);
