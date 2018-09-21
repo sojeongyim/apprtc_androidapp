@@ -21,6 +21,7 @@
     <string name="switch_camera">Switch front/back camera</string>
     <string name="capture_format_change_text">Slide to change capture format</string>
     <string name="muted">Muted</string>
+    <string name="chatRoomList">Inbox</string>
     <string name="toggle_debug">Toggle debug view</string>
     <string name="toggle_mic">Toggle microphone on/off</string>
     <string name="action_settings">Settings</string>

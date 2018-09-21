@@ -4,31 +4,24 @@
     <item
         android:id="@+id/navigation_teachers"
         android:icon="@drawable/explore"
-        android:iconTint="@color/cardview_light_background"
         android:title="EXPLORE" />
 
     <item
         android:id="@+id/navigation_saved"
-        android:iconTint="@color/cardview_dark_background"
         android:icon="@drawable/saved"
         android:title="SAVED" />
 
     <item
         android:id="@+id/navigation_timeline"
-        android:iconTint="@color/dot_dark_screen3"
         android:icon="@drawable/home"
         android:title="HOME" />
 
     <item
         android:id="@+id/navigation_chatings"
-        android:iconTint="@color/dot_dark_screen1"
-
         android:icon="@drawable/chat"
         android:title="CHAT" />
 
     <item
-        android:iconTint="@color/dot_dark_screen2"
-
         android:id="@+id/navigation_profile"
         android:icon="@drawable/profile"
         android:title="PROFILE" />

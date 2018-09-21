@@ -18,7 +18,7 @@
     <!--app:layout_constraintRight_toRightOf="parent"-->
     <!--app:layout_constraintTop_toBottomOf="@id/container"-->
     <!--app:menu="@menu/navigation" />-->
-    <!---->
+
 
     <FrameLayout
         android:id="@+id/flContainer"
@@ -30,11 +30,13 @@
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
         android:background="?android:attr/windowBackground"
+        app:itemIconTint="@layout/selector_navi"
+        app:itemTextColor="@layout/selector_navi"
         app:menu="@menu/navigation" />
 
 

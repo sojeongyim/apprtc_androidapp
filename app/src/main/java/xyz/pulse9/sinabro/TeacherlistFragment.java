@@ -50,6 +50,9 @@ public class TeacherlistFragment extends Fragment {
         Toolbar toolbar = (Toolbar) getView().findViewById(R.id.toolbar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
 
         tabLayout = (TabLayout) getView().findViewById(R.id.tab_layout);
         left_arrow =(ImageButton)getView().findViewById(R.id.left_arrow);

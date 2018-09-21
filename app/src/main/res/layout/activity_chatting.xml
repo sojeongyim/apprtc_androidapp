@@ -80,7 +80,6 @@
             android:background="@drawable/type_here_res"
             android:ems="10"
             android:inputType="text"
-            android:paddingBottom="11dp"
 
             android:paddingLeft="17dp"
             android:paddingTop="5dp"
