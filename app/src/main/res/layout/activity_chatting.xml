@@ -38,8 +38,8 @@
             app:srcCompat="@drawable/left" />
     </FrameLayout>
 
-    <ListView
-        android:id="@+id/chatListview"
+<ListView
+    android:id="@+id/chatListview"
         android:layout_width="match_parent"
         android:layout_height="472dp"
         android:layout_above="@id/ll"
@@ -58,7 +58,8 @@
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_alignParentLeft="true">
 
         <ImageButton
             android:id="@+id/vidBtn"

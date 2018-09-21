@@ -21,8 +21,8 @@
         android:textColor="@color/sianbro_black_color"
         android:textStyle="bold" />
 
-    <ListView
-        android:id="@+id/chat_list"
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+    android:id="@+id/chat_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />
