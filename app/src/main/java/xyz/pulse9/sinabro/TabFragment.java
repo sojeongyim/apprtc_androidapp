@@ -39,7 +39,7 @@ public class TabFragment extends Fragment {
 
 
     public static class TabFragment1 extends Fragment {
-        private String teacher1_token ="Jhbg1lLcwJRP7HcwHwVQwzJDy1H2";////intern1계정
+        private String teacher1_token ="FmNoB5ZDyXQD95OcbSel64yShj22";////intern1계정
         private DatabaseReference userDatabase;
         DatabaseReference followerDB;
         private String uid;

@@ -67,39 +67,50 @@ public class ChatAdapter extends ArrayAdapter {
 
 
         boolean message_left = true;
+        int align;
+
+
         if (msg.getSender().equals(curuid))
         {
             message_left = true;
+            align = Gravity.LEFT;
+
         } else {
             message_left = false;
-        }
-
-        int align;
-        if (message_left) {
-            align = Gravity.LEFT;
-        } else {
             align = Gravity.RIGHT;
+
         }
-
-
 
         switch (viewType) {
             case ITEM_VIEW_TYPE_MSG:
                 convertView = inflater.inflate(R.layout.chat_message,parent, false);
                 chatMessageContainer = convertView.findViewById(R.id.textLinear);
-                chatMessageContainer.setGravity(align);
+                Log.d("Message", "Message_Left = "  + message_left);
+                Log.d("Message", "Align = "  + align);
 
-                ImageView chatPhoto = convertView.findViewById(R.id.messagepic);
+
+
+                ImageView rightchatPhoto = convertView.findViewById(R.id.rightmessagepic);
+                ImageView leftchatPhoto = convertView.findViewById(R.id.leftmessagepic);
+
                 if(!message_left) {
                     Picasso.get().load(msg.getPhoto())
                             .transform(new CropCircleTransformation())
-                            .into(chatPhoto);
+                            .into(rightchatPhoto);
+                }
+                else
+                {
+                    Picasso.get().load(curuser.getPhotoUrl())
+                            .transform(new CropCircleTransformation())
+                            .into(leftchatPhoto);
                 }
                 TextView titleTextView = (TextView) convertView.findViewById(R.id.contentsTxt);
                 titleTextView.setText(msg.getContents());
                 titleTextView.setBackground(this.getContext().getResources().getDrawable((message_left ? R.drawable.inbox_out_shot_res2 : R.drawable.inbox_in_shot_res2)));
 
                 titleTextView.setTextColor(Color.parseColor(message_left ? "#0f2013" : "#c7c7c7")); //sinabro_black  &  sinabro_gray
+                chatMessageContainer.setGravity(align);
+
                 break;
 
             case ITEM_VIEW_TYPE_CALL:

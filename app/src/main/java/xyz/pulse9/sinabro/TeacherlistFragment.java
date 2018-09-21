@@ -54,14 +54,34 @@ public class TeacherlistFragment extends Fragment {
 
 
 
+
         tabLayout = (TabLayout) getView().findViewById(R.id.tab_layout);
         left_arrow =(ImageButton)getView().findViewById(R.id.left_arrow);
         right_arrow =(ImageButton)getView().findViewById(R.id.right_arrow);
 
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user1));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user2));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user3));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user4));
+        View view1 = getLayoutInflater().inflate(R.layout.customtab, null);
+        view1.findViewById(R.id.myicon).setBackgroundResource(R.drawable.user1);
+        tabLayout.addTab(tabLayout.newTab().setCustomView(view1));
+
+
+        View view2 = getLayoutInflater().inflate(R.layout.customtab, null);
+        view2.findViewById(R.id.myicon).setBackgroundResource(R.drawable.user2);
+        tabLayout.addTab(tabLayout.newTab().setCustomView(view2));
+
+
+        View view3 = getLayoutInflater().inflate(R.layout.customtab, null);
+        view3.findViewById(R.id.myicon).setBackgroundResource(R.drawable.user3);
+        tabLayout.addTab(tabLayout.newTab().setCustomView(view3));
+
+        View view4 = getLayoutInflater().inflate(R.layout.customtab, null);
+        view4.findViewById(R.id.myicon).setBackgroundResource(R.drawable.user4);
+        tabLayout.addTab(tabLayout.newTab().setCustomView(view4));
+
+//
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user1));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user2));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user3));
+//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user4));
 //        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user5));
 //        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user6));
 //        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user7));

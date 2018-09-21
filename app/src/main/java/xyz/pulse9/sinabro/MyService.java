@@ -61,7 +61,7 @@ public class MyService extends FirebaseMessagingService {
 
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.com_facebook_button_icon)
+                            .setSmallIcon(R.drawable.heart)
                             .setContentTitle(remoteMessage.getNotification().getTitle())
                             .setContentText(remoteMessage.getNotification().getBody())
                             .setDefaults(Notification.DEFAULT_SOUND)

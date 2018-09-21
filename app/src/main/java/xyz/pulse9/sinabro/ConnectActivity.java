@@ -41,6 +41,8 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,6 +57,7 @@ public class ConnectActivity extends AppCompatActivity {
 
     private DatabaseReference myDatabase;
     private DatabaseReference userDatabase;
+    private String cur_pick;
 
     @Override
     public void onBackPressed() {
@@ -122,9 +125,12 @@ public class ConnectActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
 
         Intent intent2 = getIntent();
-        uid = intent2.getStringExtra("uid");
+        uid = curuser.getUid();
+        cur_pick = curuser.getPhotoUrl().toString();
+
         chatroomname = intent2.getStringExtra("chatroomname");
         receiveruid = intent2.getStringExtra("receiveruid");
 
@@ -134,7 +140,6 @@ public class ConnectActivity extends AppCompatActivity {
         userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("Its USERDB", " key " + dataSnapshot.getKey());
                 receivernick = dataSnapshot.child(receiveruid).child("nickname").getValue().toString();
                 sendernick = dataSnapshot.child(uid).child("nickname").getValue().toString();
                 receiverphoto = dataSnapshot.child(receiveruid).child("photo").getValue().toString();
@@ -549,7 +554,8 @@ public class ConnectActivity extends AppCompatActivity {
 
     public void sendMessage(View view) {
         Message mMessage = new Message("0", uid, receiveruid);
-        mMessage.setPhoto(receiverphoto);
+
+        mMessage.setPhoto(cur_pick);
         mMessage.setContents(sendMsg.getText().toString());
 
         DatabaseReference ref;
@@ -558,7 +564,6 @@ public class ConnectActivity extends AppCompatActivity {
             chatroomname = ref.getKey();
             initDB(chatroomname);
         }
-
 
         ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, sendMsg.getText().toString(), mMessage.getSendDate());
         ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, sendMsg.getText().toString(), mMessage.getSendDate());
