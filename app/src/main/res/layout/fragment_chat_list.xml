@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/login_bg"
     tools:context=".ChatRoomListFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -16,6 +17,7 @@
         android:fontFamily="@font/aarial"
         android:gravity="center_vertical"
         android:text="@string/chatRoomList"
+        android:background="#66FFFAFA"
         android:textSize="20sp"
         android:textAlignment="center"
         android:textColor="@color/sianbro_black_color"

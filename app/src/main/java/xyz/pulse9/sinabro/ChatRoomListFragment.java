@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -84,7 +85,6 @@ public class ChatRoomListFragment extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         chatRoomAdapter = new ChatRoomAdapter(this.getActivity().getApplicationContext(),R.layout.chat_room);
         curuser = FirebaseAuth.getInstance().getCurrentUser();
-
 
         listView = getView().findViewById(R.id.chat_list);
 
@@ -173,12 +173,12 @@ public class ChatRoomListFragment extends Fragment{
                 SwipeMenuItem openItem = new SwipeMenuItem(
                         getActivity().getApplicationContext());
                 // set item background
-                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-                        0xCE)));
+                openItem.setBackground(new ColorDrawable(Color.rgb(0xD6, 0xF4,
+                        0x56)));
                 // set item width
-                openItem.setWidth(90);
+                openItem.setWidth(250);
                 // set item title
-                openItem.setTitle("Open");
+                openItem.setTitle("Delete");
                 // set item title fontsize
                 openItem.setTitleSize(18);
                 // set item title font color
