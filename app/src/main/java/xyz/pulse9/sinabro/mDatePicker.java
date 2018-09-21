@@ -2,6 +2,7 @@ package xyz.pulse9.sinabro;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -15,6 +16,7 @@ import android.view.WindowManager;
 
 import android.app.Activity;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -88,8 +90,9 @@ public class mDatePicker extends Activity {
 
 
         //선택기로부터 날짜 조사
-
-        findViewById(R.id.select).setOnClickListener(new View.OnClickListener() {
+        ImageButton select_butt =(ImageButton)findViewById(R.id.select);
+        select_butt.bringToFront();
+        select_butt.setOnClickListener(new View.OnClickListener() {
 
 
 

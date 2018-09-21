@@ -146,8 +146,8 @@ public class ChatAdapter extends ArrayAdapter {
                         resultBtn.setText("Accepted");
                         resultBtn.setVisibility(View.VISIBLE);
                         msg.setChk("1");
-                        userDatabase.child(curuid).child("Alarm").push().setValue(msg.getSendDate());
-                        userDatabase.child(msg.getReceiver()).child("Alarm").push().setValue(msg.getSendDate());
+                        userDatabase.child(curuid).child("Alarm").push().setValue(msg.getSendDate());   //test
+                        userDatabase.child(msg.getReceiver()).child("Alarm").push().setValue(msg.getSendDate());  //test
                     }
                 });
                 denyBtn.setOnClickListener(new View.OnClickListener() {

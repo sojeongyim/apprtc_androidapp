@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,9 @@ public class mTimePicker extends Activity {
 
         mTime = (android.widget.TimePicker)findViewById(R.id.timepicker);
 
-        findViewById(R.id.select).setOnClickListener(new View.OnClickListener() {
+        ImageButton select_butt =(ImageButton)findViewById(R.id.select);
+        select_butt.bringToFront();
+        select_butt.setOnClickListener(new View.OnClickListener() {
 
             @Override
 

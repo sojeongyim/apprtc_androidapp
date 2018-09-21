@@ -107,6 +107,10 @@ public class TabFragment extends Fragment {
                 public void onClick(View view) {
                     if(followerDB.child(uid).equals("1")==false) {
                         followerDB.child(uid).setValue("1");
+                        followertext.setTextColor(getResources().getColor(R.color.dot_dark_screen1));
+                    }else{
+                        followerDB.child(uid).removeValue();
+                        followertext.setTextColor(getResources().getColor(R.color.sianbro_black_color));
                     }
 
                 }
@@ -139,29 +143,95 @@ public class TabFragment extends Fragment {
     public static class TabFragment2 extends Fragment {
 
         private String teacher2_token ="luzZy37nmveRpTavmzgAmvOemKw1";////intern2계정
+        private DatabaseReference userDatabase;
+        DatabaseReference followerDB;
         private String uid;
         FirebaseUser curuser;
+        TextView followertext;
+        String targetUID;
+        private String chatRoomname;
+
+        public void ischatExist(final String Userid) {
+            chatRoomname = "none";
+            DatabaseReference myDB = FirebaseDatabase.getInstance().getReference("users").child(uid).child("rooms");
+            myDB.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot data : dataSnapshot.getChildren())
+                    {
+                        targetUID = data.child("receiver").getValue().toString();
+                        if(targetUID.equals(Userid))
+                        {
+                            chatRoomname = data.getKey().toString();
+                            Log.d("LISTOFTARGET", "it is Room name" + chatRoomname);
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
 
         @Override
         public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+                super.onActivityCreated(savedInstanceState);
 
-            curuser = FirebaseAuth.getInstance().getCurrentUser();
-            uid = curuser.getUid();
+                curuser = FirebaseAuth.getInstance().getCurrentUser();
+                uid = curuser.getUid();
+                userDatabase = FirebaseDatabase.getInstance().getReference("users");
+                followerDB = userDatabase.child(teacher2_token).child("follower");
+                ischatExist(teacher2_token);
 
-            super.onActivityCreated(savedInstanceState);
-            ImageView imageView_user2 = (ImageView) getView().findViewById(R.id.imageView_user2);
 
-            imageView_user2.setOnClickListener(new View.OnClickListener() {
+                followertext =(TextView)getView().findViewById(R.id.follower_num);
+                ImageView imageView_user2 = (ImageView) getView().findViewById(R.id.imageView_user2);
+                ImageButton heart_butt = (ImageButton) getView().findViewById(R.id.user2_heart);
+
+                imageView_user2.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), ConnectActivity.class);
-                    intent.putExtra("chatroomname", "none");
+                    intent.putExtra("chatroomname", chatRoomname);
                     intent.putExtra("receiveruid", teacher2_token);  //intern2계정으로 전송
                     intent.putExtra("uid", uid);  //uid 수정필요
                     startActivity(intent);
                 }
+                });
+
+            heart_butt.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    if(followerDB.child(uid).equals("1")==false) {
+                        followerDB.child(uid).setValue("1");
+                        followertext.setTextColor(getResources().getColor(R.color.dot_dark_screen1));
+                    }else{
+                        followerDB.child(uid).removeValue();
+                        followertext.setTextColor(getResources().getColor(R.color.sianbro_black_color));
+                    }
+
+                }
             });
+
+            followerDB.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.e(dataSnapshot.getKey(),dataSnapshot.getChildrenCount() + "");
+                    followertext.setText(Long.toString(dataSnapshot.getChildrenCount()));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
         }
 
         @Override
@@ -172,28 +242,95 @@ public class TabFragment extends Fragment {
 
     public static class TabFragment3 extends Fragment {
 
-        private String teacher3_token ="luzZy37nmveRpTavmzgAmvOemKw1";////intern2계정, 수정필요
+        private String teacher3_token ="luzZy37nmveRpTavmzgAmvOemKw1";////intern2계정, 계정3으로 수정해야함
+        private DatabaseReference userDatabase;
+        DatabaseReference followerDB;
         private String uid;
         FirebaseUser curuser;
+        TextView followertext;
+        String targetUID;
+        private String chatRoomname;
+
+        public void ischatExist(final String Userid) {
+            chatRoomname = "none";
+            DatabaseReference myDB = FirebaseDatabase.getInstance().getReference("users").child(uid).child("rooms");
+            myDB.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot data : dataSnapshot.getChildren())
+                    {
+                        targetUID = data.child("receiver").getValue().toString();
+                        if(targetUID.equals(Userid))
+                        {
+                            chatRoomname = data.getKey().toString();
+                            Log.d("LISTOFTARGET", "it is Room name" + chatRoomname);
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
 
         @Override
         public void onActivityCreated(@Nullable Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
+
             curuser = FirebaseAuth.getInstance().getCurrentUser();
             uid = curuser.getUid();
+            userDatabase = FirebaseDatabase.getInstance().getReference("users");
+            followerDB = userDatabase.child(teacher3_token).child("follower");
+            ischatExist(teacher3_token);
 
+
+            followertext =(TextView)getView().findViewById(R.id.follower_num);
             ImageView imageView_user3 = (ImageView) getView().findViewById(R.id.imageView_user3);
+            ImageButton heart_butt = (ImageButton) getView().findViewById(R.id.user3_heart);
+
             imageView_user3.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), ConnectActivity.class);
-                    intent.putExtra("chatroomname", "ToTeacher3");
-                    intent.putExtra("receiveruid", teacher3_token);  //intern2계정으로 전송 수정필요
+                    intent.putExtra("chatroomname", chatRoomname);
+                    intent.putExtra("receiveruid", teacher3_token);  //intern2계정으로 전송, 수정필요
                     intent.putExtra("uid", uid);  //uid 수정필요
                     startActivity(intent);
                 }
             });
+
+            heart_butt.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    if(followerDB.child(uid).equals("1")==false) {
+                        followerDB.child(uid).setValue("1");
+                        followertext.setTextColor(getResources().getColor(R.color.dot_dark_screen1));
+                    }else{
+                        followerDB.child(uid).removeValue();
+                        followertext.setTextColor(getResources().getColor(R.color.sianbro_black_color));
+                    }
+
+                }
+            });
+
+            followerDB.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.e(dataSnapshot.getKey(),dataSnapshot.getChildrenCount() + "");
+                    followertext.setText(Long.toString(dataSnapshot.getChildrenCount()));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
 
         }
 
@@ -205,23 +342,95 @@ public class TabFragment extends Fragment {
 
     public static class TabFragment4 extends Fragment {
 
-        private String teacher4_token ="luzZy37nmveRpTavmzgAmvOemKw1";////intern2계정, 수정필요
+        private String teacher4_token ="luzZy37nmveRpTavmzgAmvOemKw1";////intern2계정, 계정4으로 수정해야함
+        private DatabaseReference userDatabase;
+        DatabaseReference followerDB;
+        private String uid;
+        FirebaseUser curuser;
+        TextView followertext;
+        String targetUID;
+        private String chatRoomname;
+
+        public void ischatExist(final String Userid) {
+            chatRoomname = "none";
+            DatabaseReference myDB = FirebaseDatabase.getInstance().getReference("users").child(uid).child("rooms");
+            myDB.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot data : dataSnapshot.getChildren())
+                    {
+                        targetUID = data.child("receiver").getValue().toString();
+                        if(targetUID.equals(Userid))
+                        {
+                            chatRoomname = data.getKey().toString();
+                            Log.d("LISTOFTARGET", "it is Room name" + chatRoomname);
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
 
         @Override
         public void onActivityCreated(@Nullable Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
+
+            curuser = FirebaseAuth.getInstance().getCurrentUser();
+            uid = curuser.getUid();
+            userDatabase = FirebaseDatabase.getInstance().getReference("users");
+            followerDB = userDatabase.child(teacher4_token).child("follower");
+            ischatExist(teacher4_token);
+
+
+            followertext =(TextView)getView().findViewById(R.id.follower_num);
             ImageView imageView_user4 = (ImageView) getView().findViewById(R.id.imageView_user4);
+            ImageButton heart_butt = (ImageButton) getView().findViewById(R.id.user4_heart);
+
             imageView_user4.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), ConnectActivity.class);
-                    intent.putExtra("chatroomname", "ToTeacher4");
+                    intent.putExtra("chatroomname", chatRoomname);
                     intent.putExtra("receiveruid", teacher4_token);  //intern2계정으로 전송, 수정필요
-                    intent.putExtra("uid", "yrSf3cetwGU8PaBWsJ3aZ6kuKFi1");  //uid 수정필요
+                    intent.putExtra("uid", uid);  //uid 수정필요
                     startActivity(intent);
                 }
             });
+
+            heart_butt.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    if(followerDB.child(uid).equals("1")==false) {
+                        followerDB.child(uid).setValue("1");
+                        followertext.setTextColor(getResources().getColor(R.color.dot_dark_screen1));
+                    }else{
+                        followerDB.child(uid).removeValue();
+                        followertext.setTextColor(getResources().getColor(R.color.sianbro_black_color));
+                    }
+
+                }
+            });
+
+            followerDB.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.e(dataSnapshot.getKey(),dataSnapshot.getChildrenCount() + "");
+                    followertext.setText(Long.toString(dataSnapshot.getChildrenCount()));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
 
         }
 
@@ -230,6 +439,7 @@ public class TabFragment extends Fragment {
             return inflater.inflate(R.layout.tab_fragment_4, container, false);
         }
     }
+
 
     public static class TabFragment5 extends Fragment {
 
