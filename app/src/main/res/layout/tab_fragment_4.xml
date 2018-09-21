@@ -59,7 +59,18 @@
                     android:layout_gravity="center_vertical"
                     android:background="#00ffffff"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/heart" />
+                    app:srcCompat="@drawable/heart"
+                    android:visibility="invisible"/>
+
+                <ImageButton
+                    android:id="@+id/heart_check"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="#00ffffff"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/heart_check"
+                    android:visibility="invisible"/>
 
                 <TextView
                     android:id="@+id/follower_num"
