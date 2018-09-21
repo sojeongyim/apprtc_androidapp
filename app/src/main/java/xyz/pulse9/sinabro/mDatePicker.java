@@ -41,7 +41,7 @@ public class mDatePicker extends Activity {
 
         int width = (int) (display.getWidth() * 0.9); //Display 사이즈의 70%
 
-        int height = (int) (display.getHeight() * 0.7);  //Display 사이즈의 90%
+        int height = (int) (display.getHeight() * 0.8);  //Display 사이즈의 90%
 
         getWindow().getAttributes().width = width;
 
