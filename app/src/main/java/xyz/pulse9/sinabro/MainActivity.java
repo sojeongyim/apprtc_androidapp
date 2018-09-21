@@ -1,6 +1,8 @@
 package xyz.pulse9.sinabro;
 
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
     final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
     final String uid = curuser.getUid();
     DatabaseReference useralarmDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid).child("Alarm");
-
+    private AlarmManager mAlarmManager;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -100,43 +102,37 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
                 String AlarmId = dataSnapshot.getKey().toString();
 //                Log.d(TAG, "Alarm datetime is " + DateTime);
 
-                DateTime = DateTime.replaceAll(" " , "");
-                String[] parseDateTime = DateTime.split("\\.");
-                String[] parseTime = parseDateTime[2].split(":");
-                int year = Integer.parseInt(parseDateTime[0].substring(5));
-                int month = Integer.parseInt(parseDateTime[1]);
-                int date =Integer.parseInt(parseDateTime[2].substring(0,2));
-                int hour =Integer.parseInt(parseTime[1]);
-                int min =Integer.parseInt(parseTime[2]);
+                try {
+                    DateTime = DateTime.replaceAll(" ", "");
+                    String[] parseDateTime = DateTime.split("\\.");
+                    String[] parseTime = parseDateTime[2].split(":");
+                    int year = Integer.parseInt(parseDateTime[0].substring(5));
+                    int month = Integer.parseInt(parseDateTime[1]);
+                    int date = Integer.parseInt(parseDateTime[2].substring(0, 2));
+                    int hour = Integer.parseInt(parseTime[1]);
+                    int min = Integer.parseInt(parseTime[2]);
 //                Log.d(TAG, "year: " + year+"//month: "+month+"//date : "+date+"//hour: "+hour+"//min: "+min);
-//                new AlarmHATT(getApplicationContext()).Alarm(AlarmId,year,month,date,hour,min);
-                AlarmManager am = (AlarmManager)MainActivity.this.getSystemService(ALARM_SERVICE);
-                Intent intent = new Intent(MainActivity.this, PushInAppReceiver.class);
 
-                PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+                    new AlarmHATT(getApplicationContext()).Alarm(year,month,date,hour,min);
 
-                Calendar calendar = Calendar.getInstance();
-                //알람시간 calendar에 set해주기
-
-                calendar.set(year, month, date, hour, min, 0);
-
-                //알람 예약
-                am.set(AlarmManager.RTC, calendar.getTimeInMillis(), sender);
-
+                } catch (Exception e) {}
                 useralarmDatabase.child(AlarmId).removeValue();
             }
+
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
 
-
             }
+
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
             }
+
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
@@ -161,12 +157,13 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
 
     public class AlarmHATT {
         private Context context;
+
         public AlarmHATT(Context context) {
-            this.context=context;
+            this.context = context;
         }
 
-        public void Alarm(String id,int year,int month, int date,int hour, int min) {
-            AlarmManager am = (AlarmManager)MainActivity.this.getSystemService(Context.ALARM_SERVICE);
+        public void Alarm(int year, int month, int date, int hour, int min) {
+            AlarmManager am = (AlarmManager) MainActivity.this.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(MainActivity.this, PushInAppReceiver.class);
 
             PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
@@ -174,12 +171,11 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
             Calendar calendar = Calendar.getInstance();
             //알람시간 calendar에 set해주기
 
-            calendar.set(year, month, date, hour, min, 0);
+            calendar.set(year, month-1, date, hour, min, 0);
 
             //알람 예약
             am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-
-            useralarmDatabase.child(id).removeValue();
         }
     }
 }
+
