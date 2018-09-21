@@ -128,9 +128,13 @@ public class ChatRoomListFragment extends Fragment{
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 chatroomname = dataSnapshot.getRef().getKey();
+                Log.d("aaaaaaaaaa", "chatroom : " +chatroomname);
                 receiveruid = dataSnapshot.child("receiver").getValue().toString();
+                Log.d("aaaaaaaaaa", "receuid : " +receiveruid);
                 receivernick = dataSnapshot.child("nickname").getValue().toString();
+                Log.d("aaaaaaaaaa", "nickname : " +receivernick);
                 lastcontents = dataSnapshot.child("lastcontents").getValue().toString();
+                Log.d("aaaaaaaaaa", "chatroom : " +chatroomname);
                 receiverphoto = dataSnapshot.child("photo").getValue().toString();
                 lastTime = dataSnapshot.child("time").getValue().toString();
                 ChatRoom chatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, lastcontents, lastTime);
