@@ -31,6 +31,7 @@ public class Message {
 
 
 
+
     public String getType() {
         return type;
     }
@@ -83,9 +84,7 @@ public class Message {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+    public void setDate(String date) {this.date = date;}
 
     public String getPhoto() {
         return photo;

@@ -222,8 +222,9 @@ public class ConnectActivity extends AppCompatActivity {
 
             }else{//requestCode == 2
                 String result2 = data.getStringExtra("result");
-                Message tmp = new Message("1", uid, receiveruid);
+                Message tmp = new Message("1", uid, receiveruid, result2);   //test
                 tmp.setContents("Planing Conference");
+                tmp.setPhoto(receiverphoto);
                 tmp.setDate(result2);
                 tmp.setChk("0");
 

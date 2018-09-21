@@ -116,21 +116,21 @@ public class ChatAdapter extends ArrayAdapter {
                 // 0 for Nothing
                 // 1 for Another person Accepted
                 // 2 for Another Person denied
-                if (msg.getChk().equals("0") && msg.getSender().equals(curuid))
+                if ((msg.getChk()=="0")&& (msg.getSender()==curuid))
                 {
                     acceptBtn.setVisibility(View.GONE);
                     denyBtn.setVisibility(View.GONE);
                     resultBtn.setText("Waiting .. ");
                     resultBtn.setVisibility(View.VISIBLE);
                 }
-                else if (msg.getChk().equals("1"))
+                else if (msg.getChk()=="1")
                 {
                     denyBtn.setVisibility(View.GONE);
                     acceptBtn.setVisibility(View.GONE);
                     resultBtn.setText("Accepted");
                     resultBtn.setVisibility(View.VISIBLE);
                 }
-                else if (msg.getChk().equals("2"))
+                else if (msg.getChk()=="2")
                 {
                     denyBtn.setVisibility(View.GONE);
                     acceptBtn.setVisibility(View.GONE);
@@ -146,8 +146,8 @@ public class ChatAdapter extends ArrayAdapter {
                         resultBtn.setText("Accepted");
                         resultBtn.setVisibility(View.VISIBLE);
                         msg.setChk("1");
-                        userDatabase.child(curuid).child("Alarm").push().setValue(msg.getDate());
-                        userDatabase.child(msg.getReceiver()).child("Alarm").push().setValue(msg.getDate());
+                        userDatabase.child(curuid).child("Alarm").push().setValue(msg.getSendDate());
+                        userDatabase.child(msg.getReceiver()).child("Alarm").push().setValue(msg.getSendDate());
                     }
                 });
                 denyBtn.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +161,7 @@ public class ChatAdapter extends ArrayAdapter {
                     }
                 });
                 TextView date = convertView.findViewById(R.id.dataTime);
-                date.setText(msg.getDate());
+                date.setText(msg.getSendDate());
                 break;
         }
 
