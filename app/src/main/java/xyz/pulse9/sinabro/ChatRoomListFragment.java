@@ -201,6 +201,17 @@ public class ChatRoomListFragment extends Fragment{
             }
         };
         listView.setMenuCreator(creator);
+        listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                chatRoomAdapter.delete(chatRoomAdapter.getItem(position));
+                userDatabase= FirebaseDatabase.getInstance().getReference("users").child(curuser.getUid()).child("rooms");
+                userDatabase.child(chatRoomAdapter.getItem(position).getRoomName()).removeValue();
+
+
+                return false;
+            }
+        });
 
 
 

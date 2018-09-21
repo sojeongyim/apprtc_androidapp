@@ -51,6 +51,11 @@
         android:divider="@null"
         android:dividerHeight="0dp" />
 
+
+    <View android:background="#A9A9A9"
+        android:layout_above="@id/ll"
+        android:layout_width = "match_parent"
+        android:layout_height="1dp"/>
     <LinearLayout
         android:id="@+id/ll"
 
@@ -61,36 +66,38 @@
         android:orientation="horizontal"
         android:layout_alignParentLeft="true">
 
-        <ImageButton
-            android:id="@+id/vidBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:background="#00ffffff"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/message_option" />
-
         <EditText
             android:id="@+id/sendMsg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:background="@drawable/type_here_res"
             android:ems="10"
+            android:hint="Type Something ..."
+            android:background="@null"
             android:inputType="text"
-
             android:paddingLeft="17dp"
             android:paddingTop="5dp"
             android:singleLine="false" />
+
+
+        <ImageButton
+            android:id="@+id/vidBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:background="#00ffffff"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/message_option" />
+
 
         <ImageButton
             android:id="@+id/sendButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_weight="4"
             android:background="#00ffffff"
             android:onClick="sendMessage"
             android:paddingBottom="5dp"
