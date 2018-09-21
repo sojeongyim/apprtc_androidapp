@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by ssoww on 2018-09-18.
@@ -29,8 +30,8 @@ public class mTimePicker extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_timepicker);
-        Intent intent =getIntent();
-        result = intent.getStringExtra("result");
+        Intent intent1 =getIntent();
+        result = intent1.getStringExtra("result");
 
         Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 
@@ -58,12 +59,13 @@ public class mTimePicker extends Activity {
                     timeresult = String.format("Time : %d : %d", mTime.getCurrentHour(),mTime.getCurrentMinute());
                 }
 
-                result = result+timeresult;
+                result = result+"  "+timeresult;
 //                Toast.makeText(mDatePicker.this, result, Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent();
-                intent.putExtra("result", result);
-                setResult(RESULT_OK, intent);
+                Intent intent2 = new Intent();
+                Toast.makeText(mTimePicker.this,result,Toast.LENGTH_SHORT).show();
+                intent2.putExtra("result", result);
+                setResult(RESULT_OK, intent2);
 
                 //액티비티(팝업) 닫기
                 finish();

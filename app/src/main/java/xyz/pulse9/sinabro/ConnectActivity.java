@@ -217,12 +217,19 @@ public class ConnectActivity extends AppCompatActivity {
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
+        if (resultCode==RESULT_OK) {
+            if (requestCode == 1) {
                 String result = data.getStringExtra("result");
-                Message tmp = new Message("1", uid, receiveruid);
+                Intent intent = new Intent(ConnectActivity.this, mTimePicker.class);
+                intent.putExtra("result",result);
+                startActivityForResult(intent, 2);
+
+            }else{//requestCode == 2
+                String result2 = data.getStringExtra("result");
+                Message tmp = new Message("1", uid, receiveruid, result2);   //test
                 tmp.setContents("Planing Conference");
-                tmp.setDate(result);
+                tmp.setPhoto(receiverphoto);
+                tmp.setDate(result2);
                 tmp.setChk("0");
 
                 DatabaseReference ref;
@@ -234,6 +241,7 @@ public class ConnectActivity extends AppCompatActivity {
                 }
                 ref = database.getReference("message").child(chatroomname);
                 ref.push().setValue(tmp);
+
             }
         }
 

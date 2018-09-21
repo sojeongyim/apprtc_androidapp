@@ -17,16 +17,13 @@ import android.app.Activity;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 
 public class mDatePicker extends Activity {
 
     android.widget.DatePicker mDate;
     android.widget.TimePicker mTime;
-
-    TextView mTxtDate;
-    TextView mTxtTime;
-
 
 
 
@@ -52,7 +49,6 @@ public class mDatePicker extends Activity {
         mDate = (android.widget.DatePicker)findViewById(R.id.datepicker);
 
         mTime = (TimePicker)findViewById(R.id.timepicker);
-
 
 
 //        //처음 DatePicker를 오늘 날짜로 초기화한다.
@@ -110,10 +106,13 @@ public class mDatePicker extends Activity {
 
 //                Toast.makeText(mDatePicker.this, result, Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(mDatePicker.this,mTimePicker.class);
+                Intent intent = new Intent();
+                Toast.makeText(mDatePicker.this, result,Toast.LENGTH_SHORT).show();
                 intent.putExtra("result", result);
-                startActivity(intent);
-//                setResult(RESULT_OK, intent);
+                setResult(RESULT_OK,intent);
+//                startActivityForResult(intent, 1);
+//                startActivity(intent);
+
 
                 //액티비티(팝업) 닫기
                 finish();
@@ -123,6 +122,8 @@ public class mDatePicker extends Activity {
         });
 
     }
+
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
