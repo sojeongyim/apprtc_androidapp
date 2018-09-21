@@ -52,8 +52,7 @@ public class TabFragment extends Fragment {
         ImageButton heart_butt_check;
 
 
-        public void ischatExist(final String Userid)
-        {
+        public void ischatExist(final String Userid) {
             chatRoomname = "none";
             DatabaseReference myDB = FirebaseDatabase.getInstance().getReference("users").child(uid).child("rooms");
             myDB.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -105,32 +104,15 @@ public class TabFragment extends Fragment {
                 }
             });
 
-            heart_butt.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    if(followerDB.child(uid).equals("1")==false) {
-                        followerDB.child(uid).setValue("1");
-
-                    }else{
-                        followerDB.child(uid).removeValue();
-                        followertext.setTextColor(getResources().getColor(R.color.sianbro_black_color));
-                    }
-
-                }
-            });
-
             followerDB.addValueEventListener(new ValueEventListener() {
-
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Log.e(dataSnapshot.getKey(),dataSnapshot.getChildrenCount() + "");
                     followertext.setText(Long.toString(dataSnapshot.getChildrenCount()));
-                    if(dataSnapshot.getChildren().equals(uid)){
-                        Toast.makeText(getActivity(),"true: "+dataSnapshot.getChildren()+"",Toast.LENGTH_SHORT).show();
+                    if(dataSnapshot.getChildrenCount() != 0){
                         heart_butt_check.setVisibility(View.VISIBLE);
+                        heart_butt.setVisibility(View.INVISIBLE);
                     }else{
-                        Toast.makeText(getActivity(),dataSnapshot.getChildren()+"",Toast.LENGTH_SHORT).show();
+                        heart_butt_check.setVisibility(View.INVISIBLE);
                         heart_butt.setVisibility(View.VISIBLE);
                     }
                 }
@@ -140,6 +122,23 @@ public class TabFragment extends Fragment {
 
                 }
             });
+
+            heart_butt.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    followerDB.child(uid).setValue("1");
+                }
+            });
+            heart_butt_check.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    followerDB.child(uid).removeValue();
+                }
+            });
+
+
         }
 
 
@@ -161,6 +160,8 @@ public class TabFragment extends Fragment {
         TextView followertext;
         String targetUID;
         private String chatRoomname;
+        ImageButton heart_butt;
+        ImageButton heart_butt_check;
 
         public void ischatExist(final String Userid) {
             chatRoomname = "none";
@@ -199,7 +200,8 @@ public class TabFragment extends Fragment {
 
                 followertext =(TextView)getView().findViewById(R.id.follower_num);
                 ImageView imageView_user2 = (ImageView) getView().findViewById(R.id.imageView_user2);
-                ImageButton heart_butt = (ImageButton) getView().findViewById(R.id.user2_heart);
+                heart_butt = (ImageButton) getView().findViewById(R.id.user2_heart);
+                heart_butt_check = (ImageButton) getView().findViewById(R.id.heart_check);
 
                 imageView_user2.setOnClickListener(new View.OnClickListener() {
 
@@ -213,27 +215,17 @@ public class TabFragment extends Fragment {
                 }
                 });
 
-            heart_butt.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    if(followerDB.child(uid).equals("1")==false) {
-                        followerDB.child(uid).setValue("1");
-                        followertext.setTextColor(getResources().getColor(R.color.dot_dark_screen1));
-                    }else{
-                        followerDB.child(uid).removeValue();
-                        followertext.setTextColor(getResources().getColor(R.color.sianbro_black_color));
-                    }
-
-                }
-            });
-
             followerDB.addValueEventListener(new ValueEventListener() {
-
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Log.e(dataSnapshot.getKey(),dataSnapshot.getChildrenCount() + "");
                     followertext.setText(Long.toString(dataSnapshot.getChildrenCount()));
+                    if(dataSnapshot.getChildrenCount() != 0){
+                        heart_butt_check.setVisibility(View.VISIBLE);
+                        heart_butt.setVisibility(View.INVISIBLE);
+                    }else{
+                        heart_butt_check.setVisibility(View.INVISIBLE);
+                        heart_butt.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 @Override
@@ -242,6 +234,20 @@ public class TabFragment extends Fragment {
                 }
             });
 
+            heart_butt.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    followerDB.child(uid).setValue("1");
+                }
+            });
+            heart_butt_check.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    followerDB.child(uid).removeValue();
+                }
+            });
 
         }
 
@@ -261,6 +267,8 @@ public class TabFragment extends Fragment {
         TextView followertext;
         String targetUID;
         private String chatRoomname;
+        ImageButton heart_butt;
+        ImageButton heart_butt_check;
 
         public void ischatExist(final String Userid) {
             chatRoomname = "none";
@@ -299,7 +307,8 @@ public class TabFragment extends Fragment {
 
             followertext =(TextView)getView().findViewById(R.id.follower_num);
             ImageView imageView_user3 = (ImageView) getView().findViewById(R.id.imageView_user3);
-            ImageButton heart_butt = (ImageButton) getView().findViewById(R.id.user3_heart);
+            heart_butt = (ImageButton) getView().findViewById(R.id.user3_heart);
+            heart_butt_check = (ImageButton) getView().findViewById(R.id.heart_check);
 
             imageView_user3.setOnClickListener(new View.OnClickListener() {
 
@@ -313,27 +322,17 @@ public class TabFragment extends Fragment {
                 }
             });
 
-            heart_butt.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    if(followerDB.child(uid).equals("1")==false) {
-                        followerDB.child(uid).setValue("1");
-                        followertext.setTextColor(getResources().getColor(R.color.dot_dark_screen1));
-                    }else{
-                        followerDB.child(uid).removeValue();
-                        followertext.setTextColor(getResources().getColor(R.color.sianbro_black_color));
-                    }
-
-                }
-            });
-
             followerDB.addValueEventListener(new ValueEventListener() {
-
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Log.e(dataSnapshot.getKey(),dataSnapshot.getChildrenCount() + "");
                     followertext.setText(Long.toString(dataSnapshot.getChildrenCount()));
+                    if(dataSnapshot.getChildrenCount() != 0){
+                        heart_butt_check.setVisibility(View.VISIBLE);
+                        heart_butt.setVisibility(View.INVISIBLE);
+                    }else{
+                        heart_butt_check.setVisibility(View.INVISIBLE);
+                        heart_butt.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 @Override
@@ -342,6 +341,20 @@ public class TabFragment extends Fragment {
                 }
             });
 
+            heart_butt.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    followerDB.child(uid).setValue("1");
+                }
+            });
+            heart_butt_check.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    followerDB.child(uid).removeValue();
+                }
+            });
 
         }
 
@@ -361,6 +374,8 @@ public class TabFragment extends Fragment {
         TextView followertext;
         String targetUID;
         private String chatRoomname;
+        ImageButton heart_butt;
+        ImageButton heart_butt_check;
 
         public void ischatExist(final String Userid) {
             chatRoomname = "none";
@@ -399,7 +414,8 @@ public class TabFragment extends Fragment {
 
             followertext =(TextView)getView().findViewById(R.id.follower_num);
             ImageView imageView_user4 = (ImageView) getView().findViewById(R.id.imageView_user4);
-            ImageButton heart_butt = (ImageButton) getView().findViewById(R.id.user4_heart);
+            heart_butt = (ImageButton) getView().findViewById(R.id.user4_heart);
+            heart_butt_check = (ImageButton) getView().findViewById(R.id.heart_check);
 
             imageView_user4.setOnClickListener(new View.OnClickListener() {
 
@@ -413,32 +429,37 @@ public class TabFragment extends Fragment {
                 }
             });
 
-            heart_butt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(followerDB.child(uid).getKey().equals(uid)) {
-                        followerDB.child(uid).removeValue();
-                        followertext.setTextColor(getResources().getColor(R.color.sianbro_black_color));
-                        Toast.makeText(getActivity(),followerDB.child(uid).getKey()+"",Toast.LENGTH_SHORT).show();
-                    }else{
-                        followerDB.child(uid).setValue("1");
-                        followertext.setTextColor(getResources().getColor(R.color.dot_dark_screen1));
-                    }
-
-                }
-            });
-
             followerDB.addValueEventListener(new ValueEventListener() {
-
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Log.e(dataSnapshot.getKey(),dataSnapshot.getChildrenCount() + "");
                     followertext.setText(Long.toString(dataSnapshot.getChildrenCount()));
+                    if(dataSnapshot.getChildrenCount() != 0){
+                        heart_butt_check.setVisibility(View.VISIBLE);
+                        heart_butt.setVisibility(View.INVISIBLE);
+                    }else{
+                        heart_butt_check.setVisibility(View.INVISIBLE);
+                        heart_butt.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                }
+            });
+
+            heart_butt.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    followerDB.child(uid).setValue("1");
+                }
+            });
+            heart_butt_check.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    followerDB.child(uid).removeValue();
                 }
             });
 
