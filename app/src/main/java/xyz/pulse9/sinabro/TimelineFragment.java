@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -106,12 +107,10 @@ public class TimelineFragment extends Fragment{
         setting_butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AppSettingActivity.class);
-                startActivity(intent);
-
-
-
-
+//                Intent intent = new Intent(getActivity(), AppSettingActivity.class);
+//                startActivity(intent);
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
+                toast.show();
 
             }
         });
@@ -119,11 +118,16 @@ public class TimelineFragment extends Fragment{
             @Override
             public void onClick(View view) {
 
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ChatRoomListFragment llf = new ChatRoomListFragment();
-                ft.replace(R.id.flContainer, llf);
-                ft.commit();
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
+                toast.show();
+
+//                FragmentManager fm = getFragmentManager();
+//                FragmentTransaction ft = fm.beginTransaction();
+//                ChatRoomListFragment llf = new ChatRoomListFragment();
+//                ft.replace(R.id.flContainer, llf);
+//                ft.commit();
+
+
 //                Calendar now = Calendar.getInstance();
 //                DatePickerDialog dpd = DatePickerDialog.newInstance(
 //                        (DatePickerDialog.OnDateSetListener) getActivity(),

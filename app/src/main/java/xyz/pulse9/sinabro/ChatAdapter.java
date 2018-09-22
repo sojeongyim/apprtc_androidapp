@@ -65,7 +65,6 @@ public class ChatAdapter extends ArrayAdapter {
         final Message msg = msgs.get(position);
         String viewType = getType(position);
 
-
         boolean message_left = true;
         int align;
 
@@ -83,7 +82,10 @@ public class ChatAdapter extends ArrayAdapter {
 
         switch (viewType) {
             case ITEM_VIEW_TYPE_MSG:
+
                 convertView = inflater.inflate(R.layout.chat_message,parent, false);
+                TextView rightText = convertView.findViewById(R.id.rightTime);
+                TextView leftText = convertView.findViewById(R.id.leftTime);
                 chatMessageContainer = convertView.findViewById(R.id.textLinear);
                 Log.d("Message", "Message_Left = "  + message_left);
                 Log.d("Message", "Align = "  + align);
@@ -91,18 +93,26 @@ public class ChatAdapter extends ArrayAdapter {
 
 
                 ImageView rightchatPhoto = convertView.findViewById(R.id.rightmessagepic);
+                rightchatPhoto.setVisibility(View.GONE);
                 ImageView leftchatPhoto = convertView.findViewById(R.id.leftmessagepic);
+                leftchatPhoto.setVisibility(View.GONE);
 
                 if(!message_left) {
                     Picasso.get().load(msg.getPhoto())
                             .transform(new CropCircleTransformation())
                             .into(rightchatPhoto);
+                    rightchatPhoto.setVisibility(View.VISIBLE);
+
+                    rightText.setText(msg.getSendDate());
                 }
                 else
                 {
                     Picasso.get().load(curuser.getPhotoUrl())
                             .transform(new CropCircleTransformation())
                             .into(leftchatPhoto);
+                    leftchatPhoto.setVisibility(View.VISIBLE);
+
+                    leftText.setText(msg.getSendDate());
                 }
                 TextView titleTextView = (TextView) convertView.findViewById(R.id.contentsTxt);
                 titleTextView.setText(msg.getContents());

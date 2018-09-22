@@ -59,8 +59,7 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
                     loadFragment(fragment);
                     return true;
                 case R.id.navigation_saved:
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "Coming Soon...", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
                     toast.show();
                 case R.id.navigation_profile:
                     Toast toast2 = Toast.makeText(getApplicationContext(),

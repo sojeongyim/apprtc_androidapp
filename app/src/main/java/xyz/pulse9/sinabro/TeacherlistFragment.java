@@ -53,8 +53,6 @@ public class TeacherlistFragment extends Fragment {
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
-
-
         tabLayout = (TabLayout) getView().findViewById(R.id.tab_layout);
         left_arrow =(ImageButton)getView().findViewById(R.id.left_arrow);
         right_arrow =(ImageButton)getView().findViewById(R.id.right_arrow);

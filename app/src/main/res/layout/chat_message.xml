@@ -10,10 +10,18 @@
     android:orientation="horizontal">
 
 
+    <TextView
+        android:id="@+id/rightTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:textAlignment="textEnd" />
+
     <ImageView
         android:id="@+id/leftmessagepic"
         android:layout_width="30dp"
-        android:layout_height="30dp" />
+        android:layout_height="30dp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/contentsTxt"
@@ -25,18 +33,26 @@
         android:layout_marginRight="7dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
-        android:text="heythere"
+        android:ellipsize="none"
 
 
         android:maxLines="100"
-        android:ellipsize="none"
         android:scrollHorizontally="false"
         android:singleLine="false"
+        android:text="heythere"
         android:textSize="16sp" />
 
     <ImageView
         android:id="@+id/rightmessagepic"
         android:layout_width="30dp"
-        android:layout_height="30dp" />
+        android:layout_height="30dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/leftTime"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
 
 </LinearLayout>
