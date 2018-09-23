@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,6 +68,7 @@ public class TimelineFragment extends Fragment{
         super.onActivityCreated(savedInstanceState);
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.timeline_recyclerview);
 
+
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
@@ -78,27 +82,19 @@ public class TimelineFragment extends Fragment{
         mAdapter = new MyAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
 
-        myDataset.add(new MyData("I’m Korean-American living in Seoul.  But a few years ago a serendipitous event inspired me to get back into Korea where my roots are. As a Korean-American, I learned Korean as second language so that I understand how difficult it is to get fluent in Korean.  Such a hard-earning skill.\n" +
-                "I have better understanding of how the language can be taught as compared to the native speakers. (No worries, I’m super fluent in Korean!)\n" +
-                "If you believe that I can be of help to you or if you would like to learn more about me.\n" +
-                "Just leave me a message.",R.drawable.timeline01));
-        myDataset.add(new MyData("I’m a huge people-person and spent several years in overseas like Singapore and Hong Kong. There is nothing greater than finding opportunities for smart people to do awesome things, and teaching in Sina-bro is a fantastic process that I feel lucky to participate in.\n" +
-                "When I’m not working, I am usually with my friends hanging out, who love to run and exercise even more than I do. I’m much a kid at heart, love to cook, watch football, play guitar, and travel whenever I can.\n" +
-                "I love meeting new people and get inspired by them, so please feel free to say hello and share a story with me.I’m much thrilled to get a call from who I can share my story.\n" +
-                "Let’s get to know each other!",R.drawable.timeline02));
-        myDataset.add(new MyData("It's no surprise that I am tutoring in Sina-bro which rewards me for helping people realize their potential and setting them on their way to achieving great things.\n" +
-                "After 10+ years in teaching industry, I get as excited today as I did back then when seeing both myself and students prosper.\n" +
-                "Truly partnering with my students to help them think differently and coaching the talent I work with to attain the unattainable is what motivates me to continuously improve in this ever evolving industry.\n"+
-                "I'm interested in hearing your stories.",R.drawable.timeline03)); //중간자름
-        myDataset.add(new MyData("I love traveling the world and eating my way through the places I visit. In my spare time, I’m searching for travel deals or hang out with the new friends from Sina-bro.\n" +
-                "I’m fluent in English, and am always looking to brush up my language skills over coffee or drinks. If you challenge me to Say Wars trivia, I will win. I’m also obsessed with Music. Connect with me for networking and more.\n",R.drawable.timeline04));
-        myDataset.add(new MyData("One of my favorite things is connecting with people who have a passion for working in a self-managed organization and who genuinely love wowing their internal and external customers. For me, it’s all about discovering people’s dreams and matching them with careers that will allow them to grow and do their very best work, Getting to be yourself both inside and outside of work is where it’s at!\n" +
-                "Outside of the office, I’m committed to education and tutor at Sina-bro.\n" +
-                "I can be contacted directly at 00@gmail.com, text me!\n",R.drawable.timeline05));
-//        Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/HelveticaNeueLTPro-Lt.otf"); //asset > fonts 폴더 내 폰트파일 적용
-//        myDataset.(typeFace);
-
-
+        myDataset.add(new MyData(R.drawable.timeline01,"I’m Korean-American living in Seoul.\nBut a few years ago a serendipitous event inspired me to get back into Korea where my roots are. \nAs a Korean-American, I learned Korean as second language so that I understand how difficult it is to get fluent in Korean." +
+                "Such a hard-earning skill.\nI have better understanding of how the language can be taught as compared to the native speakers.","#JAI YOO  #cool  #dog"));
+        myDataset.add(new MyData(R.drawable.timeline02,"I’m a huge people-person and spent several years in overseas like Singapore and Hong Kong. There is nothing greater than finding opportunities for smart people to do awesome things, and teaching in Sina-bro is a fantastic process that I feel lucky to participate in.\n" +
+                "I’m much a kid at heart, love to cook, watch football, play guitar, and travel whenever I can."
+               ,"# JAI YOO  # cool  # dog"));
+        myDataset.add(new MyData(R.drawable.timeline03,"It's no surprise that I am tutoring in Sina-bro which rewards me for helping people realize their potential and setting them on their way to achieving great things.\n" +
+                "After 10+ years in teaching industry, I get as excited today as I did back then when seeing both myself and students prosper. ..."
+                ,"#JAI YOO  #cool  #dog"));
+        myDataset.add(new MyData(R.drawable.timeline04,"I love traveling the world and eating my way through the places I visit. In my spare time, I’m searching for travel deals or hang out with the new friends from Sina-bro.\n" +
+                "I’m fluent in English, and am always looking to brush up my language skills over coffee or drinks. If you challenge me to Say Wars trivia, I will win. I’m also obsessed with Music. Connect with me for networking and more.\n"
+                ,"#JAI YOO  #cool  #dog"));
+        myDataset.add(new MyData(R.drawable.timeline05,"One of my favorite things is connecting with people who have a passion for working in a self-managed organization and who genuinely love wowing their internal and external customers. For me, it’s all about discovering people’s dreams and matching them with careers that will allow them to grow and do their very best work, Getting to be yourself both inside and outside of work is where it’s at! ..."
+                ,"#JAI YOO  #cool  #dog"));
 
         ImageButton setting_butt = (ImageButton) getView().findViewById(R.id.setting);
 
@@ -140,7 +136,14 @@ public class TimelineFragment extends Fragment{
             }
         });
 
-
+//        fold.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast toast = Toast.makeText(view.getContext(),"Coming Soon...", Toast.LENGTH_SHORT);
+//                toast.show();
+//
+//            }
+//        });
 
     }
 //    @Override
@@ -237,11 +240,16 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // each data item is just a string in this case
         public ImageView mImageView;
         public TextView mTextView;
+        public TextView hashtag;
+        public ImageButton fold;
 
         public ViewHolder(View view) {
             super(view);
             mImageView = (ImageView)view.findViewById(R.id.image);
             mTextView = (TextView)view.findViewById(R.id.textview);
+            hashtag = (TextView)view.findViewById(R.id.hashtag);
+            fold = (ImageButton)view.findViewById(R.id.timeline_tab);
+
         }
     }
 
@@ -269,6 +277,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // - replace the contents of the view with that element
         holder.mTextView.setText(mDataset.get(position).text);
         holder.mImageView.setImageResource(mDataset.get(position).img);
+        holder.hashtag.setText(mDataset.get(position).text_hashtag);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -281,9 +290,11 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 class MyData{
     public String text;
     public int img;
-    public MyData(String text, int img){
-        this.text = text;
+    public String text_hashtag;
+    public MyData(int img, String text,String hashtag){
         this.img = img;
+        this.text = text;
+        this.text_hashtag = hashtag;
     }
 }
 

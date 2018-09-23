@@ -96,10 +96,21 @@ public class TeacherlistFragment extends Fragment {
         mViewPager.setAdapter(adapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
+                if(mViewPager.getCurrentItem()==0){
+                    left_arrow.setVisibility(View.INVISIBLE);
+                    right_arrow.setVisibility(View.VISIBLE);
+                }else if(mViewPager.getCurrentItem()==adapter.getCount()-1){
+                    left_arrow.setVisibility(View.VISIBLE);
+                    right_arrow.setVisibility(View.INVISIBLE);
+                }else{
+                    left_arrow.setVisibility(View.VISIBLE);
+                    right_arrow.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -112,17 +123,32 @@ public class TeacherlistFragment extends Fragment {
 
             }
         });
-//        left_arrow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//            }
-//        });
+        left_arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currentPage = mViewPager.getCurrentItem();
+
+                mViewPager.setCurrentItem(currentPage - 1, true);
+
+            }
+        });
+        right_arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currentPage = mViewPager.getCurrentItem();
+
+                mViewPager.setCurrentItem(currentPage + 1, true);
+
+            }
+        });
+
 
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override

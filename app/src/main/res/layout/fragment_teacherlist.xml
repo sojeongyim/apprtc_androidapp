@@ -52,7 +52,9 @@
         android:background="#00ffffff"
         android:elevation="6dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/left_arrow" />
+        android:src="@drawable/left_arrow"
+        android:visibility="invisible"/>
+    <!--첫화면이 맨 왼쪽이 아닐경우 visibility제거-->
 
     <ImageButton
         android:id="@+id/right_arrow"

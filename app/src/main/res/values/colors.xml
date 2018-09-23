@@ -29,6 +29,7 @@
     <color name="sianbro_main_color">#d6f456</color>
     <color name="sianbro_black_color">#0f2013</color>
     <color name="sianbro_gray_color">#c7c7c7</color>
+    <color name="sianbro_calendar_color">#009688</color>
 
     <array name="array_dot_active">
         <item>@color/dot_light_screen1</item>

@@ -15,6 +15,7 @@ import android.view.WindowManager;
  */
 
 import android.app.Activity;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -25,8 +26,6 @@ import android.widget.Toast;
 public class mDatePicker extends Activity {
 
     android.widget.DatePicker mDate;
-    android.widget.TimePicker mTime;
-
 
 
     @Override
@@ -49,9 +48,6 @@ public class mDatePicker extends Activity {
 
 
         mDate = (android.widget.DatePicker)findViewById(R.id.datepicker);
-
-        mTime = (TimePicker)findViewById(R.id.timepicker);
-
 
 //        //처음 DatePicker를 오늘 날짜로 초기화한다.
 //
@@ -90,8 +86,8 @@ public class mDatePicker extends Activity {
 
 
         //선택기로부터 날짜 조사
-        ImageButton select_butt =(ImageButton)findViewById(R.id.select);
-        select_butt.bringToFront();
+        Button select_butt =(Button)findViewById(R.id.select);
+        Button cancel_butt =(Button)findViewById(R.id.cancel);
         select_butt.setOnClickListener(new View.OnClickListener() {
 
 
@@ -122,6 +118,13 @@ public class mDatePicker extends Activity {
 
             }
 
+        });
+
+        cancel_butt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
         });
 
     }

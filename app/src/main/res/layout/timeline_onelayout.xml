@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="10dp"
-    app:cardCornerRadius="6dp"
+    app:cardCornerRadius="8dp"
     card:cardCornerRadius="6dp">
 
 
@@ -19,19 +19,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/imageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="#00ffffff"
                 android:paddingBottom="2dp"
                 android:paddingTop="2dp"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/login_logo" />
+                app:srcCompat="@drawable/user10" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -40,23 +42,49 @@
                 android:layout_weight="6"
                 android:fontFamily="@font/aarial"
                 android:gravity="center_vertical"
-                android:text="  S I N A B R O" />
+                android:text="  S I N A B R O"
+                android:textColor="@color/sianbro_black_color" />
+
+            <ImageButton
+                android:id="@+id/timeline_tab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="18dp"
+                android:layout_weight="1"
+                android:background="#00ffffff"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/fold" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
+            android:layout_weight="8"
             android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/textview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="7"
-            android:fontFamily="@font/helvetica"
+            android:layout_weight="6"
+            android:fontFamily="@font/aarial"
             android:gravity="center|left"
-            android:padding="10dp" />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp" />
+
+        <TextView
+            android:id="@+id/hashtag"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/aarial"
+            android:gravity="center|left"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textStyle="bold" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

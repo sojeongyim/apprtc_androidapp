@@ -220,6 +220,7 @@ public class ConnectActivity extends AppCompatActivity {
         keyprefAudioBitrateValue = getString(R.string.pref_startaudiobitratevalue_key);
         keyprefRoomServerUrl = getString(R.string.pref_room_server_url_key);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode==RESULT_OK) {
@@ -251,6 +252,8 @@ public class ConnectActivity extends AppCompatActivity {
         }
 
     }
+
+
     @Override
     public void onPause() {
         super.onPause();

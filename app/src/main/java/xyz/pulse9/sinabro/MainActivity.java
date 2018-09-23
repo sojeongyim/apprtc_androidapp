@@ -103,21 +103,21 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
 //                Log.d(TAG, "Alarm datetime is " + DateTime);
 
                 try {
-                    DateTime = DateTime.replaceAll(" ", "");
-                    String[] parseDateTime = DateTime.split("\\.");
-                    String[] parseTime = parseDateTime[2].split(":");
-                    int year = Integer.parseInt(parseDateTime[0].substring(5));
-                    int month = Integer.parseInt(parseDateTime[1]);
-                    int date = Integer.parseInt(parseDateTime[2].substring(0, 2));
-                    int hour = Integer.parseInt(parseTime[1]);
-                    int min = Integer.parseInt(parseTime[2]);
+                DateTime = DateTime.replaceAll(" ", "");
+                String[] parseDateTime = DateTime.split("\\.");
+                String[] parseTime = parseDateTime[2].split(":");
+                int year = Integer.parseInt(parseDateTime[0].substring(5));
+                int month = Integer.parseInt(parseDateTime[1]);
+                int date = Integer.parseInt(parseDateTime[2].substring(0, 2));
+                int hour = Integer.parseInt(parseTime[1]);
+                int min = Integer.parseInt(parseTime[2]);
 //                Log.d(TAG, "year: " + year+"//month: "+month+"//date : "+date+"//hour: "+hour+"//min: "+min);
 
-                    new AlarmHATT(getApplicationContext()).Alarm(year,month,date,hour,min);
+                new AlarmHATT(getApplicationContext()).Alarm(year,month,date,hour,min);
 
-                } catch (Exception e) {}
+            } catch (Exception e) {}
                 useralarmDatabase.child(AlarmId).removeValue();
-            }
+        }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

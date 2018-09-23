@@ -108,13 +108,14 @@ public class TabFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     followertext.setText(Long.toString(dataSnapshot.getChildrenCount()));
-                    if(dataSnapshot.getChildrenCount() != 0){
+                    if(dataSnapshot.child(uid).getValue()!=null){
                         heart_butt_check.setVisibility(View.VISIBLE);
                         heart_butt.setVisibility(View.INVISIBLE);
                     }else{
                         heart_butt_check.setVisibility(View.INVISIBLE);
                         heart_butt.setVisibility(View.VISIBLE);
                     }
+
                 }
 
                 @Override
@@ -219,7 +220,7 @@ public class TabFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     followertext.setText(Long.toString(dataSnapshot.getChildrenCount()));
-                    if(dataSnapshot.getChildrenCount() != 0){
+                    if(dataSnapshot.child(uid).getValue()!=null){
                         heart_butt_check.setVisibility(View.VISIBLE);
                         heart_butt.setVisibility(View.INVISIBLE);
                     }else{
@@ -326,7 +327,7 @@ public class TabFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     followertext.setText(Long.toString(dataSnapshot.getChildrenCount()));
-                    if(dataSnapshot.getChildrenCount() != 0){
+                    if(dataSnapshot.child(uid).getValue()!=null){
                         heart_butt_check.setVisibility(View.VISIBLE);
                         heart_butt.setVisibility(View.INVISIBLE);
                     }else{
@@ -433,7 +434,7 @@ public class TabFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     followertext.setText(Long.toString(dataSnapshot.getChildrenCount()));
-                    if(dataSnapshot.getChildrenCount() != 0){
+                    if(dataSnapshot.child(uid).getValue()!=null){
                         heart_butt_check.setVisibility(View.VISIBLE);
                         heart_butt.setVisibility(View.INVISIBLE);
                     }else{
@@ -640,6 +641,7 @@ public class TabFragment extends Fragment {
             return inflater.inflate(R.layout.tab_fragment_10, container, false);
         }
     }
+
     public static class TabFragment11 extends Fragment {
 
         private String teacher11_token ="luzZy37nmveRpTavmzgAmvOemKw1";////intern2계정, 수정필요

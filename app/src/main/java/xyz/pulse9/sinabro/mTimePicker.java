@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -38,7 +39,7 @@ public class mTimePicker extends Activity {
 
         int width = (int) (display.getWidth() * 0.9); //Display 사이즈의 70%
 
-        int height = (int) (display.getHeight() * 0.7);  //Display 사이즈의 90%
+        int height = (int) (display.getHeight() * 0.65);  //Display 사이즈의 90%
 
         getWindow().getAttributes().width = width;
 
@@ -46,8 +47,8 @@ public class mTimePicker extends Activity {
 
         mTime = (android.widget.TimePicker)findViewById(R.id.timepicker);
 
-        ImageButton select_butt =(ImageButton)findViewById(R.id.select);
-        select_butt.bringToFront();
+        Button select_butt =(Button)findViewById(R.id.select);
+        Button cancel_butt =(Button)findViewById(R.id.cancel);
         select_butt.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -77,6 +78,12 @@ public class mTimePicker extends Activity {
 
         });
 
+        cancel_butt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     @Override
