@@ -68,6 +68,9 @@ public class ChatRoomAdapter extends ArrayAdapter {
         String time = chatRoom.getTime();
         String times[] = time.split(" ");
         time = times[0] + " " + times[1] + " " + times[2] + " " + times[3];
+        times = time.split(":");
+        time = times[0] + ":" + times[1];
+
         msgText3.setText(time);
         return row;
     }

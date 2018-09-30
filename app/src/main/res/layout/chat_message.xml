@@ -19,6 +19,7 @@
 
     <ImageView
         android:id="@+id/leftmessagepic"
+        android:layout_gravity="center_vertical"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:visibility="gone" />
@@ -46,6 +47,7 @@
         android:id="@+id/rightmessagepic"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
         android:visibility="gone" />
 
     <TextView

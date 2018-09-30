@@ -86,6 +86,7 @@ public class ChatAdapter extends ArrayAdapter {
                 convertView = inflater.inflate(R.layout.chat_message,parent, false);
                 TextView rightText = convertView.findViewById(R.id.rightTime);
                 TextView leftText = convertView.findViewById(R.id.leftTime);
+
                 chatMessageContainer = convertView.findViewById(R.id.textLinear);
                 Log.d("Message", "Message_Left = "  + message_left);
                 Log.d("Message", "Align = "  + align);
@@ -97,13 +98,18 @@ public class ChatAdapter extends ArrayAdapter {
                 ImageView leftchatPhoto = convertView.findViewById(R.id.leftmessagepic);
                 leftchatPhoto.setVisibility(View.GONE);
 
+                String t[] = msg.getSendDate().split(" ");
+                String t2 = t[3];
+                t = t2.split(":");
+                t2 = t[0]+":"+t[1];
+
                 if(!message_left) {
                     Picasso.get().load(msg.getPhoto())
                             .transform(new CropCircleTransformation())
                             .into(rightchatPhoto);
                     rightchatPhoto.setVisibility(View.VISIBLE);
 
-                    rightText.setText(msg.getSendDate());
+                    rightText.setText(t2);
                 }
                 else
                 {
@@ -112,7 +118,7 @@ public class ChatAdapter extends ArrayAdapter {
                             .into(leftchatPhoto);
                     leftchatPhoto.setVisibility(View.VISIBLE);
 
-                    leftText.setText(msg.getSendDate());
+                    leftText.setText(t2);
                 }
                 TextView titleTextView = (TextView) convertView.findViewById(R.id.contentsTxt);
                 titleTextView.setText(msg.getContents());
