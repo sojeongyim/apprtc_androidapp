@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="54dp">
+    android:minHeight="@dimen/item_min_height"
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/userpic"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:contentDescription="TODO"
         android:src="@drawable/ic_launcher" />
 
@@ -18,6 +21,8 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:layout_marginTop="13dp"
+
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -30,15 +35,18 @@
                 android:layout_weight="1"
                 android:gravity="top"
                 android:text="Name of User"
-                android:textSize="16sp" />
+                android:textColor="@color/sianbro_black_color"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/thirdLine"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:layout_marginRight="5dp"
+                android:textColor="@color/sianbro_gray_color"
+
                 android:singleLine="true"
 
 
@@ -51,9 +59,11 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginTop="5dp"
             android:ellipsize="marquee"
-            android:gravity="bottom"
+            android:layout_marginTop="5dp"
+            android:gravity="top"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/sianbro_gray_color"
 
             android:singleLine="true"
             android:text="Last Conversation"
