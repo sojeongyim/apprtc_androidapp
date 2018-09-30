@@ -1,5 +1,6 @@
 package xyz.pulse9.sinabro;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -243,12 +244,21 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public TextView hashtag;
         public ImageButton fold;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view)
+        {
             super(view);
             mImageView = (ImageView)view.findViewById(R.id.image);
             mTextView = (TextView)view.findViewById(R.id.textview);
             hashtag = (TextView)view.findViewById(R.id.hashtag);
             fold = (ImageButton)view.findViewById(R.id.timeline_tab);
+
+            fold.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast toast = Toast.makeText(view.getContext().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
 
         }
     }
