@@ -26,12 +26,16 @@ public class mPagerAdapter extends FragmentStatePagerAdapter {
                 return tab1;
             case 1:
                 TabFragment.TabFragment2 tab2 = new TabFragment.TabFragment2();
+//                TabFragment.TabFragment1 tab2 = new TabFragment.TabFragment1();
                 return tab2;
+
             case 2:
                 TabFragment.TabFragment3 tab3 = new TabFragment.TabFragment3();
+//                TabFragment.TabFragment1 tab3 = new TabFragment.TabFragment1();
                 return tab3;
             case 3:
                 TabFragment.TabFragment4 tab4 = new TabFragment.TabFragment4();
+//                TabFragment.TabFragment1 tab4 = new TabFragment.TabFragment1();
                 return tab4;
             case 4:
                 TabFragment.TabFragment5 tab5 = new TabFragment.TabFragment5();

@@ -5,7 +5,9 @@ package xyz.pulse9.sinabro;
  */
 
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +54,8 @@ public class TabFragment extends Fragment {
         private String chatRoomname;
         ImageButton heart_butt;
         ImageButton heart_butt_check;
-
+        ImageButton plus_button;
+        LinearLayoutCompat profile_card;
 
         public void ischatExist(final String Userid) {
             chatRoomname = "none";
@@ -75,7 +80,6 @@ public class TabFragment extends Fragment {
             });
         }
 
-
         @Override
         public void onActivityCreated(@Nullable Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
@@ -89,11 +93,18 @@ public class TabFragment extends Fragment {
 
             followertext =(TextView)getView().findViewById(R.id.follower_num);
             ImageView imageView_user1 = (ImageView) getView().findViewById(R.id.imageView_user1);
-            ImageView imageView_profile = (ImageView)getView().findViewById(R.id.image_profile);
             heart_butt = (ImageButton) getView().findViewById(R.id.user1_heart);
             heart_butt_check = (ImageButton) getView().findViewById(R.id.heart_check);
-
+            plus_button = (ImageButton)getView().findViewById(R.id.plus_button);
+//            ImageView imageView_profile = (ImageView)getView().findViewById(R.id.image_profile);
 //            imageView_profile.setAdjustViewBounds(true);
+            profile_card =(LinearLayoutCompat)getView().findViewById(R.id.profile_card);
+            GradientDrawable drawable = (GradientDrawable)getContext().getResources().getDrawable(R.drawable.rounded);
+            profile_card.setBackground(drawable);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                profile_card.setClipToOutline(true);
+            }
+
             imageView_user1.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -140,7 +151,14 @@ public class TabFragment extends Fragment {
                     followerDB.child(uid).removeValue();
                 }
             });
+            plus_button.setOnClickListener(new View.OnClickListener() {
 
+                @Override
+                public void onClick(View view) {
+                    Toast toast = Toast.makeText(getActivity(),"Coming Soon...", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
 
         }
 
@@ -165,6 +183,8 @@ public class TabFragment extends Fragment {
         private String chatRoomname;
         ImageButton heart_butt;
         ImageButton heart_butt_check;
+        ImageButton plus_button;
+        LinearLayoutCompat profile_card;
 
         public void ischatExist(final String Userid) {
             chatRoomname = "none";
@@ -205,7 +225,16 @@ public class TabFragment extends Fragment {
                 ImageView imageView_user2 = (ImageView) getView().findViewById(R.id.imageView_user2);
                 heart_butt = (ImageButton) getView().findViewById(R.id.user2_heart);
                 heart_butt_check = (ImageButton) getView().findViewById(R.id.heart_check);
+                plus_button =(ImageButton)getView().findViewById(R.id.plus_button);
 
+//            ImageView imageView_profile = (ImageView)getView().findViewById(R.id.imageView2);
+//            imageView_profile.setAdjustViewBounds(true);
+            profile_card =(LinearLayoutCompat)getView().findViewById(R.id.profile_card);
+            GradientDrawable drawable = (GradientDrawable)getContext().getResources().getDrawable(R.drawable.rounded);
+            profile_card.setBackground(drawable);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                profile_card.setClipToOutline(true);
+            }
                 imageView_user2.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -251,6 +280,14 @@ public class TabFragment extends Fragment {
                     followerDB.child(uid).removeValue();
                 }
             });
+            plus_button.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    Toast toast = Toast.makeText(getActivity(),"Coming Soon...", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
 
         }
 
@@ -272,6 +309,8 @@ public class TabFragment extends Fragment {
         private String chatRoomname;
         ImageButton heart_butt;
         ImageButton heart_butt_check;
+        ImageButton plus_button;
+        LinearLayoutCompat profile_card;
 
         public void ischatExist(final String Userid) {
             chatRoomname = "none";
@@ -312,7 +351,17 @@ public class TabFragment extends Fragment {
             ImageView imageView_user3 = (ImageView) getView().findViewById(R.id.imageView_user3);
             heart_butt = (ImageButton) getView().findViewById(R.id.user3_heart);
             heart_butt_check = (ImageButton) getView().findViewById(R.id.heart_check);
+            plus_button = (ImageButton) getView().findViewById(R.id.plus_button);
 
+//            ImageView imageView_profile = (ImageView)getView().findViewById(R.id.imageView2);
+//            imageView_profile.setAdjustViewBounds(true);
+
+            profile_card =(LinearLayoutCompat)getView().findViewById(R.id.profile_card);
+            GradientDrawable drawable = (GradientDrawable)getContext().getResources().getDrawable(R.drawable.rounded);
+            profile_card.setBackground(drawable);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                profile_card.setClipToOutline(true);
+            }
             imageView_user3.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -359,6 +408,15 @@ public class TabFragment extends Fragment {
                 }
             });
 
+            plus_button.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    Toast toast = Toast.makeText(getActivity(),"Coming Soon...", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
         }
 
         @Override
@@ -379,6 +437,8 @@ public class TabFragment extends Fragment {
         private String chatRoomname;
         ImageButton heart_butt;
         ImageButton heart_butt_check;
+        ImageButton plus_button;
+        LinearLayoutCompat profile_card;
 
         public void ischatExist(final String Userid) {
             chatRoomname = "none";
@@ -419,7 +479,16 @@ public class TabFragment extends Fragment {
             ImageView imageView_user4 = (ImageView) getView().findViewById(R.id.imageView_user4);
             heart_butt = (ImageButton) getView().findViewById(R.id.user4_heart);
             heart_butt_check = (ImageButton) getView().findViewById(R.id.heart_check);
+            plus_button= (ImageButton) getView().findViewById(R.id.plus_button);
 
+//            ImageView imageView_profile = (ImageView)getView().findViewById(R.id.imageView2);
+//            imageView_profile.setAdjustViewBounds(true);
+            profile_card =(LinearLayoutCompat)getView().findViewById(R.id.profile_card);
+            GradientDrawable drawable = (GradientDrawable)getContext().getResources().getDrawable(R.drawable.rounded);
+            profile_card.setBackground(drawable);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                profile_card.setClipToOutline(true);
+            }
             imageView_user4.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -466,6 +535,14 @@ public class TabFragment extends Fragment {
                 }
             });
 
+            plus_button.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    Toast toast = Toast.makeText(getActivity(),"Coming Soon...", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
 
         }
 
