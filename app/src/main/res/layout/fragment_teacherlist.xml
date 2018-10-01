@@ -49,11 +49,13 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_gravity="left|center_vertical"
+        android:layout_marginTop="30dp"
         android:background="#00ffffff"
         android:elevation="6dp"
+        android:padding="5dp"
         android:scaleType="fitCenter"
         android:src="@drawable/left_arrow"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
     <!--첫화면이 맨 왼쪽이 아닐경우 visibility제거-->
 
     <ImageButton
@@ -61,8 +63,10 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_gravity="right|center_vertical"
+        android:layout_marginTop="30dp"
         android:background="#00ffffff"
         android:elevation="6dp"
+        android:padding="5dp"
         android:scaleType="fitCenter"
         android:src="@drawable/right_arrow" />
 
