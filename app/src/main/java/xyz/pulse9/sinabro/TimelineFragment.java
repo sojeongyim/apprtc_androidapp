@@ -1,17 +1,11 @@
 package xyz.pulse9.sinabro;
 
-import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,10 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 
 /**
@@ -41,18 +34,14 @@ public class TimelineFragment extends Fragment{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<MyData> myDataset;
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
-
     public TimelineFragment() {
         // Required empty public constructor
     }
@@ -106,18 +95,20 @@ public class TimelineFragment extends Fragment{
             public void onClick(View view) {
 //                Intent intent = new Intent(getActivity(), AppSettingActivity.class);
 //                startActivity(intent);
-                Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
+                FirebaseAuth.getInstance().signOut();
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Logout Complete", Toast.LENGTH_SHORT);
                 toast.show();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
 
             }
         });
         notice_butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
                 toast.show();
-
 //                FragmentManager fm = getFragmentManager();
 //                FragmentTransaction ft = fm.beginTransaction();
 //                ChatRoomListFragment llf = new ChatRoomListFragment();

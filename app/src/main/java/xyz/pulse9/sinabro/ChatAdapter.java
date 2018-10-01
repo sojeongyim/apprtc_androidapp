@@ -32,6 +32,7 @@ public class ChatAdapter extends ArrayAdapter {
 
     private static final String ITEM_VIEW_TYPE_MSG = "0";
     private static final String ITEM_VIEW_TYPE_CALL = "1";
+    private static final String ITEM_VIEW_TYPE_DATE = "2";
     private String DateTime = null;
 
     List<Message> msgs = new ArrayList();
@@ -94,20 +95,16 @@ public class ChatAdapter extends ArrayAdapter {
 
         switch (viewType) {
             case ITEM_VIEW_TYPE_MSG:
-
                 convertView = inflater.inflate(R.layout.chat_message,parent, false);
                 TextView rightText = convertView.findViewById(R.id.rightTime);
                 TextView leftText = convertView.findViewById(R.id.leftTime);
-
-                chatMessageContainer = convertView.findViewById(R.id.textLinear);
-                Log.d("Message", "Message_Left = "  + message_left);
-                Log.d("Message", "Align = "  + align);
-
-
-
                 ImageView rightchatPhoto = convertView.findViewById(R.id.rightmessagepic);
-                rightchatPhoto.setVisibility(View.GONE);
+                chatMessageContainer = convertView.findViewById(R.id.textLinear);
                 ImageView leftchatPhoto = convertView.findViewById(R.id.leftmessagepic);
+
+
+
+                rightchatPhoto.setVisibility(View.GONE);
                 leftchatPhoto.setVisibility(View.GONE);
 
                 String t[] = msg.getSendDate().split(" ");
@@ -139,6 +136,20 @@ public class ChatAdapter extends ArrayAdapter {
                 titleTextView.setTextColor(Color.parseColor(message_left ? "#0f2013" : "#c7c7c7")); //sinabro_black  &  sinabro_gray
                 chatMessageContainer.setGravity(align);
 
+                if(position!=0)
+                {
+                    Message prev_msg = msgs.get(position-1);
+                    if (prev_msg.getSender().equals(msg.getSender()))
+                    {
+                        if(message_left) {
+                            leftchatPhoto.setVisibility(View.INVISIBLE);
+                        }
+                        else
+                        {
+                            rightchatPhoto.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                }
                 break;
 
             case ITEM_VIEW_TYPE_CALL:
@@ -206,6 +217,10 @@ public class ChatAdapter extends ArrayAdapter {
                 TextView date = convertView.findViewById(R.id.dataTime);
                 date.setText(msg.getSendDate());
                 break;
+            case ITEM_VIEW_TYPE_DATE:
+
+                break;
+
         }
         return convertView;
     }

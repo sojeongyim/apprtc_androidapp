@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
-
-
     android:orientation="horizontal">
 
 
@@ -15,13 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:textAlignment="textEnd" />
+        />
 
     <ImageView
         android:id="@+id/leftmessagepic"
-        android:layout_gravity="center_vertical"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
         android:visibility="gone" />
 
     <TextView
@@ -35,14 +33,10 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:ellipsize="none"
-
-
         android:maxLines="100"
         android:scrollHorizontally="false"
         android:singleLine="false"
-        android:text="heythere"
         android:textSize="16sp" />
-
     <ImageView
         android:id="@+id/rightmessagepic"
         android:layout_width="30dp"
@@ -53,6 +47,7 @@
     <TextView
         android:id="@+id/leftTime"
         android:layout_width="wrap_content"
+        android:layout_marginLeft="5dp"
 
         android:layout_height="wrap_content"
         android:layout_gravity="bottom" />

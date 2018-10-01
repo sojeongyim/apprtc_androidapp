@@ -1,5 +1,6 @@
 package xyz.pulse9.sinabro;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,15 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -31,29 +27,25 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.FacebookAuthProvider;
 
 
-public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener{   //login page(첫화면)
 
     private CallbackManager callbackManager;
     final String TAG = "Jangmin_AUTH";
     final int RC_SIGN_IN = 222;
     GoogleSignInClient mGoogleSignInClient;
-    SignInButton googleBtn;
 
     private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
-    private String mUsername;
-    private String mPhotoUrl;
     private ImageView fb;
     private ImageView ggl;
 
     private EditText idinput;
     private EditText pwdinput;
     private Button forgot_password;
-
-
+    private TextView textlogin;
+    private Button loginBtn;
+    private ProgressDialog mProgress;
 //                            Toast.makeText(LoginActivity.this, "Authentication failed.",
 //                                    Toast.LENGTH_SHORT).show();
 
@@ -62,54 +54,29 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        fb=findViewById(R.id.fakeFB);
-        googleBtn = findViewById(R.id.google_login);
-        forgot_password = findViewById(R.id.forgot_password);
+        mProgress = new ProgressDialog(this);
+        mProgress.setTitle("Sinabro...");
+        mProgress.setMessage("Please wait...");
+        mProgress.setCancelable(false);
+        mProgress.setIndeterminate(true);
 
+
+        loginBtn=findViewById(R.id.loginBtn);
+        fb=findViewById(R.id.fakeFB);
+        forgot_password = findViewById(R.id.forgot_password);
         idinput=findViewById(R.id.UserID);
         pwdinput=findViewById(R.id.Password);
-        pwdinput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast toast = Toast.makeText(getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
-        idinput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast toast = Toast.makeText(getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
-        forgot_password.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast toast = Toast.makeText(getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+        textlogin=findViewById(R.id.textlogin);
 
+        loginBtn.setOnClickListener(this);
+        fb.setOnClickListener(this);
+        forgot_password.setOnClickListener(this);
+        idinput.setOnClickListener(this);
+        pwdinput.setOnClickListener(this);
+        textlogin.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
-
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
-
-
-        googleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signIn();
-            }
-        });
-
-        fb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast toast = Toast.makeText(getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+//        FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         ggl=findViewById(R.id.fakeGoogle);
         ggl.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +93,6 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         callbackManager = CallbackManager.Factory.create();
-
 
 //        AccessToken accessToken = AccessToken.getCurrentAccessToken();
 //
@@ -174,6 +140,7 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
         super.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
+            mProgress.dismiss();
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -192,6 +159,7 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+        mProgress.show();
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -205,11 +173,9 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
                         } else {
                             updateUI(null);
                         }
-
                     }
                 });
     }
-
     private void updateUI(FirebaseUser curuser) {
         if (curuser != null) {
             Log.d(TAG, "Auth Successed");
@@ -234,6 +200,12 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Toast toast = Toast.makeText(getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
 //    private void handleFacebookAccessToken(AccessToken token) {
