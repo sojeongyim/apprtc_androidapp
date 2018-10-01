@@ -234,7 +234,7 @@ public class ConnectActivity extends AppCompatActivity {
                 String result2 = data.getStringExtra("result");
                 Message tmp = new Message("1", uid, receiveruid, result2);   //test
                 tmp.setContents("Planing Conference");
-                tmp.setPhoto(receiverphoto);
+                tmp.setPhoto(senderphoto);
                 tmp.setDate(result2);
                 tmp.setChk("0");
 

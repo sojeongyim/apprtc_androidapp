@@ -40,7 +40,7 @@ public class TabFragment extends Fragment {
 
 
     public static class TabFragment1 extends Fragment {
-        private String teacher1_token ="FmNoB5ZDyXQD95OcbSel64yShj22";////intern1계정
+        private String teacher1_token ="FmNoB5ZDyXQD95OcbSel64yShj22";    //sojeongy7@gmail.com
         private DatabaseReference userDatabase;
         DatabaseReference followerDB;
         private String uid;
@@ -153,7 +153,7 @@ public class TabFragment extends Fragment {
 
     public static class TabFragment2 extends Fragment {
 
-        private String teacher2_token ="luzZy37nmveRpTavmzgAmvOemKw1";////intern2계정
+        private String teacher2_token ="Jhbg1lLcwJRP7HcwHwVQwzJDy1H2";     //intern1계정
         private DatabaseReference userDatabase;
         DatabaseReference followerDB;
         private String uid;
@@ -260,7 +260,7 @@ public class TabFragment extends Fragment {
 
     public static class TabFragment3 extends Fragment {
 
-        private String teacher3_token ="luzZy37nmveRpTavmzgAmvOemKw1";////intern2계정, 계정3으로 수정해야함
+        private String teacher3_token ="cTNzaDD7mtfqbNVs7yZRsqVQVDV2";    //intern6계정
         private DatabaseReference userDatabase;
         DatabaseReference followerDB;
         private String uid;
@@ -367,7 +367,7 @@ public class TabFragment extends Fragment {
 
     public static class TabFragment4 extends Fragment {
 
-        private String teacher4_token ="luzZy37nmveRpTavmzgAmvOemKw1";////intern2계정, 계정4으로 수정해야함
+        private String teacher4_token ="luzZy37nmveRpTavmzgAmvOemKw1";     //intern2계정
         private DatabaseReference userDatabase;
         DatabaseReference followerDB;
         private String uid;

@@ -61,6 +61,9 @@
             android:theme="@style/CallActivityTheme" />
         <activity android:name=".mDatePicker" />
         <activity android:name=".mTimePicker" />
+
+        <receiver android:name=".PushInAppReceiver"/>
+
         <activity
             android:name=".LoginActivity"
             android:label="login">
@@ -103,7 +106,6 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".PushInAppReceiver"/>
     </application>
 
 
