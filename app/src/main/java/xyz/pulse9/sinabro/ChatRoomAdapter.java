@@ -65,7 +65,13 @@ public class ChatRoomAdapter extends ArrayAdapter {
         TextView msgText3 = (TextView) row.findViewById(R.id.thirdLine);
         msgText.setText(chatRoom.getNickname());
         msgText2.setText(chatRoom.getLastcontents());
-        msgText3.setText(chatRoom.getTime());
+        String time = chatRoom.getTime();
+        String times[] = time.split(" ");
+        time = times[0] + " " + times[1] + " " + times[2] + " " + times[3];
+        times = time.split(":");
+        time = times[0] + ":" + times[1];
+
+        msgText3.setText(time);
         return row;
     }
 }

@@ -28,6 +28,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +36,7 @@ import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -94,6 +96,7 @@ public class ConnectActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         database = FirebaseDatabase.getInstance();
         setContentView(R.layout.activity_chatting);
         friendsid = findViewById(R.id.friendId);
@@ -144,7 +147,7 @@ public class ConnectActivity extends AppCompatActivity {
                 sendernick = dataSnapshot.child(uid).child("nickname").getValue().toString();
                 receiverphoto = dataSnapshot.child(receiveruid).child("photo").getValue().toString();
                 senderphoto = dataSnapshot.child(uid).child("photo").getValue().toString();
-                friendsid.setText(receivernick);
+                friendsid.setText(receivernick.toUpperCase());
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

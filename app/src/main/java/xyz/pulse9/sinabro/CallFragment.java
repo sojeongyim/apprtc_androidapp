@@ -30,7 +30,6 @@ public class CallFragment extends Fragment {
   private TextView contactView;
   private ImageButton disconnectButton;
   private ImageButton cameraSwitchButton;
-  private ImageButton videoScalingButton;
   private ImageButton toggleMuteButton;
   private TextView captureFormatText;
   private SeekBar captureFormatSlider;
@@ -58,7 +57,6 @@ public class CallFragment extends Fragment {
     contactView = (TextView) controlView.findViewById(R.id.contact_name_call);
     disconnectButton = (ImageButton) controlView.findViewById(R.id.button_call_disconnect);
     cameraSwitchButton = (ImageButton) controlView.findViewById(R.id.button_call_switch_camera);
-    videoScalingButton = (ImageButton) controlView.findViewById(R.id.button_call_scaling_mode);
     toggleMuteButton = (ImageButton) controlView.findViewById(R.id.button_call_toggle_mic);
     captureFormatText = (TextView) controlView.findViewById(R.id.capture_format_text_call);
     captureFormatSlider = (SeekBar) controlView.findViewById(R.id.capture_format_slider_call);
@@ -78,19 +76,6 @@ public class CallFragment extends Fragment {
       }
     });
 
-    videoScalingButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        if (scalingType == ScalingType.SCALE_ASPECT_FILL) {
-          videoScalingButton.setBackgroundResource(R.drawable.ic_action_full_screen);
-          scalingType = ScalingType.SCALE_ASPECT_FIT;
-        } else {
-          videoScalingButton.setBackgroundResource(R.drawable.ic_action_return_from_full_screen);
-          scalingType = ScalingType.SCALE_ASPECT_FILL;
-        }
-        callEvents.onVideoScalingSwitch(scalingType);
-      }
-    });
     scalingType = ScalingType.SCALE_ASPECT_FILL;
 
     toggleMuteButton.setOnClickListener(new View.OnClickListener() {

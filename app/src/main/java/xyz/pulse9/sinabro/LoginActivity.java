@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -48,6 +49,12 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
     private ImageView fb;
     private ImageView ggl;
 
+    private EditText idinput;
+    private EditText pwdinput;
+
+
+//                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +64,22 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
         fb=findViewById(R.id.fakeFB);
         googleBtn = findViewById(R.id.google_login);
 
-//        fb.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                googleBtn.performClick();
-//            }
-//        });
+        idinput=findViewById(R.id.UserID);
+        pwdinput=findViewById(R.id.Password);
+        pwdinput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast toast = Toast.makeText(getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+        idinput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast toast = Toast.makeText(getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -77,11 +94,18 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
             }
         });
 
+        fb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast toast = Toast.makeText(getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+
         ggl=findViewById(R.id.fakeGoogle);
         ggl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("asdfasd", "HEL");
                 signIn();
             }
         });
