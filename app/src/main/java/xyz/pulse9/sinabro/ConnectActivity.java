@@ -604,15 +604,26 @@ public class ConnectActivity extends AppCompatActivity {
                 if (type.equals("1"))
                 {
                     String chk = dataSnapshot.child("chk").getValue().toString();
+                    Log.d("JMTEST", "chk From DB : " + chk);
                     String date = dataSnapshot.child("date").getValue().toString();
                     mMessage.setDate(date);
-                    mMessage.setDate(chk);
+                    mMessage.setChk(chk);
                 }
                 chatAdapter.add(mMessage);
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s)
+            {
+                String type = dataSnapshot.child("type").getValue().toString();
+                if (type.equals("1"))
+                {
+                    String chk = dataSnapshot.child("chk").getValue().toString();
+                    String date = dataSnapshot.child("date").getValue().toString();
+                    chatAdapter.getItemByDate(date).setChk(chk);
+                    chatAdapter.notifyDataSetChanged();
+                    listView.setAdapter(chatAdapter);
+                }
             }
 
             @Override

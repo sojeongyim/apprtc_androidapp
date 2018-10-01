@@ -54,6 +54,18 @@ public class ChatAdapter extends ArrayAdapter {
     public Message getItem(int index) {
         return (Message) msgs.get(index);
     }
+    public Message getItemByDate(String date)
+    {
+        for(Message k : msgs)
+        {
+            if(k.getType().equals("1"))
+            {
+                k.getDate().equals(date);
+                return k;
+            }
+        }
+        return null;
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater;
@@ -143,21 +155,25 @@ public class ChatAdapter extends ArrayAdapter {
                 // 0 for Nothing
                 // 1 for Another person Accepted
                 // 2 for Another Person denied
-                if ((msg.getChk()=="0")&& (msg.getSender()==curuid))
+                Log.d("JMTEST", "Check : " + msg.getChk());
+                Log.d("JMTEST", "msg.getSender() : " + msg.getSender());
+                Log.d("JMTEST", "msg.getSender() : " + curuid);
+
+                if ((msg.getChk().equals("0"))&& (msg.getSender().equals(curuid)))
                 {
                     acceptBtn.setVisibility(View.GONE);
                     denyBtn.setVisibility(View.GONE);
                     resultBtn.setText("Waiting .. ");
                     resultBtn.setVisibility(View.VISIBLE);
                 }
-                else if (msg.getChk()=="1")
+                else if (msg.getChk().equals("1"))
                 {
                     denyBtn.setVisibility(View.GONE);
                     acceptBtn.setVisibility(View.GONE);
                     resultBtn.setText("Accepted");
                     resultBtn.setVisibility(View.VISIBLE);
                 }
-                else if (msg.getChk()=="2")
+                else if (msg.getChk().equals("2"))
                 {
                     denyBtn.setVisibility(View.GONE);
                     acceptBtn.setVisibility(View.GONE);
@@ -191,12 +207,6 @@ public class ChatAdapter extends ArrayAdapter {
                 date.setText(msg.getSendDate());
                 break;
         }
-
         return convertView;
     }
-
-
 }
-
-
-
