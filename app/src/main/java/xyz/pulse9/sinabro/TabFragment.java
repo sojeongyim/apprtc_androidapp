@@ -89,9 +89,11 @@ public class TabFragment extends Fragment {
 
             followertext =(TextView)getView().findViewById(R.id.follower_num);
             ImageView imageView_user1 = (ImageView) getView().findViewById(R.id.imageView_user1);
+            ImageView imageView_profile = (ImageView)getView().findViewById(R.id.image_profile);
             heart_butt = (ImageButton) getView().findViewById(R.id.user1_heart);
             heart_butt_check = (ImageButton) getView().findViewById(R.id.heart_check);
 
+//            imageView_profile.setAdjustViewBounds(true);
             imageView_user1.setOnClickListener(new View.OnClickListener() {
 
                 @Override

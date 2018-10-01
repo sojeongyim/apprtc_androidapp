@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
 
     private EditText idinput;
     private EditText pwdinput;
+    private Button forgot_password;
 
 
 //                            Toast.makeText(LoginActivity.this, "Authentication failed.",
@@ -63,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
 
         fb=findViewById(R.id.fakeFB);
         googleBtn = findViewById(R.id.google_login);
+        forgot_password = findViewById(R.id.forgot_password);
 
         idinput=findViewById(R.id.UserID);
         pwdinput=findViewById(R.id.Password);
@@ -74,6 +76,13 @@ public class LoginActivity extends AppCompatActivity {   //login page(첫화면)
             }
         });
         idinput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast toast = Toast.makeText(getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+        forgot_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast toast = Toast.makeText(getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
