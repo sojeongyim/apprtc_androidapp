@@ -190,7 +190,6 @@ public class ChatAdapter extends ArrayAdapter {
                     resultBtn.setText("Denied");
                     resultBtn.setVisibility(View.VISIBLE);
                 }
-
                 acceptBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

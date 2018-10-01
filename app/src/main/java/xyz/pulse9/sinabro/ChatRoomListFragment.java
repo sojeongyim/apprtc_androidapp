@@ -159,52 +159,29 @@ public class ChatRoomListFragment extends Fragment{
             }
         });
 
-
-
-
         SwipeMenuCreator creator = new SwipeMenuCreator() {
             @Override
             public void create(SwipeMenu menu) {
                 // create "open" item
                 SwipeMenuItem openItem = new SwipeMenuItem(
                         getActivity().getApplicationContext());
-                // set item background
                 openItem.setBackground(new ColorDrawable(Color.rgb(0xD6, 0xF4,
                         0x56)));
-                // set item width
                 openItem.setWidth(250);
-                // set item title
                 openItem.setTitle("Delete");
-                // set item title fontsize
                 openItem.setTitleSize(18);
-                // set item title font color
                 openItem.setTitleColor(Color.WHITE);
-                // add to menu
                 menu.addMenuItem(openItem);
-//
-//                // create "delete" item
-//                SwipeMenuItem deleteItem = new SwipeMenuItem(
-//                        getApplicationContext());
-//                // set item background
-//                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-//                        0x3F, 0x25)));
-//                // set item width
-//                deleteItem.setWidth(90);
-//                // set a icon
-//                deleteItem.setIcon(R.drawable.com_facebook_button_icon);
-//                // add to menu
-//                menu.addMenuItem(deleteItem);
             }
         };
         listView.setMenuCreator(creator);
         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                chatRoomAdapter.delete(chatRoomAdapter.getItem(position));
                 userDatabase= FirebaseDatabase.getInstance().getReference("users").child(curuser.getUid()).child("rooms");
+                FirebaseDatabase.getInstance().getReference("message").child(chatRoomAdapter.getItem(position).getRoomName()).removeValue();
                 userDatabase.child(chatRoomAdapter.getItem(position).getRoomName()).removeValue();
-
-
+                chatRoomAdapter.delete(chatRoomAdapter.getItem(position));
                 return false;
             }
         });
