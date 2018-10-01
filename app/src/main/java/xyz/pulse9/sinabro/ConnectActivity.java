@@ -12,14 +12,15 @@ package xyz.pulse9.sinabro;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.DataSetObserver;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -28,21 +29,18 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -174,6 +172,13 @@ public class ConnectActivity extends AppCompatActivity {
             }
         });
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        });
 
         vidBtn = (ImageButton) findViewById(R.id.vidBtn);
         vidBtn.setOnClickListener(new View.OnClickListener() {
@@ -223,6 +228,28 @@ public class ConnectActivity extends AppCompatActivity {
         keyprefAudioBitrateValue = getString(R.string.pref_startaudiobitratevalue_key);
         keyprefRoomServerUrl = getString(R.string.pref_room_server_url_key);
     }
+
+
+
+
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent event) {
+//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//            View v = getCurrentFocus();
+//            if ( v instanceof EditText ) {
+//                Rect outRect = new Rect();
+//                v.getGlobalVisibleRect(outRect);
+//                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+//                    v.clearFocus();
+//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+//                }
+//            }
+//        }
+//        return super.dispatchTouchEvent( event );
+//    }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -321,38 +348,29 @@ public class ConnectActivity extends AppCompatActivity {
     }
 
     private void connectToRoom(String roomId) {
-
-
         String roomUrl = sharedPref.getString(
                 keyprefRoomServerUrl, getString(R.string.pref_room_server_url_default));
-
         // Video call enabled flag.
         boolean videoCallEnabled = sharedPrefGetBoolean(R.string.pref_videocall_key,
                 CallActivity.EXTRA_VIDEO_CALL, R.string.pref_videocall_default, false);
-
         // Use screencapture option.
         boolean useScreencapture = sharedPrefGetBoolean(R.string.pref_screencapture_key,
                 CallActivity.EXTRA_SCREENCAPTURE, R.string.pref_screencapture_default, false);
-
         // Use Camera2 option.
         boolean useCamera2 = sharedPrefGetBoolean(R.string.pref_camera2_key, CallActivity.EXTRA_CAMERA2,
                 R.string.pref_camera2_default, false);
-
         // Get default codecs.
         String videoCodec = sharedPrefGetString(R.string.pref_videocodec_key,
                 CallActivity.EXTRA_VIDEOCODEC, R.string.pref_videocodec_default, false);
         String audioCodec = sharedPrefGetString(R.string.pref_audiocodec_key,
                 CallActivity.EXTRA_AUDIOCODEC, R.string.pref_audiocodec_default, false);
-
         // Check HW codec flag.
         boolean hwCodec = sharedPrefGetBoolean(R.string.pref_hwcodec_key,
                 CallActivity.EXTRA_HWCODEC_ENABLED, R.string.pref_hwcodec_default, false);
-
         // Check Capture to texture.
         boolean captureToTexture = sharedPrefGetBoolean(R.string.pref_capturetotexture_key,
                 CallActivity.EXTRA_CAPTURETOTEXTURE_ENABLED, R.string.pref_capturetotexture_default,
                 false);
-
         // Check FlexFEC.
         boolean flexfecEnabled = sharedPrefGetBoolean(R.string.pref_flexfec_key,
                 CallActivity.EXTRA_FLEXFEC_ENABLED, R.string.pref_flexfec_default, false);
@@ -564,6 +582,7 @@ public class ConnectActivity extends AppCompatActivity {
         mMessage.setPhoto(cur_pick);
         mMessage.setContents(sendMsg.getText().toString());
 
+
         DatabaseReference ref;
         if (chatroomname.equals("none")) {
             ref = database.getReference("message").push();
@@ -576,8 +595,18 @@ public class ConnectActivity extends AppCompatActivity {
         userDatabase.child(uid).child("rooms").child(chatroomname).setValue(updateChatRoom);
         userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(updateChatRoom2);
 
-
         ref = database.getReference("message").child(chatroomname);
+        if(chatAdapter.getCount()!=0)
+        {
+            Message tmp = chatAdapter.getItem(chatAdapter.getCount()-1);
+            String tmp_time[] = tmp.getSendDate().split(" ");
+            String cur_time[] = mMessage.getSendDate().split(" ");
+            if(!(tmp_time[0].equals(cur_time[0]) && tmp_time[1].equals(cur_time[1]) && tmp_time[2].equals(cur_time[2])))
+            {
+                Message dateMsg = new Message("2", uid, receiveruid);
+                ref.push().setValue(dateMsg);
+            }
+        }
         ref.push().setValue(mMessage);
         sendMsg.setText("");
     }
@@ -589,25 +618,32 @@ public class ConnectActivity extends AppCompatActivity {
         myDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String type = dataSnapshot.child("type").getValue().toString();
-                String sender = dataSnapshot.child("sender").getValue().toString();
-                String photo = dataSnapshot.child("photo").getValue().toString();
-                String receiver = dataSnapshot.child("receiver").getValue().toString();
-                String time = dataSnapshot.child("sendDate").getValue().toString();
-                String contents = dataSnapshot.child("contents").getValue().toString();
-
                 Message mMessage;
-                mMessage = new Message(type, sender, receiver, time);
-                mMessage.setPhoto(photo);
-                mMessage.setContents(contents);
+                String type = dataSnapshot.child("type").getValue().toString();
+                String receiver = dataSnapshot.child("receiver").getValue().toString();
+                String sender = dataSnapshot.child("sender").getValue().toString();
+                String time = dataSnapshot.child("sendDate").getValue().toString();
+                if(type.equals("0") || type.equals("1")) {
+                    String photo = dataSnapshot.child("photo").getValue().toString();
+                    String contents = dataSnapshot.child("contents").getValue().toString();
 
-                if (type.equals("1"))
+                    mMessage = new Message(type, sender, receiver, time);
+                    mMessage.setPhoto(photo);
+                    mMessage.setContents(contents);
+
+                    if (type.equals("1")) {
+                        String chk = dataSnapshot.child("chk").getValue().toString();
+                        Log.d("JMTEST", "chk From DB : " + chk);
+                        String date = dataSnapshot.child("date").getValue().toString();
+                        mMessage.setDate(date);
+                        mMessage.setChk(chk);
+                    }
+                }
+                else
                 {
-                    String chk = dataSnapshot.child("chk").getValue().toString();
-                    Log.d("JMTEST", "chk From DB : " + chk);
-                    String date = dataSnapshot.child("date").getValue().toString();
-                    mMessage.setDate(date);
-                    mMessage.setChk(chk);
+                    mMessage = new Message("2", sender, receiver);
+                    time = time.split(" ")[0] + " " +time.split(" ")[1] + " " +time.split(" ")[2];
+                    mMessage.setSendDate(time);
                 }
                 chatAdapter.add(mMessage);
             }

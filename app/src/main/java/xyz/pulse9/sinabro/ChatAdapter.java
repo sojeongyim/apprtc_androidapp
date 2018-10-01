@@ -81,7 +81,6 @@ public class ChatAdapter extends ArrayAdapter {
         boolean message_left = true;
         int align;
 
-
         if (msg.getSender().equals(curuid))
         {
             message_left = true;
@@ -215,10 +214,12 @@ public class ChatAdapter extends ArrayAdapter {
                     }
                 });
                 TextView date = convertView.findViewById(R.id.dataTime);
-                date.setText(msg.getSendDate());
+                date.setText(msg.getDate());
                 break;
             case ITEM_VIEW_TYPE_DATE:
-
+                convertView = inflater.inflate(R.layout.chat_date,parent, false);
+                TextView dateText = convertView.findViewById(R.id.lastDate);
+                dateText.setText(msg.getSendDate());
                 break;
 
         }

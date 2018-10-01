@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="30dp"
+    android:background="@android:color/transparent">
+
+    <View
+
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@color/sianbro_main_color" />
+
+    <TextView
+        android:id="@+id/lastDate"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/myriad_pro_regular"
+        android:text="Fri Sep 21"
+        android:textAlignment="center"
+        android:textColor="@color/sianbro_main_color"
+        android:textSize="20sp" />
+
+    <View
+
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@color/sianbro_main_color" />
 
 </LinearLayout>

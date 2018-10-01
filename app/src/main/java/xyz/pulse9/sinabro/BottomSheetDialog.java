@@ -30,19 +30,17 @@ public class BottomSheetDialog extends BottomSheetDialogFragment implements View
         return new BottomSheetDialog();
     }
 
-    private LinearLayout msgLo;
+//    private LinearLayout msgLo;
     private LinearLayout emailLo;
-    private LinearLayout cloudLo;
-    private LinearLayout bluetoothLo;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bottom_sheet_dialog, container, false);
-        msgLo = (LinearLayout) view.findViewById(R.id.msgLo);
+//        msgLo = (LinearLayout) view.findViewById(R.id.msgLo);
         emailLo = (LinearLayout) view.findViewById(R.id.emailLo);
 
-        msgLo.setOnClickListener(listener);
+//        msgLo.setOnClickListener(listener);
         emailLo.setOnClickListener(listener);
         return view;
     }
