@@ -77,8 +77,6 @@ public class mDatePicker extends Activity {
 //
 //                });
 
-
-
         //선택기로부터 날짜 조사
         Button select_butt =(Button)findViewById(R.id.select);
         Button cancel_butt =(Button)findViewById(R.id.cancel);
@@ -91,12 +89,9 @@ public class mDatePicker extends Activity {
             @Override
 
             public void onClick(View v) {
-
                 // TODO Auto-generated method stub
-
                 String result = null;
                 result = String.format("%d/%d/%d", mDate.getYear(),mDate.getMonth(), mDate.getDayOfMonth());
-
                 Intent intent = new Intent();
                 Toast.makeText(mDatePicker.this, result,Toast.LENGTH_SHORT).show();
                 intent.putExtra("result", result);

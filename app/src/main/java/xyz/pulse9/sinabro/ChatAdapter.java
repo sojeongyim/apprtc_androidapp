@@ -202,9 +202,12 @@ public class ChatAdapter extends ArrayAdapter {
 
                         String tmp_time = msg.getDate();
                         Long tmp_time2 = DateConverter(tmp_time.split("/")[0], tmp_time.split("/")[1], tmp_time.split("/")[2], tmp_time.split("/")[3], tmp_time.split("/")[4]);
+                        tmp_time2  = tmp_time2-43200;
 
-                        userDatabase.child(msg.getSender()).child("Alarm").push().setValue(tmp_time2);
-                        userDatabase.child(msg.getReceiver()).child("Alarm").push().setValue(tmp_time2);
+                        Alarm tmp_alarm = new Alarm(tmp_time2, msg.getChatroomname(), msg.getReceiver());
+                        userDatabase.child(msg.getSender()).child("Alarm").push().setValue(tmp_alarm);
+                        Alarm tmp_alarm2 = new Alarm(tmp_time2, msg.getChatroomname(), msg.getSender());
+                        userDatabase.child(msg.getReceiver()).child("Alarm").push().setValue(tmp_alarm);
 
                         Message tmp = new Message("1", msg.getSender(), msg.getReceiver(), msg.getSendDate());   //test
                         tmp.setContents("Planing Conference");
