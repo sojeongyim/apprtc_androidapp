@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,7 +103,6 @@ public class ChatRoomListFragment extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String roomname = chatRoomAdapter.getItem(i).getRoomName();
-                Log.d("ChatRoomList", "Get RoomName = " + roomname);
                 Intent intent = new Intent(getActivity(), ConnectActivity.class);
                 intent.putExtra("chatroomname", roomname);
                 intent.putExtra("receiveruid", chatRoomAdapter.getItem(i).getReceiver());

@@ -633,7 +633,6 @@ public class ConnectActivity extends AppCompatActivity {
 
                     if (type.equals("1")) {
                         String chk = dataSnapshot.child("chk").getValue().toString();
-                        Log.d("JMTEST", "chk From DB : " + chk);
                         String date = dataSnapshot.child("date").getValue().toString();
                         mMessage.setDate(date);
                         mMessage.setChk(chk);

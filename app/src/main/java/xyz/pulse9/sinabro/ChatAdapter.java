@@ -165,10 +165,6 @@ public class ChatAdapter extends ArrayAdapter {
                 // 0 for Nothing
                 // 1 for Another person Accepted
                 // 2 for Another Person denied
-                Log.d("JMTEST", "Check : " + msg.getChk());
-                Log.d("JMTEST", "msg.getSender() : " + msg.getSender());
-                Log.d("JMTEST", "msg.getSender() : " + curuid);
-
                 if ((msg.getChk().equals("0"))&& (msg.getSender().equals(curuid)))
                 {
                     acceptBtn.setVisibility(View.GONE);
