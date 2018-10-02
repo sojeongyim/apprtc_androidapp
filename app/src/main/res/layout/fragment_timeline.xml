@@ -20,7 +20,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="0dp"
-                android:layout_weight="5"
+                android:layout_weight="4"
                 android:fontFamily="@font/aarial"
                 android:gravity="center_vertical"
                 android:text="S I N A B R O    S T O R Y"
@@ -33,7 +33,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="100dp"
-                android:layout_weight="0.6"
+                android:layout_weight="0.5"
                 android:background="#00ffffff"
                 android:scaleType="fitCenter"
                 android:src="@drawable/settings" />
@@ -44,7 +44,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="10dp"
-                android:layout_weight="0.7"
+                android:layout_weight="0.45"
                 android:background="#00ffffff"
                 android:scaleType="fitCenter"
                 android:src="@drawable/bell" />

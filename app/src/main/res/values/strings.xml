@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">sinabro</string>
+    <string name="app_name" translatable="false">Sina Bro</string>
     <string name="settings_name" translatable="false">AppRTC Settings</string>
     <string name="login_name">Login</string>
     <string name="disconnect_call">Disconnect Call</string>
