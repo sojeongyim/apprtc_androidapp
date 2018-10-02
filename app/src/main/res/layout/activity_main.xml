@@ -29,14 +29,13 @@
     </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
-        app:itemIconTint="@layout/selector_navi"
-        app:itemTextColor="@layout/selector_navi"
-        app:menu="@menu/navigation" />
-
+    android:id="@+id/navigation"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/windowBackground"
+    app:itemIconTint="@drawable/selector_navi"
+    app:itemTextColor="@drawable/selector_navi"
+    app:menu="@menu/navigation"/>
 
 </LinearLayout>
 
