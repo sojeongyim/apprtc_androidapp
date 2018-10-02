@@ -44,18 +44,20 @@ public class TabFragment extends Fragment {
 
 
     public static class TabFragment1 extends Fragment {
-        private String teacher1_token ="FmNoB5ZDyXQD95OcbSel64yShj22";    //sojeongy7@gmail.com
+        private String teacher1_token ="Jhbg1lLcwJRP7HcwHwVQwzJDy1H2";    //intern1
         private DatabaseReference userDatabase;
         DatabaseReference followerDB;
         private String uid;
         FirebaseUser curuser;
         TextView followertext;
+        TextView user_name;
         String targetUID;
         private String chatRoomname;
         ImageButton heart_butt;
         ImageButton heart_butt_check;
         ImageButton plus_button;
         LinearLayoutCompat profile_card;
+        String nickname;
 
         public void ischatExist(final String Userid) {
             chatRoomname = "none";
@@ -96,6 +98,7 @@ public class TabFragment extends Fragment {
             heart_butt = (ImageButton) getView().findViewById(R.id.user1_heart);
             heart_butt_check = (ImageButton) getView().findViewById(R.id.heart_check);
             plus_button = (ImageButton)getView().findViewById(R.id.plus_button);
+            user_name=(TextView)getView().findViewById(R.id.user_name);
 //            ImageView imageView_profile = (ImageView)getView().findViewById(R.id.image_profile);
 //            imageView_profile.setAdjustViewBounds(true);
             profile_card =(LinearLayoutCompat)getView().findViewById(R.id.profile_card);
@@ -104,6 +107,19 @@ public class TabFragment extends Fragment {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 profile_card.setClipToOutline(true);
             }
+
+            userDatabase.child(teacher1_token).child("nickname").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    nickname = dataSnapshot.getValue().toString();
+                    user_name.setText(nickname);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
 
             imageView_user1.setOnClickListener(new View.OnClickListener() {
 
@@ -173,18 +189,20 @@ public class TabFragment extends Fragment {
 
     public static class TabFragment2 extends Fragment {
 
-        private String teacher2_token ="Jhbg1lLcwJRP7HcwHwVQwzJDy1H2";     //intern1계정
+        private String teacher2_token ="luzZy37nmveRpTavmzgAmvOemKw1";     //intern2계정
         private DatabaseReference userDatabase;
         DatabaseReference followerDB;
         private String uid;
         FirebaseUser curuser;
         TextView followertext;
+        TextView user_name;
         String targetUID;
         private String chatRoomname;
         ImageButton heart_butt;
         ImageButton heart_butt_check;
         ImageButton plus_button;
         LinearLayoutCompat profile_card;
+        String nickname;
 
         public void ischatExist(final String Userid) {
             chatRoomname = "none";
@@ -226,6 +244,7 @@ public class TabFragment extends Fragment {
                 heart_butt = (ImageButton) getView().findViewById(R.id.user2_heart);
                 heart_butt_check = (ImageButton) getView().findViewById(R.id.heart_check);
                 plus_button =(ImageButton)getView().findViewById(R.id.plus_button);
+                user_name=(TextView)getView().findViewById(R.id.user_name);
 
 //            ImageView imageView_profile = (ImageView)getView().findViewById(R.id.imageView2);
 //            imageView_profile.setAdjustViewBounds(true);
@@ -235,7 +254,20 @@ public class TabFragment extends Fragment {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 profile_card.setClipToOutline(true);
             }
-                imageView_user2.setOnClickListener(new View.OnClickListener() {
+
+            userDatabase.child(teacher2_token).child("nickname").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    nickname = dataSnapshot.getValue().toString();
+                    user_name.setText(nickname);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            imageView_user2.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
@@ -299,18 +331,20 @@ public class TabFragment extends Fragment {
 
     public static class TabFragment3 extends Fragment {
 
-        private String teacher3_token ="cTNzaDD7mtfqbNVs7yZRsqVQVDV2";    //intern6계정
+        private String teacher3_token ="jsPInIrU4RMoNLNQEOYciaMScL73";    //intern3계정
         private DatabaseReference userDatabase;
         DatabaseReference followerDB;
         private String uid;
         FirebaseUser curuser;
         TextView followertext;
+        TextView user_name;
         String targetUID;
         private String chatRoomname;
         ImageButton heart_butt;
         ImageButton heart_butt_check;
         ImageButton plus_button;
         LinearLayoutCompat profile_card;
+        String nickname;
 
         public void ischatExist(final String Userid) {
             chatRoomname = "none";
@@ -352,6 +386,7 @@ public class TabFragment extends Fragment {
             heart_butt = (ImageButton) getView().findViewById(R.id.user3_heart);
             heart_butt_check = (ImageButton) getView().findViewById(R.id.heart_check);
             plus_button = (ImageButton) getView().findViewById(R.id.plus_button);
+            user_name= (TextView)getView().findViewById(R.id.user_name);
 
 //            ImageView imageView_profile = (ImageView)getView().findViewById(R.id.imageView2);
 //            imageView_profile.setAdjustViewBounds(true);
@@ -362,6 +397,18 @@ public class TabFragment extends Fragment {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 profile_card.setClipToOutline(true);
             }
+
+            userDatabase.child(teacher3_token).child("nickname").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    nickname = dataSnapshot.getValue().toString();
+                    user_name.setText(nickname);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
             imageView_user3.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -427,18 +474,20 @@ public class TabFragment extends Fragment {
 
     public static class TabFragment4 extends Fragment {
 
-        private String teacher4_token ="luzZy37nmveRpTavmzgAmvOemKw1";     //intern2계정
+        private String teacher4_token ="cTNzaDD7mtfqbNVs7yZRsqVQVDV2";     //intern6계정
         private DatabaseReference userDatabase;
         DatabaseReference followerDB;
         private String uid;
         FirebaseUser curuser;
         TextView followertext;
+        TextView user_name;
         String targetUID;
         private String chatRoomname;
         ImageButton heart_butt;
         ImageButton heart_butt_check;
         ImageButton plus_button;
         LinearLayoutCompat profile_card;
+        String nickname;
 
         public void ischatExist(final String Userid) {
             chatRoomname = "none";
@@ -480,6 +529,7 @@ public class TabFragment extends Fragment {
             heart_butt = (ImageButton) getView().findViewById(R.id.user4_heart);
             heart_butt_check = (ImageButton) getView().findViewById(R.id.heart_check);
             plus_button= (ImageButton) getView().findViewById(R.id.plus_button);
+            user_name =(TextView)getView().findViewById(R.id.user_name);
 
 //            ImageView imageView_profile = (ImageView)getView().findViewById(R.id.imageView2);
 //            imageView_profile.setAdjustViewBounds(true);
@@ -489,6 +539,18 @@ public class TabFragment extends Fragment {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 profile_card.setClipToOutline(true);
             }
+
+            userDatabase.child(teacher4_token).child("nickname").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    nickname = dataSnapshot.getValue().toString();
+                    user_name.setText(nickname);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
             imageView_user4.setOnClickListener(new View.OnClickListener() {
 
                 @Override
