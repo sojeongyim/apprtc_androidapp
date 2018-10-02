@@ -7,10 +7,10 @@
     <View
 
         android:layout_width="0dp"
-        android:layout_height="3dp"
+        android:layout_height="1dp"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:background="@color/sianbro_main_color" />
+        android:background="@color/sianbro_gray_color" />
 
     <TextView
         android:id="@+id/lastDate"
@@ -20,16 +20,16 @@
         android:fontFamily="@font/myriad_pro_regular"
         android:text="Fri Sep 21"
         android:textAlignment="center"
-        android:textColor="@color/sianbro_main_color"
+        android:textColor="@color/sianbro_gray_color"
         android:textSize="20sp" />
 
     <View
 
         android:id="@+id/view"
         android:layout_width="0dp"
-        android:layout_height="3dp"
+        android:layout_height="1dp"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:background="@color/sianbro_main_color" />
+        android:background="@color/sianbro_gray_color" />
 
 </LinearLayout>

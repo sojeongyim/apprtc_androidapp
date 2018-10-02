@@ -13,6 +13,27 @@ public class Message {
     private String receiver;
     private String date;
 
+    private String chatroomname;
+    private String MessageName;
+
+
+    public String getMessageName() {
+        return MessageName;
+    }
+
+    public void setMessageName(String messageName) {
+        MessageName = messageName;
+    }
+
+    public String getChatroomname() {
+        return chatroomname;
+    }
+
+    public void setChatroomname(String chatroomname) {
+        this.chatroomname = chatroomname;
+    }
+
+
     public Message(String type, String sender, String receiver, String sendDate)
     {
         this.type=type;
@@ -28,9 +49,6 @@ public class Message {
         this.receiver=receiver;
         this.sendDate = Calendar.getInstance().getTime().toString();
     }
-
-
-
 
     public String getType() {
         return type;

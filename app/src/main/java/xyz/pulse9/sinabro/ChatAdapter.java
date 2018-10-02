@@ -22,9 +22,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static org.webrtc.ContextUtils.getApplicationContext;
 
@@ -33,12 +37,23 @@ public class ChatAdapter extends ArrayAdapter {
     private static final String ITEM_VIEW_TYPE_MSG = "0";
     private static final String ITEM_VIEW_TYPE_CALL = "1";
     private static final String ITEM_VIEW_TYPE_DATE = "2";
-    private String DateTime = null;
 
     List<Message> msgs = new ArrayList();
 
     public ChatAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
+    }
+    public long DateConverter(String year, String month, String day, String hour, String minute) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, Integer.parseInt(year));
+        c.set(Calendar.MONTH, Integer.parseInt(month));
+        c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day));
+        c.set(Calendar.HOUR, Integer.parseInt(hour));
+        c.set(Calendar.MINUTE, Integer.parseInt(minute));
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+
+        return (long)(c.getTimeInMillis() / 1000L);
     }
     public void add(Message object) {
         msgs.add(object);
@@ -99,12 +114,8 @@ public class ChatAdapter extends ArrayAdapter {
                 TextView leftText = convertView.findViewById(R.id.leftTime);
                 ImageView rightchatPhoto = convertView.findViewById(R.id.rightmessagepic);
                 chatMessageContainer = convertView.findViewById(R.id.textLinear);
-                ImageView leftchatPhoto = convertView.findViewById(R.id.leftmessagepic);
-
-
 
                 rightchatPhoto.setVisibility(View.GONE);
-                leftchatPhoto.setVisibility(View.GONE);
 
                 String t[] = msg.getSendDate().split(" ");
                 String t2 = t[3];
@@ -121,11 +132,6 @@ public class ChatAdapter extends ArrayAdapter {
                 }
                 else
                 {
-                    Picasso.get().load(curuser.getPhotoUrl())
-                            .transform(new CropCircleTransformation())
-                            .into(leftchatPhoto);
-                    leftchatPhoto.setVisibility(View.VISIBLE);
-
                     leftText.setText(t2);
                 }
                 TextView titleTextView = (TextView) convertView.findViewById(R.id.contentsTxt);
@@ -138,10 +144,9 @@ public class ChatAdapter extends ArrayAdapter {
                 if(position!=0)
                 {
                     Message prev_msg = msgs.get(position-1);
-                    if (prev_msg.getSender().equals(msg.getSender()))
+                    if (prev_msg.getSender().equals(msg.getSender()) && !prev_msg.getType().equals("2"))
                     {
                         if(message_left) {
-                            leftchatPhoto.setVisibility(View.INVISIBLE);
                         }
                         else
                         {
@@ -194,8 +199,24 @@ public class ChatAdapter extends ArrayAdapter {
                         resultBtn.setText("Accepted");
                         resultBtn.setVisibility(View.VISIBLE);
                         msg.setChk("1");
-                        userDatabase.child(curuid).child("Alarm").push().setValue(msg.getSendDate());   //test
-                        userDatabase.child(msg.getReceiver()).child("Alarm").push().setValue(msg.getSendDate());  //test
+
+                        String tmp_time = msg.getDate();
+                        Long tmp_time2 = DateConverter(tmp_time.split("/")[0], tmp_time.split("/")[1], tmp_time.split("/")[2], tmp_time.split("/")[3], tmp_time.split("/")[4]);
+
+                        userDatabase.child(msg.getSender()).child("Alarm").push().setValue(tmp_time2);
+                        userDatabase.child(msg.getReceiver()).child("Alarm").push().setValue(tmp_time2);
+
+                        Message tmp = new Message("1", msg.getSender(), msg.getReceiver(), msg.getSendDate());   //test
+                        tmp.setContents("Planing Conference");
+                        tmp.setPhoto(msg.getPhoto());
+                        tmp.setDate(msg.getDate());
+                        tmp.setChk("1");
+
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference ref;
+                        ref = database.getReference("message").child(msg.getChatroomname());
+
+                        ref.child(msg.getMessageName()).setValue(tmp);
                     }
                 });
                 denyBtn.setOnClickListener(new View.OnClickListener() {
@@ -206,6 +227,18 @@ public class ChatAdapter extends ArrayAdapter {
                         resultBtn.setText("Denied");
                         resultBtn.setVisibility(View.VISIBLE);
                         msg.setChk("2");
+
+                        Message tmp = new Message("1", msg.getSender(), msg.getReceiver(), msg.getSendDate());   //test
+                        tmp.setContents("Planing Conference");
+                        tmp.setPhoto(msg.getPhoto());
+                        tmp.setDate(msg.getDate());
+                        tmp.setChk("2");
+
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference ref;
+                        ref = database.getReference("message").child(msg.getChatroomname());
+
+                        ref.child(msg.getMessageName()).setValue(tmp);
                     }
                 });
                 TextView date = convertView.findViewById(R.id.dataTime);

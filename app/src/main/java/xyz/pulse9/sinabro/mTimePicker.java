@@ -58,12 +58,12 @@ public class mTimePicker extends Activity {
                 // TODO Auto-generated method stub
                 String timeresult = null;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    timeresult = String.format("Time : %d : %d", mTime.getHour(),mTime.getMinute());
+                    timeresult = String.format("/%d/%d", mTime.getHour(),mTime.getMinute());
                 }else{
-                    timeresult = String.format("Time : %d : %d", mTime.getCurrentHour(),mTime.getCurrentMinute());
+                    timeresult = String.format("/%d/%d", mTime.getCurrentHour(),mTime.getCurrentMinute());
                 }
 
-                result = result+"  "+timeresult;
+                result = result+timeresult;
 //                Toast.makeText(mDatePicker.this, result, Toast.LENGTH_SHORT).show();
 
                 Intent intent2 = new Intent();

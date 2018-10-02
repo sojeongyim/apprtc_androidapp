@@ -38,8 +38,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
     DatabaseReference ref = database.getReference("users");
     final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
     final String uid = curuser.getUid();
-    DatabaseReference useralarmDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid).child("Alarm");
-    private AlarmManager mAlarmManager;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -74,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -98,52 +95,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         ref.child(uid).child("photo").setValue(photo);
 
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        final DatabaseReference useralarmDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid).child("Alarm");
-        useralarmDatabase.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.d(TAG, "Alaram is added to " + uid);
-                String DateTime = dataSnapshot.getValue().toString();
-                String AlarmId = dataSnapshot.getKey().toString();
-//                Log.d(TAG, "Alarm datetime is " + DateTime);
-
-                try {
-                DateTime = DateTime.replaceAll(" ", "");
-                String[] parseDateTime = DateTime.split("\\.");
-                String[] parseTime = parseDateTime[2].split(":");
-                int year = Integer.parseInt(parseDateTime[0].substring(5));
-                int month = Integer.parseInt(parseDateTime[1]);
-                int date = Integer.parseInt(parseDateTime[2].substring(0, 2));
-                int hour = Integer.parseInt(parseTime[1]);
-                int min = Integer.parseInt(parseTime[2]);
-//                Log.d(TAG, "year: " + year+"//month: "+month+"//date : "+date+"//hour: "+hour+"//min: "+min);
-
-                new AlarmHATT(getApplicationContext()).Alarm(year,month,date,hour,min);
-
-            } catch (Exception e) {}
-                useralarmDatabase.child(AlarmId).removeValue();
-        }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-//        loadFragment(new TimelineFragment());
         BottomNavigationView navigation = findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(navigation);
 
@@ -160,29 +111,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
     @Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
-
-    public class AlarmHATT {
-        private Context context;
-
-        public AlarmHATT(Context context) {
-            this.context = context;
-        }
-
-        public void Alarm(int year, int month, int date, int hour, int min) {
-            AlarmManager am = (AlarmManager) MainActivity.this.getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(MainActivity.this, PushInAppReceiver.class);
-
-            PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
-
-            Calendar calendar = Calendar.getInstance();
-            //알람시간 calendar에 set해주기
-
-            calendar.set(year, month-1, date, hour, min, 0);
-
-            //알람 예약
-            am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-        }
     }
 }
 

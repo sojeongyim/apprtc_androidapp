@@ -24,12 +24,8 @@ import android.widget.Toast;
 
 
 public class mDatePicker extends Activity {
-
     android.widget.DatePicker mDate;
-
-
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -39,11 +35,9 @@ public class mDatePicker extends Activity {
         Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 
         int width = (int) (display.getWidth() * 0.9); //Display 사이즈의 70%
-
         int height = (int) (display.getHeight() * 0.8);  //Display 사이즈의 90%
 
         getWindow().getAttributes().width = width;
-
         getWindow().getAttributes().height = height;
 
 
@@ -101,19 +95,12 @@ public class mDatePicker extends Activity {
                 // TODO Auto-generated method stub
 
                 String result = null;
-                result = String.format("Date: %d . %d . %d", mDate.getYear(),mDate.getMonth() + 1, mDate.getDayOfMonth());
-
-//                Toast.makeText(mDatePicker.this, result, Toast.LENGTH_SHORT).show();
+                result = String.format("%d/%d/%d", mDate.getYear(),mDate.getMonth(), mDate.getDayOfMonth());
 
                 Intent intent = new Intent();
                 Toast.makeText(mDatePicker.this, result,Toast.LENGTH_SHORT).show();
                 intent.putExtra("result", result);
                 setResult(RESULT_OK,intent);
-//                startActivityForResult(intent, 1);
-//                startActivity(intent);
-
-
-                //액티비티(팝업) 닫기
                 finish();
 
             }
