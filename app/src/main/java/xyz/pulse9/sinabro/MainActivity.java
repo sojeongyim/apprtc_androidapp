@@ -1,34 +1,23 @@
 package xyz.pulse9.sinabro;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.util.Calendar;
 
 import xyz.pulse9.sinabro.util.BottomNavigationViewHelper;
 
@@ -48,16 +37,19 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
                 case R.id.navigation_timeline:
                     fragment = new TimelineFragment();
                     loadFragment(fragment);
+                    item.setChecked(true);
                     return true;
                 case R.id.navigation_chatings:
                     fragment = new ChatRoomListFragment();
                     loadFragment(fragment);
+                    item.setChecked(true);
                     return true;
                 case R.id.navigation_teachers:
                     fragment = new TeacherlistFragment();
                     loadFragment(fragment);
+                    item.setChecked(true);
                     return true;
-                case R.id.navigation_saved:
+                case R.id.navigation_schedule:
                     Toast toast = Toast.makeText(getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
                     toast.show();
                 case R.id.navigation_profile:

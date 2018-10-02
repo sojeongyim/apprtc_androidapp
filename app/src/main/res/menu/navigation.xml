@@ -4,12 +4,12 @@
     <item
         android:id="@+id/navigation_teachers"
         android:icon="@drawable/explore"
-        android:title="EXPLORE" />
+        android:title="EXPLORE"/>
 
     <item
-        android:id="@+id/navigation_saved"
-        android:icon="@drawable/saved"
-        android:title="SAVED" />
+        android:id="@+id/navigation_schedule"
+        android:icon="@drawable/cal"
+        android:title="SCHEDULE" />
 
     <item
         android:id="@+id/navigation_timeline"
