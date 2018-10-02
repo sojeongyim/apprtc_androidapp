@@ -1,8 +1,11 @@
 package xyz.pulse9.sinabro;
 
-import android.net.Uri;
+import android.util.Log;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class ChatRoom {
 
@@ -64,6 +67,22 @@ public class ChatRoom {
 
     public String getTime() {
         return time;
+    }
+    public Date getDate_Time()
+    {
+        Date date;
+        String test = this.time;
+        Log.d("TIMETSET", "TIMETEST2 : " + test);
+
+        SimpleDateFormat parserSDF = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.ENGLISH);
+        try {
+            date = parserSDF.parse(test);
+            Log.d("TIMETSET", "TIMETEST3 : " + date);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void setTime(String time) {

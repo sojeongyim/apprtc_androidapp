@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ChatRoomAdapter extends ArrayAdapter {
@@ -37,6 +39,28 @@ public class ChatRoomAdapter extends ArrayAdapter {
             }
         }
     }
+    public void sortList() {
+        Comparator<ChatRoom> Asc = new Comparator<ChatRoom>() {
+            @Override
+            public int compare(ChatRoom item1, ChatRoom item2) {
+                int ret = 0;
+                if(item1.getDate_Time().after(item2.getDate_Time()))
+                {
+                    ret = -1;
+                }
+                else if (item1.getDate_Time().equals(item2.getDate_Time()))
+                {
+                    ret = 0 ;
+                }
+                else if (item1.getDate_Time().before(item2.getDate_Time()))
+                {
+                    ret = 1;
+                }
+                return ret;
+            }
+        };
+        Collections.sort(ChatRooms, Asc);
+    }
     @Override
     public int getCount() {
         return ChatRooms.size();
@@ -45,7 +69,6 @@ public class ChatRoomAdapter extends ArrayAdapter {
     public ChatRoom getItem(int index) {
         return (ChatRoom) ChatRooms.get(index);
     }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
@@ -57,6 +80,7 @@ public class ChatRoomAdapter extends ArrayAdapter {
 
         final ChatRoom chatRoom = ChatRooms.get(position);
         final TextView msgText = (TextView) row.findViewById(R.id.firstLine);
+
         ImageView userpic = row.findViewById(R.id.userpic);
         Picasso.get().load(chatRoom.getPhoto())
                 .transform(new CropCircleTransformation())

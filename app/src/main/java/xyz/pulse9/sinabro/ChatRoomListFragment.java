@@ -133,6 +133,9 @@ public class ChatRoomListFragment extends Fragment{
                 lastTime = dataSnapshot.child("time").getValue().toString();
                 ChatRoom chatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, lastcontents, lastTime);
                 chatRoomAdapter.add(chatRoom);
+                chatRoomAdapter.sortList();
+                chatRoomAdapter.notifyDataSetChanged();
+                listView.setAdapter(chatRoomAdapter);
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -140,6 +143,7 @@ public class ChatRoomListFragment extends Fragment{
                 lastcontents = dataSnapshot.child("lastcontents").getValue().toString();
                 lastTime = dataSnapshot.child("time").getValue().toString();
                 chatRoomAdapter.refresh(chatroomname, lastcontents, lastTime);
+                chatRoomAdapter.sortList();
                 chatRoomAdapter.notifyDataSetChanged();
                 listView.setAdapter(chatRoomAdapter);
             }
