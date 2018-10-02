@@ -6,13 +6,13 @@
     </style>
 
     <style name="EditTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorAccent">@color/cursorColor</item>
+        <item name="colorAccent">@color/lineOnTouch</item>
         <item name="colorControlNormal">@color/nomalColor</item>
         <item name="colorControlActivated">@color/lineOnTouch</item>
         <item name="android:textCursorDrawable">@color/cursorColor</item>
         <item name="android:textColor">@color/sianbro_gray_color</item>
         <item name="android:textColorHint">@color/sianbro_gray_color</item>
-        <item name="android:textColorHighlight">@color/cursorColor</item>
+        <item name="android:textColorHighlight">@color/lineOnTouch</item>
     </style>
 
     <style name="CallActivityTheme" parent="android:Theme.Black">
