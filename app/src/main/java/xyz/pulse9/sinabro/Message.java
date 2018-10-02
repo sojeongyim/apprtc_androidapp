@@ -50,6 +50,12 @@ public class Message {
         this.sendDate = Calendar.getInstance().getTime().toString();
     }
 
+    public Message(String type)
+    {
+        this.type=type;
+        this.sendDate = Calendar.getInstance().getTime().toString();
+    }
+
     public String getType() {
         return type;
     }

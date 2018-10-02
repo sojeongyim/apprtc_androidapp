@@ -177,6 +177,10 @@ public class ConnectActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                if(chatAdapter.getItem(i).getType().equals("3"))
+                {
+                    connectToRoom(chatroomname);
+                }
             }
         });
 
@@ -598,10 +602,11 @@ public class ConnectActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Message mMessage;
                 String type = dataSnapshot.child("type").getValue().toString();
-                String receiver = dataSnapshot.child("receiver").getValue().toString();
-                String sender = dataSnapshot.child("sender").getValue().toString();
                 String time = dataSnapshot.child("sendDate").getValue().toString();
+
                 if(type.equals("0") || type.equals("1")) {
+                    String receiver = dataSnapshot.child("receiver").getValue().toString();
+                    String sender = dataSnapshot.child("sender").getValue().toString();
                     String photo = dataSnapshot.child("photo").getValue().toString();
                     String contents = dataSnapshot.child("contents").getValue().toString();
 
@@ -618,11 +623,15 @@ public class ConnectActivity extends AppCompatActivity {
                         mMessage.setMessageName(dataSnapshot.getKey());
                     }
                 }
-                else
+                else if( type.equals("2"))
                 {
-                    mMessage = new Message("2", sender, receiver);
+                    mMessage = new Message("2");
                     time = time.split(" ")[0] + " " +time.split(" ")[1] + " " +time.split(" ")[2];
                     mMessage.setSendDate(time);
+                }
+                else
+                {
+                    mMessage = new Message("3");
                 }
                 chatAdapter.add(mMessage);
             }

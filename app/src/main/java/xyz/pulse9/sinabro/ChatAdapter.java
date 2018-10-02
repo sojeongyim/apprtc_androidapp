@@ -37,6 +37,7 @@ public class ChatAdapter extends ArrayAdapter {
     private static final String ITEM_VIEW_TYPE_MSG = "0";
     private static final String ITEM_VIEW_TYPE_CALL = "1";
     private static final String ITEM_VIEW_TYPE_DATE = "2";
+    private static final String ITEM_VIEW_TYPE_CONF = "3";
 
     List<Message> msgs = new ArrayList();
 
@@ -94,17 +95,18 @@ public class ChatAdapter extends ArrayAdapter {
         String viewType = getType(position);
 
         boolean message_left = true;
-        int align;
+        int align= 0;
 
-        if (msg.getSender().equals(curuid))
-        {
-            message_left = true;
-            align = Gravity.LEFT;
+        if(msg.getSender()!=null) {
+            if (msg.getSender().equals(curuid)) {
+                message_left = true;
+                align = Gravity.LEFT;
 
-        } else {
-            message_left = false;
-            align = Gravity.RIGHT;
+            } else {
+                message_left = false;
+                align = Gravity.RIGHT;
 
+            }
         }
 
         switch (viewType) {
@@ -204,10 +206,9 @@ public class ChatAdapter extends ArrayAdapter {
                         Long tmp_time2 = DateConverter(tmp_time.split("/")[0], tmp_time.split("/")[1], tmp_time.split("/")[2], tmp_time.split("/")[3], tmp_time.split("/")[4]);
                         tmp_time2  = tmp_time2-43200;
 
-                        Alarm tmp_alarm = new Alarm(tmp_time2, msg.getChatroomname(), msg.getReceiver());
-                        userDatabase.child(msg.getSender()).child("Alarm").push().setValue(tmp_alarm);
-                        Alarm tmp_alarm2 = new Alarm(tmp_time2, msg.getChatroomname(), msg.getSender());
-                        userDatabase.child(msg.getReceiver()).child("Alarm").push().setValue(tmp_alarm);
+                        final DatabaseReference alarmDatabase = FirebaseDatabase.getInstance().getReference("alarm");
+                        Alarm tmp_alarm = new Alarm(tmp_time2, msg.getChatroomname(), msg.getReceiver(), msg.getSender());
+                        alarmDatabase.push().setValue(tmp_alarm);
 
                         Message tmp = new Message("1", msg.getSender(), msg.getReceiver(), msg.getSendDate());   //test
                         tmp.setContents("Planing Conference");
@@ -252,7 +253,9 @@ public class ChatAdapter extends ArrayAdapter {
                 TextView dateText = convertView.findViewById(R.id.lastDate);
                 dateText.setText(msg.getSendDate());
                 break;
-
+            case ITEM_VIEW_TYPE_CONF:
+                convertView = inflater.inflate(R.layout.chat_startconf,parent, false);
+                break;
         }
         return convertView;
     }

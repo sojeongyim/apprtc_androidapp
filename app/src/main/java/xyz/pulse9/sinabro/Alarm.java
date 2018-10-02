@@ -4,13 +4,15 @@ public class Alarm {
     Long date;
     String roomname;
     String receiverUID;
+    String senderUID;
 
 
-    public Alarm (Long date, String roomname, String receiverUID)
+    public Alarm (Long date, String roomname, String receiverUID, String senderUID)
     {
         this.date = date;
         this.roomname = roomname;
         this.receiverUID = receiverUID;
+        this.senderUID = senderUID;
     }
 
     public Long getDate() {
