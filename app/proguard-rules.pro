@@ -17,6 +17,7 @@
 #}
 
 -dontwarn android.support.**
+-dontwarn com.google.android.gms.common.GooglePlayServicesUtil
 
 
 -keep class org.webrtc.**  { *; }
