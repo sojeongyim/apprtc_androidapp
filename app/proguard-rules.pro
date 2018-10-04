@@ -25,10 +25,14 @@
 
 -keep class org.appspot.apprtc.**  { *; }
 
+-ignorewarnings
 
+-keep class * {
+    public private *;
+}
 
 -keep class de.tavendo.autobahn.**  { *; }
 
-
+-dontwarn com.google.android.gms.common.GooglePlayServicesUtil
 
 -keepclasseswithmembernames class * { native <methods>; }
