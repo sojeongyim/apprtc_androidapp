@@ -18,8 +18,8 @@ android {
         minSdkVersion 16
         targetSdkVersion 26
 
-        versionCode 15663
-        versionName "r15663"
+        versionCode 15664
+        versionName "1.1"
 
         testApplicationId "xyz.pulse9.sinabro.test"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
@@ -41,7 +41,7 @@ android {
 dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    implementation 'com.google.firebase:firebase-auth:16.[     0.2'
+    implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-messaging:17.3.1'
