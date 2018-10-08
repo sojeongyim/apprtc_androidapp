@@ -5,6 +5,7 @@ android {
 
     repositories {
         jcenter()
+        maven { url "https://maven.google.com" }
     }
 
     sourceSets.main {
@@ -40,12 +41,12 @@ android {
 
 dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
-
-    implementation 'com.google.firebase:firebase-auth:16.0.2'
-    implementation 'com.google.android.gms:play-services-auth:15.0.1'
-    implementation 'com.google.firebase:firebase-core:16.0.1'
-    implementation 'com.google.firebase:firebase-messaging:17.3.1'
-    implementation "com.google.firebase:firebase-database:16.0.1"
+    implementation 'com.google.firebase:firebase-auth:16.0.4'
+    implementation 'com.google.android.gms:play-services-auth:16.0.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:16.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-messaging:17.3.3'
+    implementation "com.google.firebase:firebase-database:16.0.3"
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:26.4.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'

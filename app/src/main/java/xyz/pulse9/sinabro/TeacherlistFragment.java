@@ -35,6 +35,7 @@ public class TeacherlistFragment extends Fragment {
     private TabLayout tabLayout;
     private ImageButton left_arrow;
     private ImageButton right_arrow;
+    private final int TEACHER_NUM=4;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -57,6 +58,8 @@ public class TeacherlistFragment extends Fragment {
         left_arrow =(ImageButton)getView().findViewById(R.id.left_arrow);
         right_arrow =(ImageButton)getView().findViewById(R.id.right_arrow);
 
+
+
         View view1 = getLayoutInflater().inflate(R.layout.customtab, null);
         view1.findViewById(R.id.myicon).setBackgroundResource(R.drawable.user1);
         tabLayout.addTab(tabLayout.newTab().setCustomView(view1));
@@ -75,7 +78,7 @@ public class TeacherlistFragment extends Fragment {
         view4.findViewById(R.id.myicon).setBackgroundResource(R.drawable.user4);
         tabLayout.addTab(tabLayout.newTab().setCustomView(view4));
 
-//
+
 //        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user1));
 //        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user2));
 //        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user3));
