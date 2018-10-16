@@ -34,7 +34,8 @@ import java.util.ArrayList;
  * Use the {@link TimelineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TimelineFragment extends Fragment {
+public class TimelineFragment extends  YouTubePlayerSupportFragment implements
+        YouTubePlayer.OnInitializedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -211,6 +212,14 @@ public class TimelineFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+        youTubePlayer.loadVideo("n1T9VPG4st0");
+    }
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -243,7 +252,6 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
         public TextView hashtag;
         public ImageButton fold;
         public YouTubePlayerView youtubeView;
-        YouTubePlayer.OnInitializedListener listener;
 
         public ViewHolder(View view)
         {
@@ -259,24 +267,10 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
                 public void onClick(View view) {
 //                    Toast toast = Toast.makeText(view.getContext().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
 //                    toast.show();
-                    youtubeView.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", listener);
+//                    youtubeView.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", listener);
                 }
             });
 
-
-            listener = new YouTubePlayer.OnInitializedListener() {
-                @Override
-                public void onInitializationSuccess(YouTubePlayer.Provider provider,
-                                                    YouTubePlayer youTubePlayer,
-                                                    boolean b) {
-                    youTubePlayer.loadVideo("n1T9VPG4st0");
-                }
-                @Override
-                public void onInitializationFailure(
-                        YouTubePlayer.Provider provider,
-                        YouTubeInitializationResult youTubeInitializationResult) {
-                }
-            };
 
 
         }
@@ -289,8 +283,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.timeline_onelayout, parent, false);
