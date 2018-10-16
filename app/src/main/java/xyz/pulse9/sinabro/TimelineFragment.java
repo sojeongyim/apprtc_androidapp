@@ -16,6 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -29,7 +34,7 @@ import java.util.ArrayList;
  * Use the {@link TimelineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TimelineFragment extends Fragment{
+public class TimelineFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,7 +46,9 @@ public class TimelineFragment extends Fragment{
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private OnFragmentInteractionListener mListener;
+
+    private TimelineFragment.OnFragmentInteractionListener mListener;
+
     public TimelineFragment() {
         // Required empty public constructor
     }
@@ -138,6 +145,7 @@ public class TimelineFragment extends Fragment{
 //        });
 
     }
+
 //    @Override
 //    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 //        String date = "You picked the following date: "+dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
@@ -222,7 +230,7 @@ public class TimelineFragment extends Fragment{
 }
 
 
-class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
     private ArrayList<MyData> mDataset;
 
     // Provide a reference to the views for each data item
@@ -234,6 +242,8 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public TextView mTextView;
         public TextView hashtag;
         public ImageButton fold;
+        public YouTubePlayerView youtubeView;
+        YouTubePlayer.OnInitializedListener listener;
 
         public ViewHolder(View view)
         {
@@ -242,14 +252,32 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             mTextView = (TextView)view.findViewById(R.id.textview);
             hashtag = (TextView)view.findViewById(R.id.hashtag);
             fold = (ImageButton)view.findViewById(R.id.timeline_tab);
+            youtubeView = (YouTubePlayerView)view.findViewById(R.id.youtubeView);
 
             fold.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast toast = Toast.makeText(view.getContext().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
-                    toast.show();
+//                    Toast toast = Toast.makeText(view.getContext().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
+//                    toast.show();
+                    youtubeView.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", listener);
                 }
             });
+
+
+            listener = new YouTubePlayer.OnInitializedListener() {
+                @Override
+                public void onInitializationSuccess(YouTubePlayer.Provider provider,
+                                                    YouTubePlayer youTubePlayer,
+                                                    boolean b) {
+                    youTubePlayer.loadVideo("n1T9VPG4st0");
+                }
+                @Override
+                public void onInitializationFailure(
+                        YouTubePlayer.Provider provider,
+                        YouTubeInitializationResult youTubeInitializationResult) {
+                }
+            };
+
 
         }
     }
