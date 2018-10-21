@@ -34,6 +34,11 @@ import static org.webrtc.ContextUtils.getApplicationContext;
 
 public class ChatAdapter extends ArrayAdapter {
 
+
+//    General Message = "0";
+//    Offer Plan for Video Conferrence = "1";
+//    Show Date of Last Message = "2";
+//    Start Conferrence Message = "3";
     private static final String ITEM_VIEW_TYPE_MSG = "0";
     private static final String ITEM_VIEW_TYPE_CALL = "1";
     private static final String ITEM_VIEW_TYPE_DATE = "2";
@@ -60,9 +65,6 @@ public class ChatAdapter extends ArrayAdapter {
         msgs.add(object);
         super.add(object);
     }
-    public String getType(int Pos) {
-        return msgs.get(Pos).getType();
-    }
     @Override
     public int getCount() {
         return msgs.size();
@@ -88,11 +90,11 @@ public class ChatAdapter extends ArrayAdapter {
         LayoutInflater inflater;
         inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
-        final String curuid = curuser.getUid();
         LinearLayout chatMessageContainer;
+
+        final String curuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final Message msg = msgs.get(position);
-        String viewType = getType(position);
+        String viewType = msg.getType();
 
         boolean message_left = true;
         int align= 0;
@@ -116,7 +118,6 @@ public class ChatAdapter extends ArrayAdapter {
                 TextView leftText = convertView.findViewById(R.id.leftTime);
                 ImageView rightchatPhoto = convertView.findViewById(R.id.rightmessagepic);
                 chatMessageContainer = convertView.findViewById(R.id.textLinear);
-
                 rightchatPhoto.setVisibility(View.GONE);
 
                 String t[] = msg.getSendDate().split(" ");
@@ -129,7 +130,6 @@ public class ChatAdapter extends ArrayAdapter {
                             .transform(new CropCircleTransformation())
                             .into(rightchatPhoto);
                     rightchatPhoto.setVisibility(View.VISIBLE);
-
                     rightText.setText(t2);
                 }
                 else
@@ -139,20 +139,20 @@ public class ChatAdapter extends ArrayAdapter {
                 TextView titleTextView = (TextView) convertView.findViewById(R.id.contentsTxt);
                 titleTextView.setText(msg.getContents());
                 titleTextView.setBackground(this.getContext().getResources().getDrawable((message_left ? R.drawable.inbox_out_shot_res2 : R.drawable.inbox_in_shot_res2)));
-
                 titleTextView.setTextColor(Color.parseColor(message_left ? "#0f2013" : "#c7c7c7")); //sinabro_black  &  sinabro_gray
                 chatMessageContainer.setGravity(align);
 
-                if(position!=0)
+                if(msgs.size()>0 && position > 0)
                 {
+                    Log.d("JANGMIN", "Position : " + position);
                     Message prev_msg = msgs.get(position-1);
-                    if (prev_msg.getSender().equals(msg.getSender()) && !prev_msg.getType().equals("2"))
-                    {
-                        if(message_left) {
-                        }
-                        else
+                    if(!prev_msg.getType().equals("2") && !prev_msg.getType().equals("3") ) {
+                        if (prev_msg.getSender().equals(msg.getSender()))
                         {
-                            rightchatPhoto.setVisibility(View.INVISIBLE);
+                            if (message_left) {
+                            } else {
+                                rightchatPhoto.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
                 }
