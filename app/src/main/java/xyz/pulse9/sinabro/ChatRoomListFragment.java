@@ -112,9 +112,7 @@ public class ChatRoomListFragment extends Fragment{
                 startActivity(intent);
             }
         });
-
         userDatabase= FirebaseDatabase.getInstance().getReference("users").child(curuser.getUid()).child("rooms");
-
         userDatabase.addChildEventListener(new ChildEventListener() {
             String chatroomname;
             String lastcontents;

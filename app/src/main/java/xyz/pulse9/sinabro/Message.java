@@ -49,6 +49,11 @@ public class Message {
         this.receiver=receiver;
         this.sendDate = Calendar.getInstance().getTime().toString();
     }
+
+    public Message()
+    {
+
+    }
     public Message(String type)
     {
         this.type=type;

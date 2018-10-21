@@ -73,14 +73,14 @@ public class ChatAdapter extends ArrayAdapter {
     public Message getItem(int index) {
         return (Message) msgs.get(index);
     }
-    public Message getItemByDate(String date)
+    public Message getItemByName(String Name)
     {
         for(Message k : msgs)
         {
-            if(k.getType().equals("1"))
-            {
-                k.getDate().equals(date);
-                return k;
+            if(k.getType().equals("1")) {
+                if (k.getMessageName().equals(Name)) {
+                    return k;
+                }
             }
         }
         return null;
@@ -214,12 +214,13 @@ public class ChatAdapter extends ArrayAdapter {
                         tmp.setContents("Planing Conference");
                         tmp.setPhoto(msg.getPhoto());
                         tmp.setDate(msg.getDate());
+                        tmp.setMessageName(msg.getMessageName());
+                        tmp.setChatroomname(msg.getChatroomname());
                         tmp.setChk("1");
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference ref;
                         ref = database.getReference("message").child(msg.getChatroomname());
-
                         ref.child(msg.getMessageName()).setValue(tmp);
                     }
                 });
@@ -236,12 +237,13 @@ public class ChatAdapter extends ArrayAdapter {
                         tmp.setContents("Planing Conference");
                         tmp.setPhoto(msg.getPhoto());
                         tmp.setDate(msg.getDate());
+                        tmp.setMessageName(msg.getMessageName());
+                        tmp.setChatroomname(msg.getChatroomname());
                         tmp.setChk("2");
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference ref;
                         ref = database.getReference("message").child(msg.getChatroomname());
-
                         ref.child(msg.getMessageName()).setValue(tmp);
                     }
                 });
