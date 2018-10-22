@@ -248,7 +248,10 @@ public class ChatAdapter extends ArrayAdapter {
                     }
                 });
                 TextView date = convertView.findViewById(R.id.dataTime);
-                date.setText(msg.getDate());
+                String[] k = msg.getDate().split("/");
+                k[1] = String.valueOf(Integer.parseInt(k[1]) +1);
+                String tmp = k[0] + "/" + k[1] + "/" +k[2] + "/" +k[3] + "/" +k[4];
+                date.setText(tmp);
                 break;
             case ITEM_VIEW_TYPE_DATE:
                 convertView = inflater.inflate(R.layout.chat_date,parent, false);

@@ -172,7 +172,7 @@ public class ConnectActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 if(chatAdapter.getItem(i).getType().equals("3"))
                 {
-                    connectToRoom(chatroomname);
+                    connectToRoom(chatAdapter.getItem(i).getVidRoomName());
                 }
             }
         });
@@ -240,6 +240,9 @@ public class ConnectActivity extends AppCompatActivity {
                 }
                 ref = database.getReference("message").child(chatroomname);
                 String result2 = data.getStringExtra("result");
+//                String[] k = result2.split("/");
+//                k[1] = String.valueOf(Integer.parseInt(k[1]) +1);
+//                result2 = k[0] + "/" + k[1] + "/" +k[2] + "/" +k[3] + "/" +k[4];
                 Message tmp = new Message("1", uid, receiveruid);   //test
                 String tmp_name = ref.push().getKey();
                 tmp.setMessageName(tmp_name);
@@ -515,7 +518,6 @@ public class ConnectActivity extends AppCompatActivity {
                 intent.putExtra(CallActivity.EXTRA_ID, id);
             }
 
-
             startActivity(intent);
         }
     }
@@ -584,7 +586,6 @@ public class ConnectActivity extends AppCompatActivity {
                 mMessage = dataSnapshot.getValue(Message.class);
                 chatAdapter.getItemByName(mMessage.getMessageName()).setChk(mMessage.getChk());
                 chatAdapter.notifyDataSetChanged();
-                listView.setAdapter(chatAdapter);
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
