@@ -57,4 +57,17 @@
         <item>Remove favorite</item>
     </string-array>
 
+    <!--intern1,2,3,6,dev,dev4,dev5-->
+    <!--<string-array name="teacherTokenList">-->
+        <!--<item>Jhbg1lLcwJRP7HcwHwVQwzJDy1H2</item>-->
+        <!--<item>luzZy37nmveRpTavmzgAmvOemKw1</item>-->
+        <!--<item>jsPInIrU4RMoNLNQEOYciaMScL73</item>-->
+        <!--<item>cTNzaDD7mtfqbNVs7yZRsqVQVDV2</item>-->
+        <!--<item>ltGq7etoE4cBiFhwbGbjLYAms8m1</item>-->
+        <!--<item>lzByd8SE7YYupDMHkFKhvEHZg2F3</item>-->
+        <!--<item>voc9tqPaD5anHP0z28yTuAtlxcF3</item>-->
+    <!--</string-array>-->
+
+
+
 </resources>

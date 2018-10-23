@@ -20,47 +20,17 @@ public class mPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                TabFragment.TabFragment1 tab1 = new TabFragment.TabFragment1();
-                return tab1;
-            case 1:
-                TabFragment.TabFragment2 tab2 = new TabFragment.TabFragment2();
-//                TabFragment.TabFragment1 tab2 = new TabFragment.TabFragment1();
-                return tab2;
-
-            case 2:
-                TabFragment.TabFragment3 tab3 = new TabFragment.TabFragment3();
-//                TabFragment.TabFragment1 tab3 = new TabFragment.TabFragment1();
-                return tab3;
-            case 3:
-                TabFragment.TabFragment4 tab4 = new TabFragment.TabFragment4();
-//                TabFragment.TabFragment1 tab4 = new TabFragment.TabFragment1();
-                return tab4;
-            case 4:
-                TabFragment.TabFragment5 tab5 = new TabFragment.TabFragment5();
-                return tab5;
-            case 5:
-                TabFragment.TabFragment6 tab6 = new TabFragment.TabFragment6();
-                return tab6;
-            case 6:
-                TabFragment.TabFragment7 tab7 = new TabFragment.TabFragment7();
-                return tab7;
-            case 7:
-                TabFragment.TabFragment8 tab8 = new TabFragment.TabFragment8();
-                return tab8;
-            case 8:
-                TabFragment.TabFragment9 tab9= new TabFragment.TabFragment9();
-                return tab9;
-            case 9:
-                TabFragment.TabFragment10 tab10 = new TabFragment.TabFragment10();
-                return tab10;
-            case 10:
-                TabFragment.TabFragment11 tab11 = new TabFragment.TabFragment11();
-                return tab11;
-            default:
-                return null;
-        }
+//          intern1,2,3,6,dev,dev4,dev5
+        String[] teacherToken = {"Jhbg1lLcwJRP7HcwHwVQwzJDy1H2"
+                ,"luzZy37nmveRpTavmzgAmvOemKw1"
+                ,"jsPInIrU4RMoNLNQEOYciaMScL73"
+                ,"cTNzaDD7mtfqbNVs7yZRsqVQVDV2"
+                ,"ltGq7etoE4cBiFhwbGbjLYAms8m1"
+                ,"lzByd8SE7YYupDMHkFKhvEHZg2F3"
+                ,"voc9tqPaD5anHP0z28yTuAtlxcF3"};  //임시
+        TabFragment tab = new TabFragment();
+        tab.setTeacherToken(teacherToken[position]);
+        return tab;
     }
 
     @Override

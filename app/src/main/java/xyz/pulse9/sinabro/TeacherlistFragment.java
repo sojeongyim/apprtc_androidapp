@@ -26,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.provider.FirebaseInitProvider;
 
+import java.util.ArrayList;
+
 public class TeacherlistFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,7 +37,7 @@ public class TeacherlistFragment extends Fragment {
     private TabLayout tabLayout;
     private ImageButton left_arrow;
     private ImageButton right_arrow;
-    private final int TEACHER_NUM=4;
+    private final int TEACHER_NUM=7;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -59,38 +61,15 @@ public class TeacherlistFragment extends Fragment {
         right_arrow =(ImageButton)getView().findViewById(R.id.right_arrow);
 
 
-
-        View view1 = getLayoutInflater().inflate(R.layout.customtab, null);
-        view1.findViewById(R.id.myicon).setBackgroundResource(R.drawable.user1);
-        tabLayout.addTab(tabLayout.newTab().setCustomView(view1));
-
-
-        View view2 = getLayoutInflater().inflate(R.layout.customtab, null);
-        view2.findViewById(R.id.myicon).setBackgroundResource(R.drawable.user2);
-        tabLayout.addTab(tabLayout.newTab().setCustomView(view2));
-
-
-        View view3 = getLayoutInflater().inflate(R.layout.customtab, null);
-        view3.findViewById(R.id.myicon).setBackgroundResource(R.drawable.user3);
-        tabLayout.addTab(tabLayout.newTab().setCustomView(view3));
-
-        View view4 = getLayoutInflater().inflate(R.layout.customtab, null);
-        view4.findViewById(R.id.myicon).setBackgroundResource(R.drawable.user4);
-        tabLayout.addTab(tabLayout.newTab().setCustomView(view4));
+        ArrayList<View> views =new ArrayList<>();
+        for(int i=0;i<TEACHER_NUM;i++) {
+            views.add(i, getLayoutInflater().inflate(R.layout.customtab, null));
+            views.get(i).findViewById(R.id.myicon).setBackgroundResource(R.drawable.user1); //icon teacherclass 만들어 저장할것
+            tabLayout.addTab(tabLayout.newTab().setCustomView(views.get(i)));
+        }
 
 
 //        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user1));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user2));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user3));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user4));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user5));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user6));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user7));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user8));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user9));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user10));
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user11));
-
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 

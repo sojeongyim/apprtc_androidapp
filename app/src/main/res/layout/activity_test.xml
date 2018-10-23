@@ -6,9 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="xyz.pulse9.sinabro.TestActivity">
-    ​
-
-    <view
+    ​<view
         android:id="@+id/youtubeView"
         class="com.google.android.youtube.player.YouTubePlayerView"
         id="@+id/view"

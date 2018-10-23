@@ -184,7 +184,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (curuser != null) {
             Log.d(TAG, "Auth Successed");
             Log.d(TAG, "curuser : " + curuser.getProviderId());
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, TestActivity.class);
             startActivity(intent);
             finish();
         } else
