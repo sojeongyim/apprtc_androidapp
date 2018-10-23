@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature
@@ -43,7 +44,6 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SettingsActivity"
             android:label="@string/settings_name" />
@@ -56,13 +56,14 @@
         <activity android:name=".mDatePicker" />
         <activity android:name=".mTimePicker" />
 
-        <receiver android:name=".PushInAppReceiver"/>
+        <receiver android:name=".PushInAppReceiver" />
 
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -92,6 +93,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <service android:name=".MyService">
             <intent-filter>
@@ -99,9 +103,7 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".RegisterActivity"></activity>
     </application>
-
-
-
 
 </manifest>
