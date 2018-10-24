@@ -41,7 +41,6 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 

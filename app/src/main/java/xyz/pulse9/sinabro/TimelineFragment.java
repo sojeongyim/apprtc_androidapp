@@ -6,17 +6,26 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.login.LoginManager;
+
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -30,7 +39,7 @@ import java.util.ArrayList;
  * Use the {@link TimelineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TimelineFragment extends Fragment{
+public class TimelineFragment extends YouTubePlayerSupportFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -43,20 +52,24 @@ public class TimelineFragment extends Fragment{
     private String mParam1;
     private String mParam2;
     private OnFragmentInteractionListener mListener;
+    YouTubePlayerSupportFragment youTubePlayerFragment;
+
+    public ImageButton fold;
+    YouTubePlayerView youtubeView;
+    YouTubePlayer youTubePlayer;
+    Button button;
+    YouTubePlayer.OnInitializedListener listener;
+
+
+
     public TimelineFragment() {
         // Required empty public constructor
     }
-//
-//    @Override
-//    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-//        String time = "You picked the following time: "+hourOfDay+"h"+minute+"m"+second;
-//        timeTextView.setText(time);
-//    }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.timeline_recyclerview);
 
 
@@ -69,23 +82,18 @@ public class TimelineFragment extends Fragment{
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        myDataset = new ArrayList<>();
-        mAdapter = new MyAdapter(myDataset);
-        mRecyclerView.setAdapter(mAdapter);
 
-        myDataset.add(new MyData(R.drawable.timeline01,"I’m Korean-American living in Seoul.\nBut a few years ago a serendipitous event inspired me to get back into Korea where my roots are. \nAs a Korean-American, I learned Korean as second language so that I understand how difficult it is to get fluent in Korean." +
-                "Such a hard-earning skill.\nI have better understanding of how the language can be taught as compared to the native speakers.","#JAI YOO  #cool  #dog"));
-        myDataset.add(new MyData(R.drawable.timeline02,"I’m a huge people-person and spent several years in overseas like Singapore and Hong Kong. There is nothing greater than finding opportunities for smart people to do awesome things, and teaching in Sina-bro is a fantastic process that I feel lucky to participate in.\n" +
-                "I’m much a kid at heart, love to cook, watch football, play guitar, and travel whenever I can."
-               ,"# JAI YOO  # cool  # dog"));
-        myDataset.add(new MyData(R.drawable.timeline03,"It's no surprise that I am tutoring in Sina-bro which rewards me for helping people realize their potential and setting them on their way to achieving great things.\n" +
-                "After 10+ years in teaching industry, I get as excited today as I did back then when seeing both myself and students prosper. ..."
-                ,"#JAI YOO  #cool  #dog"));
-        myDataset.add(new MyData(R.drawable.timeline04,"I love traveling the world and eating my way through the places I visit. In my spare time, I’m searching for travel deals or hang out with the new friends from Sina-bro.\n" +
-                "I’m fluent in English, and am always looking to brush up my language skills over coffee or drinks. If you challenge me to Say Wars trivia, I will win. I’m also obsessed with Music. Connect with me for networking and more.\n"
-                ,"#JAI YOO  #cool  #dog"));
-        myDataset.add(new MyData(R.drawable.timeline05,"One of my favorite things is connecting with people who have a passion for working in a self-managed organization and who genuinely love wowing their internal and external customers. For me, it’s all about discovering people’s dreams and matching them with careers that will allow them to grow and do their very best work, Getting to be yourself both inside and outside of work is where it’s at! ..."
-                ,"#JAI YOO  #cool  #dog"));
+//        myDataset = new ArrayList<>();
+//        mAdapter = new MyAdapter(myDataset);
+//        mRecyclerView.setAdapter(mAdapter);
+//        myDataset.add(new MyData("uO4BMId9e0w"));
+//        myDataset.add(new MyData("bL54g7RF5hk"));
+//        myDataset.add(new MyData("CHoPhkCzdrc"));
+//        myDataset.add(new MyData("ivG_NZojm-8"));
+//        myDataset.add(new MyData("7bR8TG2HgVA"));
+
+
+
 
         ImageButton setting_butt = (ImageButton) getView().findViewById(R.id.setting);
 
@@ -130,22 +138,33 @@ public class TimelineFragment extends Fragment{
             }
         });
 
-//        fold.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast toast = Toast.makeText(view.getContext(),"Coming Soon...", Toast.LENGTH_SHORT);
-//                toast.show();
+//        button = (Button)getView().findViewById(R.id.youtubeButton);
+//        youtubeView = (YouTubePlayerView)getView().findViewById(R.id.youtubeView);
+//        fold = (ImageButton)getView().findViewById(R.id.timeline_tab);
 //
+//        listener = new YouTubePlayer.OnInitializedListener() {
+//            @Override
+//            public void onInitializationSuccess(YouTubePlayer.Provider provider,
+//                                                YouTubePlayer youTubePlayer,
+//                                                boolean b) {
+//                youTubePlayer.loadVideo("uO4BMId9e0w");
+//            }
+//            @Override
+//            public void onInitializationFailure(
+//                    YouTubePlayer.Provider provider,
+//                    YouTubeInitializationResult youTubeInitializationResult) {
+//            }
+//        };
+//        button.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                youtubeView.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", listener);
 //            }
 //        });
+////        initYouTube();
 
     }
-//    @Override
-//    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-//        String date = "You picked the following date: "+dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
-////        dateTextView.setText(date);
-//        Log.e("sojeong")
-//    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -176,9 +195,38 @@ public class TimelineFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+//        initYouTube();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_timeline, container, false);
     }
+    private void initYouTube() {
+        youTubePlayerFragment= YouTubePlayerSupportFragment.newInstance();
+        if (youTubePlayerFragment == null) {
+            youTubePlayerFragment = (YouTubePlayerSupportFragment)getChildFragmentManager().findFragmentById(R.id.youtubeView);
+            youTubePlayerFragment.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", new YouTubePlayer.OnInitializedListener() {
+                @Override
+                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
+                    Log.i("Detail","YouTube Player onInitializationSuccess");
+
+                    // Don't do full screen
+                    player.setFullscreen(false);
+                    if (!wasRestored) {
+                        youTubePlayer = player;
+//                        cueVideoIfNeeded();
+                    }
+                }
+
+                @Override
+                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+                    Log.i("Detail", "Failed: "+youTubeInitializationResult);
+
+                }
+            });
+        }
+    }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -227,23 +275,45 @@ public class TimelineFragment extends Fragment{
 class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<MyData> mDataset;
 
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public ImageView mImageView;
-        public TextView mTextView;
-        public TextView hashtag;
         public ImageButton fold;
+        YouTubePlayerView youtubeView;
+        Button button;
+        YouTubePlayer.OnInitializedListener listener;
+        String videoCode;
+
 
         public ViewHolder(View view)
         {
             super(view);
-            mImageView = (ImageView)view.findViewById(R.id.image);
-            mTextView = (TextView)view.findViewById(R.id.textview);
-            hashtag = (TextView)view.findViewById(R.id.hashtag);
+            button = (Button)view.findViewById(R.id.youtubeButton);
+            youtubeView = (YouTubePlayerView)view.findViewById(R.id.youtubeView);
             fold = (ImageButton)view.findViewById(R.id.timeline_tab);
+
+            listener = new YouTubePlayer.OnInitializedListener() {
+                @Override
+                public void onInitializationSuccess(YouTubePlayer.Provider provider,
+                                                    YouTubePlayer youTubePlayer,
+                                                    boolean b) {
+                    youTubePlayer.loadVideo(videoCode);
+                }
+                @Override
+                public void onInitializationFailure(
+                        YouTubePlayer.Provider provider,
+                        YouTubeInitializationResult youTubeInitializationResult) {
+                }
+            };
+            button.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    youtubeView.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", listener);
+                }
+            });
 
             fold.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -269,6 +339,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.timeline_onelayout, parent, false);
         // set the view's size, margins, paddings and layout parameters
+
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -278,9 +349,8 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset.get(position).text);
-        holder.mImageView.setImageResource(mDataset.get(position).img);
-        holder.hashtag.setText(mDataset.get(position).text_hashtag);
+        holder.videoCode=mDataset.get(position).video_code;
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -291,13 +361,10 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 }
 
 class MyData{
-    public String text;
-    public int img;
-    public String text_hashtag;
-    public MyData(int img, String text,String hashtag){
-        this.img = img;
-        this.text = text;
-        this.text_hashtag = hashtag;
+    public String video_code;
+
+    public MyData(String code){
+        this.video_code = code;
     }
 }
 

@@ -55,8 +55,8 @@
             android:theme="@style/CallActivityTheme" />
         <activity android:name=".mDatePicker" />
         <activity android:name=".mTimePicker" />
-
-        <receiver android:name=".PushInAppReceiver" />
+        <activity android:name=".TestActivity" />
+        <receiver android:name=".PushInAppReceiver"/>
 
         <activity
             android:name=".LoginActivity"

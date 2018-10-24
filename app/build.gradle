@@ -5,6 +5,7 @@ android {
 
     repositories {
         jcenter()
+        maven { url "https://maven.google.com" }
     }
 
     sourceSets.main {
@@ -18,8 +19,8 @@ android {
         minSdkVersion 16
         targetSdkVersion 26
 
-        versionCode 15663
-        versionName "r15663"
+        versionCode 15664
+        versionName "1.1"
 
         testApplicationId "xyz.pulse9.sinabro.test"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
@@ -42,19 +43,18 @@ dependencies {
 //    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
-
-    implementation 'com.google.firebase:firebase-auth:16.0.2'
-    implementation 'com.google.android.gms:play-services-auth:15.0.1'
-    implementation 'com.google.firebase:firebase-core:16.0.1'
-    implementation 'com.google.firebase:firebase-messaging:17.3.1'
-    implementation "com.google.firebase:firebase-database:16.0.1"
+    implementation 'com.google.firebase:firebase-auth:16.0.4'
+    implementation 'com.google.android.gms:play-services-auth:16.0.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:16.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-messaging:17.3.3'
+    implementation 'com.google.firebase:firebase-database:16.0.3'
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:26.4.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-//    implementation 'com.android.support:recyclerview-v7:26.4.0'
-//    implementation 'com.android.support:design:26.4.0'
+    //    implementation 'com.android.support:recyclerview-v7:26.4.0'
+    //    implementation 'com.android.support:design:26.4.0'
     implementation 'com.android.support:support-vector-drawable:26.4.0'
-
     implementation 'com.android.support:support-v4:26.1.0'
     implementation files('libs/audio_device_java.jar')
     implementation files('libs/autobanh.jar')
@@ -69,7 +69,7 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:26.0.+'
 
     implementation 'com.android.support:design:26.1.0'
-
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 
 }
 apply plugin: 'com.google.gms.google-services'

@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
-
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
             Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.navigation_timeline:
-                    fragment = new TimelineFragment();
-                    loadFragment(fragment);
+                    YouTubePlayerSupportFragment yfragment = new TimelineFragment();
+                    loadyoutubeFragment(yfragment);
                     item.setChecked(true);
                     return true;
                 case R.id.navigation_chatings:
@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
                 Activity.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
+
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users");
         final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
@@ -100,6 +102,18 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         transaction.replace(R.id.flContainer, fragment);
         transaction.commit();
     }
+
+    private void loadyoutubeFragment(YouTubePlayerSupportFragment fragment) {
+        //sojeong
+        fragment = new YouTubePlayerSupportFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .replace(R.id.flContainer, fragment)
+                .addToBackStack(null)
+                .commit();
+        //
+    }
+
 
     @Override
     public void onFragmentInteraction(Uri uri) {
