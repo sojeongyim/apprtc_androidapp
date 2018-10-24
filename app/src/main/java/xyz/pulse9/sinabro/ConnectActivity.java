@@ -55,6 +55,7 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class ConnectActivity extends AppCompatActivity {
 
+    public static final int VIDCALL = 100;
     private DatabaseReference myDatabase;
     private DatabaseReference userDatabase;
     private String cur_pick;
@@ -230,7 +231,7 @@ public class ConnectActivity extends AppCompatActivity {
                 Intent intent = new Intent(ConnectActivity.this, mTimePicker.class);
                 intent.putExtra("result",result);
                 startActivityForResult(intent, 2);
-            }else{//requestCode == 2
+            }else if(requestCode == 2 ){//requestCode == 2
                 DatabaseReference ref;
                 if (chatroomname.equals("none")) {
                     // It Duplicate Chatrooms
@@ -252,6 +253,16 @@ public class ConnectActivity extends AppCompatActivity {
                 tmp.setChk("0");
                 tmp.setChatroomname(chatroomname);
                 ref.child(tmp_name).setValue(tmp);
+            }
+            else if(requestCode==VIDCALL)
+            {
+                Long result = data.getLongExtra("millisec", 0);
+                Log.d("JANGMIN", "How long ~~? : " + String.valueOf(result));
+                Message tmpMessage = new Message("4", String.valueOf(result/1000));
+
+                DatabaseReference ref;
+                ref = database.getReference("message").child(chatroomname);
+                ref.push().setValue(tmpMessage);
             }
         }
     }
@@ -518,7 +529,8 @@ public class ConnectActivity extends AppCompatActivity {
                 intent.putExtra(CallActivity.EXTRA_ID, id);
             }
 
-            startActivity(intent);
+//            startActivity(intent);
+            startActivityForResult(intent, VIDCALL);
         }
     }
     private boolean validateUrl(String url) {

@@ -35,8 +35,6 @@ import java.util.Locale;
 import static org.webrtc.ContextUtils.getApplicationContext;
 
 public class ChatAdapter extends ArrayAdapter {
-
-
 //    General Message = "0";
 //    Offer Plan for Video Conferrence = "1";
 //    Show Date of Last Message = "2";
@@ -45,6 +43,7 @@ public class ChatAdapter extends ArrayAdapter {
     private static final String ITEM_VIEW_TYPE_CALL = "1";
     private static final String ITEM_VIEW_TYPE_DATE = "2";
     private static final String ITEM_VIEW_TYPE_CONF = "3";
+    private static final String ITEM_VIEW_TYPE_END = "4";
 
     List<Message> msgs = new ArrayList();
 
@@ -116,7 +115,6 @@ public class ChatAdapter extends ArrayAdapter {
         switch (viewType) {
             case ITEM_VIEW_TYPE_MSG:
                 convertView = inflater.inflate(R.layout.chat_message,parent, false);
-                convertView.setAlpha(getAlpha(position));
                 TextView rightText = convertView.findViewById(R.id.rightTime);
                 TextView leftText = convertView.findViewById(R.id.leftTime);
                 ImageView rightchatPhoto = convertView.findViewById(R.id.rightmessagepic);
@@ -149,7 +147,7 @@ public class ChatAdapter extends ArrayAdapter {
                 {
                     Log.d("JANGMIN", "Position : " + position);
                     Message prev_msg = msgs.get(position-1);
-                    if(!prev_msg.getType().equals("2") && !prev_msg.getType().equals("3") ) {
+                    if(!prev_msg.getType().equals("2") && !prev_msg.getType().equals("3")&& !prev_msg.getType().equals("4") ) {
                         if (prev_msg.getSender().equals(msg.getSender()))
                         {
                             if (message_left) {
@@ -170,7 +168,6 @@ public class ChatAdapter extends ArrayAdapter {
                 final Button acceptBtn = convertView.findViewById(R.id.acceptBtn);
                 final Button denyBtn = convertView.findViewById(R.id.denyBtn);
                 final Button resultBtn = convertView.findViewById(R.id.resultBtn);
-                convertView.setAlpha(getAlpha(position));
 
                 resultBtn.setEnabled(false);
                 // 0 for Nothing
@@ -265,7 +262,16 @@ public class ChatAdapter extends ArrayAdapter {
             case ITEM_VIEW_TYPE_CONF:
                 convertView = inflater.inflate(R.layout.chat_startconf,parent, false);
                 break;
+            case ITEM_VIEW_TYPE_END:
+                convertView = inflater.inflate(R.layout.chat_end,parent, false);
+                TextView durationTxt = convertView.findViewById(R.id.durationTxt);
+                int sec = Integer.parseInt(msg.getCallTime());
+                int min = sec/60;
+                sec = sec%60;
+                durationTxt.setText(min + " : " + sec);
+                break;
         }
+        convertView.setAlpha(getAlpha(position));
         return convertView;
 
     }

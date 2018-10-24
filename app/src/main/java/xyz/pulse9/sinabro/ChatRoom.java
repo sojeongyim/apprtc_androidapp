@@ -16,6 +16,11 @@ public class ChatRoom {
     private String lastcontents;
     private String time;
 
+    public ChatRoom()
+    {
+
+    }
+
     public ChatRoom(String roomName, String receiver, String nickname, String photo, String lastcontents, String time) {
         this.RoomName = roomName;
         this.receiver = receiver;

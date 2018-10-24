@@ -41,6 +41,7 @@ public class Message {
     private String chatroomname;
     private String MessageName;
     private String vidRoomName;
+    private String callTime;
 
     public Message(String type, String sender, String receiver)
     {
@@ -49,16 +50,16 @@ public class Message {
         this.receiver=receiver;
         this.sendDate = Calendar.getInstance().getTime().toString();
     }
-
     public Message()
     {
 
     }
-    public Message(String type)
+    public Message(String type, String callTime)
     {
         this.type=type;
-        this.sendDate = Calendar.getInstance().getTime().toString();
+        this.callTime=callTime;
     }
+
     public Message(String type, String sender, String receiver, String sendDate)
     {
         this.type=type;
@@ -131,6 +132,14 @@ public class Message {
     }
     public void setVidRoomName(String vidRoomName) {
         this.vidRoomName = vidRoomName;
+    }
+
+    public String getCallTime() {
+        return callTime;
+    }
+
+    public void setCallTime(String callTime) {
+        this.callTime = callTime;
     }
 }
 

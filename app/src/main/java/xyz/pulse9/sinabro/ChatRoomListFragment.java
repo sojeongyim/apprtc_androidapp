@@ -139,13 +139,9 @@ public class ChatRoomListFragment extends Fragment{
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                chatroomname = dataSnapshot.getRef().getKey();
-                receiveruid = dataSnapshot.child("receiver").getValue().toString();
-                receivernick = dataSnapshot.child("nickname").getValue().toString();
-                lastcontents = dataSnapshot.child("lastcontents").getValue().toString();
-                receiverphoto = dataSnapshot.child("photo").getValue().toString();
-                lastTime = dataSnapshot.child("time").getValue().toString();
-                ChatRoom chatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, lastcontents, lastTime);
+                ChatRoom chatRoom;
+                chatRoom = dataSnapshot.getValue(ChatRoom.class);
+                chatRoom.setRoomName(dataSnapshot.getRef().getKey());
                 chatRoomAdapter.add(chatRoom);
                 chatRoomAdapter.sortList();
                 chatRoomAdapter.notifyDataSetChanged();
@@ -159,7 +155,6 @@ public class ChatRoomListFragment extends Fragment{
                 chatRoomAdapter.refresh(chatroomname, lastcontents, lastTime);
                 chatRoomAdapter.sortList();
                 chatRoomAdapter.notifyDataSetChanged();
-
                 if(dataSnapshot.getChildrenCount()==0)
                 {
                     noTxt.setVisibility(View.VISIBLE);
