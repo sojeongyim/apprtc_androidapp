@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ import java.util.ArrayList;
  * Use the {@link TimelineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TimelineFragment extends Fragment{
+public class TimelineFragment extends YouTubePlayerSupportFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -50,16 +51,19 @@ public class TimelineFragment extends Fragment{
     private String mParam1;
     private String mParam2;
     private OnFragmentInteractionListener mListener;
+    YouTubePlayerSupportFragment youTubePlayerFragment;
+
+    public ImageButton fold;
+    YouTubePlayerView youtubeView;
+    YouTubePlayer youTubePlayer;
+    Button button;
+    YouTubePlayer.OnInitializedListener listener;
+
+
+
     public TimelineFragment() {
         // Required empty public constructor
     }
-//
-//    @Override
-//    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-//        String time = "You picked the following time: "+hourOfDay+"h"+minute+"m"+second;
-//        timeTextView.setText(time);
-//    }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -78,14 +82,17 @@ public class TimelineFragment extends Fragment{
 
         // specify an adapter (see also next example)
 
-        myDataset = new ArrayList<>();
-        mAdapter = new MyAdapter(myDataset);
-        mRecyclerView.setAdapter(mAdapter);
-        myDataset.add(new MyData("uO4BMId9e0w"));
-        myDataset.add(new MyData("bL54g7RF5hk"));
-        myDataset.add(new MyData("CHoPhkCzdrc"));
-        myDataset.add(new MyData("ivG_NZojm-8"));
-        myDataset.add(new MyData("7bR8TG2HgVA"));
+//        myDataset = new ArrayList<>();
+//        mAdapter = new MyAdapter(myDataset);
+//        mRecyclerView.setAdapter(mAdapter);
+//        myDataset.add(new MyData("uO4BMId9e0w"));
+//        myDataset.add(new MyData("bL54g7RF5hk"));
+//        myDataset.add(new MyData("CHoPhkCzdrc"));
+//        myDataset.add(new MyData("ivG_NZojm-8"));
+//        myDataset.add(new MyData("7bR8TG2HgVA"));
+
+
+
 
         ImageButton setting_butt = (ImageButton) getView().findViewById(R.id.setting);
 
@@ -129,16 +136,33 @@ public class TimelineFragment extends Fragment{
             }
         });
 
+//        button = (Button)getView().findViewById(R.id.youtubeButton);
+//        youtubeView = (YouTubePlayerView)getView().findViewById(R.id.youtubeView);
+//        fold = (ImageButton)getView().findViewById(R.id.timeline_tab);
+//
+//        listener = new YouTubePlayer.OnInitializedListener() {
+//            @Override
+//            public void onInitializationSuccess(YouTubePlayer.Provider provider,
+//                                                YouTubePlayer youTubePlayer,
+//                                                boolean b) {
+//                youTubePlayer.loadVideo("uO4BMId9e0w");
+//            }
+//            @Override
+//            public void onInitializationFailure(
+//                    YouTubePlayer.Provider provider,
+//                    YouTubeInitializationResult youTubeInitializationResult) {
+//            }
+//        };
+//        button.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                youtubeView.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", listener);
+//            }
+//        });
+////        initYouTube();
 
     }
 
-
-//    @Override
-//    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-//        String date = "You picked the following date: "+dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
-////        dateTextView.setText(date);
-//        Log.e("sojeong")
-//    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -169,9 +193,38 @@ public class TimelineFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+//        initYouTube();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_timeline, container, false);
     }
+    private void initYouTube() {
+        youTubePlayerFragment= YouTubePlayerSupportFragment.newInstance();
+        if (youTubePlayerFragment == null) {
+            youTubePlayerFragment = (YouTubePlayerSupportFragment)getChildFragmentManager().findFragmentById(R.id.youtubeView);
+            youTubePlayerFragment.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", new YouTubePlayer.OnInitializedListener() {
+                @Override
+                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
+                    Log.i("Detail","YouTube Player onInitializationSuccess");
+
+                    // Don't do full screen
+                    player.setFullscreen(false);
+                    if (!wasRestored) {
+                        youTubePlayer = player;
+//                        cueVideoIfNeeded();
+                    }
+                }
+
+                @Override
+                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+                    Log.i("Detail", "Failed: "+youTubeInitializationResult);
+
+                }
+            });
+        }
+    }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

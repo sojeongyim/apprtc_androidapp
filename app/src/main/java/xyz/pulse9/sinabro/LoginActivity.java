@@ -33,6 +33,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import junit.framework.Test;
+
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{   //login page(첫화면)
 
@@ -184,7 +186,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (curuser != null) {
             Log.d(TAG, "Auth Successed");
             Log.d(TAG, "curuser : " + curuser.getProviderId());
-            Intent intent = new Intent(this, TestActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         } else

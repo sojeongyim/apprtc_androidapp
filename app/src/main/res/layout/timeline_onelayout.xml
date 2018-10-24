@@ -57,19 +57,24 @@
                 app:srcCompat="@drawable/fold" />
         </LinearLayout>
 
-        ​<com.google.android.youtube.player.YouTubePlayerView
-        android:id="@+id/youtubeView"
-        layout_alignParentTop="true"
-        layout_centerHorizontal="true"
-        layout_marginTop="99dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="31dp" />
-        ​
+        <!--​<com.google.android.youtube.player.YouTubePlayerView-->
+        <!--android:id="@+id/youtubeView"-->
+        <!--layout_alignParentTop="true"-->
+        <!--layout_centerHorizontal="true"-->
+        <!--layout_marginTop="99dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="6"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_marginTop="31dp" />-->
+
+        <com.google.android.youtube.player.YouTubePlayerView
+            android:id="@+id/youtubeView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"/>
         <Button
             android:id="@+id/youtubeButton"
             android:layout_width="wrap_content"
