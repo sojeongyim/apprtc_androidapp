@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -114,6 +116,7 @@ public class ChatAdapter extends ArrayAdapter {
         switch (viewType) {
             case ITEM_VIEW_TYPE_MSG:
                 convertView = inflater.inflate(R.layout.chat_message,parent, false);
+                convertView.setAlpha(getAlpha(position));
                 TextView rightText = convertView.findViewById(R.id.rightTime);
                 TextView leftText = convertView.findViewById(R.id.leftTime);
                 ImageView rightchatPhoto = convertView.findViewById(R.id.rightmessagepic);
@@ -167,6 +170,7 @@ public class ChatAdapter extends ArrayAdapter {
                 final Button acceptBtn = convertView.findViewById(R.id.acceptBtn);
                 final Button denyBtn = convertView.findViewById(R.id.denyBtn);
                 final Button resultBtn = convertView.findViewById(R.id.resultBtn);
+                convertView.setAlpha(getAlpha(position));
 
                 resultBtn.setEnabled(false);
                 // 0 for Nothing
@@ -263,5 +267,15 @@ public class ChatAdapter extends ArrayAdapter {
                 break;
         }
         return convertView;
+
+    }
+
+    private float getAlpha(int position) {
+        float min = 0.5f;
+        float alpha = Math.abs(getCount() - position - 1);
+        alpha = (255f - alpha * 7f) / 255f;
+        Log.d("ALPHA", String.valueOf(Math.max(min, alpha)));
+        Log.d("ALPHA", "It is alpha : " + String.valueOf(alpha));
+        return Math.max(min, alpha);
     }
 }

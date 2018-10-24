@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="facebook_app_id">1907106906046525</string>
-    <string name="fb_login_protocol_scheme">fb1907106906046525</string>
+    <string name="facebook_app_id">1635435253250587</string>
+    <string name="fb_login_protocol_scheme">fb1635435253250587</string>
     <string name="app_name" translatable="false">Sina Bro</string>
     <string name="settings_name" translatable="false">AppRTC Settings</string>
     <string name="login_name">Login</string>

@@ -25,6 +25,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.LoggingBehavior;
 import com.facebook.login.Login;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth mAuth;
     private ImageView fb;
     private ImageView ggl;
+    LoginButton loginButton;
 
     private EditText idinput;
     private EditText pwdinput;
@@ -61,8 +63,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ImageButton loginBtn;
     private ProgressDialog mProgress;
     private CallbackManager mCallbackManager;
-//                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +73,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             FacebookSdk.setIsDebugEnabled(true);
             FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
         }
-
         mProgress = new ProgressDialog(this);
         mProgress.setTitle("Sinabro...");
         mProgress.setMessage("Please wait...");
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
+
 
         loginBtn=findViewById(R.id.loginBtn);
         fb=findViewById(R.id.fakeFB);
@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = findViewById(R.id.login_button);
+        loginButton = findViewById(R.id.login_button);
         loginButton.setReadPermissions("email", "public_profile");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -138,7 +138,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerUser();
+//                registerUser();
+                loginButton.performClick();
             }
         });
 
@@ -148,45 +149,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-
-//        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-//
-//        boolean isLoggedIn;
-//        isLoggedIn = accessToken != null && !accessToken.isExpired();
-//        Log.d(TAG, "isLoggedIn" + isLoggedIn);
-//
-//        if (isLoggedIn)
-//        {
-//            Log.d(TAG, "Token : " +accessToken.getToken());
-//            Log.d(TAG, "UID : " +accessToken.getUserId());
-//            handleFacebookAccessToken(accessToken);
-//
-//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//            startActivity(intent);
-//        }
-//
-//        LoginButton loginButton = (LoginButton) findViewById(R.id.facebook_login);
-//        loginButton.setReadPermissions("email", "public_profile");
-//        CallbackManager mCallbackManager = CallbackManager.Factory.create();
-//        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-//            @Override
-//            public void onSuccess(LoginResult loginResult) {
-//                Log.d(TAG, "facebook:onSuccess:" + loginResult);
-//                handleFacebookAccessToken(loginResult.getAccessToken());
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//                Log.d(TAG, "facebook:onCancel");
-//                // ...
-//            }
-//
-//            @Override
-//            public void onError(FacebookException error) {
-//                Log.d(TAG, "facebook:onError", error);
-//                // ...
-//            }
-//        });
     }
 
     private void registerUser() {
@@ -285,7 +247,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
-//        showProgressDialog();
+        mProgress.show();
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
@@ -304,9 +266,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
-//                        hideProgressDialog();
+                        mProgress.dismiss();
                     }
                 });
     }
-
 }

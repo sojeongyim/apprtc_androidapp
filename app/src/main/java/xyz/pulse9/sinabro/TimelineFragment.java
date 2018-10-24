@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -96,6 +97,7 @@ public class TimelineFragment extends Fragment{
 //                Intent intent = new Intent(getActivity(), AppSettingActivity.class);
 //                startActivity(intent);
                 FirebaseAuth.getInstance().signOut();
+                LoginManager.getInstance().logOut();
                 Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Logout Complete", Toast.LENGTH_SHORT);
                 toast.show();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
