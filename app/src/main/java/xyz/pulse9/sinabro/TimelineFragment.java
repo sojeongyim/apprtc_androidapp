@@ -38,7 +38,7 @@ import java.util.ArrayList;
  * Use the {@link TimelineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TimelineFragment extends YouTubePlayerSupportFragment {
+public class TimelineFragment extends YouTubePlayerSupportFragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -54,8 +54,7 @@ public class TimelineFragment extends YouTubePlayerSupportFragment {
     YouTubePlayerSupportFragment youTubePlayerFragment;
 
     public ImageButton fold;
-    YouTubePlayerView youtubeView;
-    YouTubePlayer youTubePlayer;
+//    YouTubePlayerView youtubeView;
     Button button;
     YouTubePlayer.OnInitializedListener listener;
 
@@ -69,18 +68,18 @@ public class TimelineFragment extends YouTubePlayerSupportFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mRecyclerView = (RecyclerView) getView().findViewById(R.id.timeline_recyclerview);
-
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
+//        mRecyclerView = (RecyclerView) getView().findViewById(R.id.timeline_recyclerview);
+//
+//
+//        // use this setting to improve performance if you know that changes
+//        // in content do not change the layout size of the RecyclerView
+//        mRecyclerView.setHasFixedSize(true);
+//
+//        // use a linear layout manager
+//        mLayoutManager = new LinearLayoutManager(getActivity());
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+//
+//        // specify an adapter (see also next example)
 
 //        myDataset = new ArrayList<>();
 //        mAdapter = new MyAdapter(myDataset);
@@ -94,52 +93,52 @@ public class TimelineFragment extends YouTubePlayerSupportFragment {
 
 
 
-        ImageButton setting_butt = (ImageButton) getView().findViewById(R.id.setting);
-
-        ImageButton notice_butt = (ImageButton) getView().findViewById(R.id.notice);
-
-        setting_butt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), AppSettingActivity.class);
+//        ImageButton setting_butt = (ImageButton) getView().findViewById(R.id.setting);
+//
+//        ImageButton notice_butt = (ImageButton) getView().findViewById(R.id.notice);
+//
+//        setting_butt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                Intent intent = new Intent(getActivity(), AppSettingActivity.class);
+////                startActivity(intent);
+//                FirebaseAuth.getInstance().signOut();
+//                Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Logout Complete", Toast.LENGTH_SHORT);
+//                toast.show();
+//                Intent intent = new Intent(getActivity(), LoginActivity.class);
 //                startActivity(intent);
-                FirebaseAuth.getInstance().signOut();
-                Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Logout Complete", Toast.LENGTH_SHORT);
-                toast.show();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-                getActivity().finish();
-
-            }
-        });
-        notice_butt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
-                toast.show();
-//                FragmentManager fm = getFragmentManager();
-//                FragmentTransaction ft = fm.beginTransaction();
-//                ChatRoomListFragment llf = new ChatRoomListFragment();
-//                ft.replace(R.id.flContainer, llf);
-//                ft.commit();
-
-
-//                Calendar now = Calendar.getInstance();
-//                DatePickerDialog dpd = DatePickerDialog.newInstance(
-//                        (DatePickerDialog.OnDateSetListener) getActivity(),
-//                        now.get(Calendar.YEAR), // Initial year selection
-//                        now.get(Calendar.MONTH), // Initial month selection
-//                        now.get(Calendar.DAY_OF_MONTH) // Inital day selection
-//                );
-//                dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
-//                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
-            }
-        });
+//                getActivity().finish();
+//
+//            }
+//        });
+//        notice_butt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
+//                toast.show();
+////                FragmentManager fm = getFragmentManager();
+////                FragmentTransaction ft = fm.beginTransaction();
+////                ChatRoomListFragment llf = new ChatRoomListFragment();
+////                ft.replace(R.id.flContainer, llf);
+////                ft.commit();
+//
+//
+////                Calendar now = Calendar.getInstance();
+////                DatePickerDialog dpd = DatePickerDialog.newInstance(
+////                        (DatePickerDialog.OnDateSetListener) getActivity(),
+////                        now.get(Calendar.YEAR), // Initial year selection
+////                        now.get(Calendar.MONTH), // Initial month selection
+////                        now.get(Calendar.DAY_OF_MONTH) // Inital day selection
+////                );
+////                dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
+////                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+//            }
+//        });
 
 //        button = (Button)getView().findViewById(R.id.youtubeButton);
 //        youtubeView = (YouTubePlayerView)getView().findViewById(R.id.youtubeView);
-//        fold = (ImageButton)getView().findViewById(R.id.timeline_tab);
-//
+        fold = (ImageButton)getView().findViewById(R.id.timeline_tab);
+
 //        listener = new YouTubePlayer.OnInitializedListener() {
 //            @Override
 //            public void onInitializationSuccess(YouTubePlayer.Provider provider,
@@ -159,7 +158,7 @@ public class TimelineFragment extends YouTubePlayerSupportFragment {
 //                youtubeView.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", listener);
 //            }
 //        });
-////        initYouTube();
+//        initYouTube();
 
     }
 
@@ -193,15 +192,20 @@ public class TimelineFragment extends YouTubePlayerSupportFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-//        initYouTube();
+        View v=inflater.inflate(R.layout.timeline_onelayout, container, false);
+        initYouTube();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_timeline, container, false);
+        return v;
     }
     private void initYouTube() {
         youTubePlayerFragment= YouTubePlayerSupportFragment.newInstance();
         if (youTubePlayerFragment == null) {
+
             youTubePlayerFragment = (YouTubePlayerSupportFragment)getChildFragmentManager().findFragmentById(R.id.youtubeView);
+
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            transaction.add(R.id.youtubeView, youTubePlayerFragment).commit();
+
             youTubePlayerFragment.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", new YouTubePlayer.OnInitializedListener() {
                 @Override
                 public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
@@ -210,14 +214,18 @@ public class TimelineFragment extends YouTubePlayerSupportFragment {
                     // Don't do full screen
                     player.setFullscreen(false);
                     if (!wasRestored) {
-                        youTubePlayer = player;
+                        player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
+                        player.loadVideo("uO4BMId9e0w");
+                        player.play();
 //                        cueVideoIfNeeded();
                     }
                 }
 
                 @Override
                 public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-                    Log.i("Detail", "Failed: "+youTubeInitializationResult);
+                    String errorMessage = youTubeInitializationResult.toString();
+                    Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
+                    Log.d("errorMessage:", errorMessage);
 
                 }
             });

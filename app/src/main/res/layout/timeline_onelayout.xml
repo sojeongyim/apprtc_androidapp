@@ -70,7 +70,7 @@
         <!--android:layout_alignParentTop="true"-->
         <!--android:layout_marginTop="31dp" />-->
 
-        <com.google.android.youtube.player.YouTubePlayerView
+        <FrameLayout
             android:id="@+id/youtubeView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
