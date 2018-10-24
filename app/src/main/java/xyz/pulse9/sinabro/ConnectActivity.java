@@ -55,6 +55,7 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class ConnectActivity extends AppCompatActivity {
 
+    public static final int VIDCALL = 100;
     private DatabaseReference myDatabase;
     private DatabaseReference userDatabase;
     private String cur_pick;
@@ -63,18 +64,15 @@ public class ConnectActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
-
     private final static String TAG = "ConnectActivity";
     ChatAdapter chatAdapter;
     String chatroomname = "none";
     FirebaseDatabase database;
-
     private String uid;
     private String receiveruid;
     private ImageButton vidBtn;
     private ImageButton backBtn;
     private ImageButton sendBtn;
-
     private EditText sendMsg;
     private SharedPreferences sharedPref;
     private String keyprefResolution;
@@ -131,13 +129,10 @@ public class ConnectActivity extends AppCompatActivity {
         Intent intent2 = getIntent();
         uid = curuser.getUid();
         cur_pick = curuser.getPhotoUrl().toString();
-
         chatroomname = intent2.getStringExtra("chatroomname");
         receiveruid = intent2.getStringExtra("receiveruid");
 
-
         userDatabase = database.getReference("users");
-
         userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -152,8 +147,8 @@ public class ConnectActivity extends AppCompatActivity {
 
             }
         });
-
-        if (!chatroomname.equals("none")) {
+        if (!chatroomname.equals("none"))
+        {
             initDB(chatroomname);
         }
 
@@ -171,7 +166,6 @@ public class ConnectActivity extends AppCompatActivity {
                 listView.setSelection(chatAdapter.getCount() - 1);
             }
         });
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -179,11 +173,10 @@ public class ConnectActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 if(chatAdapter.getItem(i).getType().equals("3"))
                 {
-                    connectToRoom(chatroomname);
+                    connectToRoom(chatAdapter.getItem(i).getVidRoomName());
                 }
             }
         });
-
         vidBtn = (ImageButton) findViewById(R.id.vidBtn);
         vidBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,7 +205,6 @@ public class ConnectActivity extends AppCompatActivity {
                 });
             }
         });
-
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -220,7 +212,6 @@ public class ConnectActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.BLUETOOTH},
                     202);
         }
-
         // Get setting keys.
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -240,16 +231,7 @@ public class ConnectActivity extends AppCompatActivity {
                 Intent intent = new Intent(ConnectActivity.this, mTimePicker.class);
                 intent.putExtra("result",result);
                 startActivityForResult(intent, 2);
-
-            }else{//requestCode == 2
-                String result2 = data.getStringExtra("result");
-                Message tmp = new Message("1", uid, receiveruid);   //test
-                tmp.setContents("Planing Conference");
-                tmp.setPhoto(senderphoto);
-                tmp.setDate(result2);
-                tmp.setChk("0");
-                tmp.setChatroomname(chatroomname);
-
+            }else if(requestCode == 2 ){//requestCode == 2
                 DatabaseReference ref;
                 if (chatroomname.equals("none")) {
                     // It Duplicate Chatrooms
@@ -258,14 +240,32 @@ public class ConnectActivity extends AppCompatActivity {
                     initDB(chatroomname);
                 }
                 ref = database.getReference("message").child(chatroomname);
-                ref.push().setValue(tmp);
+                String result2 = data.getStringExtra("result");
+//                String[] k = result2.split("/");
+//                k[1] = String.valueOf(Integer.parseInt(k[1]) +1);
+//                result2 = k[0] + "/" + k[1] + "/" +k[2] + "/" +k[3] + "/" +k[4];
+                Message tmp = new Message("1", uid, receiveruid);   //test
+                String tmp_name = ref.push().getKey();
+                tmp.setMessageName(tmp_name);
+                tmp.setContents("Planing Conference");
+                tmp.setPhoto(senderphoto);
+                tmp.setDate(result2);
+                tmp.setChk("0");
+                tmp.setChatroomname(chatroomname);
+                ref.child(tmp_name).setValue(tmp);
+            }
+            else if(requestCode==VIDCALL)
+            {
+                Long result = data.getLongExtra("millisec", 0);
+                Log.d("JANGMIN", "How long ~~? : " + String.valueOf(result));
+                Message tmpMessage = new Message("4", String.valueOf(result/1000));
 
+                DatabaseReference ref;
+                ref = database.getReference("message").child(chatroomname);
+                ref.push().setValue(tmpMessage);
             }
         }
-
     }
-
-
     @Override
     public void onPause() {
         super.onPause();
@@ -293,7 +293,6 @@ public class ConnectActivity extends AppCompatActivity {
             return sharedPref.getString(attributeName, defaultValue);
         }
     }
-
     /**
      * Get a value from the shared preference or from the intent, if it does not
      * exist the default is used.
@@ -307,7 +306,6 @@ public class ConnectActivity extends AppCompatActivity {
             return sharedPref.getBoolean(attributeName, defaultValue);
         }
     }
-
     /**
      * Get a value from the shared preference or from the intent, if it does not
      * exist the default is used.
@@ -328,7 +326,6 @@ public class ConnectActivity extends AppCompatActivity {
             }
         }
     }
-
     private void connectToRoom(String roomId) {
         String roomUrl = sharedPref.getString(
                 keyprefRoomServerUrl, getString(R.string.pref_room_server_url_default));
@@ -532,11 +529,10 @@ public class ConnectActivity extends AppCompatActivity {
                 intent.putExtra(CallActivity.EXTRA_ID, id);
             }
 
-
-            startActivity(intent);
+//            startActivity(intent);
+            startActivityForResult(intent, VIDCALL);
         }
     }
-
     private boolean validateUrl(String url) {
         if (URLUtil.isHttpsUrl(url) || URLUtil.isHttpUrl(url)) {
             return true;
@@ -556,110 +552,61 @@ public class ConnectActivity extends AppCompatActivity {
                 .show();
         return false;
     }
-
-
     public void sendMessage(View view) {
         Message mMessage = new Message("0", uid, receiveruid);
-
         mMessage.setPhoto(cur_pick);
         mMessage.setContents(sendMsg.getText().toString());
-
-
         DatabaseReference ref;
         if (chatroomname.equals("none")) {
             ref = database.getReference("message").push();
             chatroomname = ref.getKey();
             initDB(chatroomname);
         }
-
+        ref = database.getReference("message").child(chatroomname);
         ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, sendMsg.getText().toString(), mMessage.getSendDate());
         ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, sendMsg.getText().toString(), mMessage.getSendDate());
         userDatabase.child(uid).child("rooms").child(chatroomname).setValue(updateChatRoom);
         userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(updateChatRoom2);
-
-        ref = database.getReference("message").child(chatroomname);
-        if(chatAdapter.getCount()!=0)
-        {
-            Message tmp = chatAdapter.getItem(chatAdapter.getCount()-1);
-            String tmp_time[] = tmp.getSendDate().split(" ");
-            String cur_time[] = mMessage.getSendDate().split(" ");
-            if(!(tmp_time[0].equals(cur_time[0]) && tmp_time[1].equals(cur_time[1]) && tmp_time[2].equals(cur_time[2])))
-            {
-                Message dateMsg = new Message("2", uid, receiveruid);
-                ref.push().setValue(dateMsg);
-            }
-        }
+//        if(chatAdapter.getCount()!=0)
+//        {
+//            Message tmp = chatAdapter.getItem(chatAdapter.getCount()-1);
+//            String tmp_time[] = tmp.getSendDate().split(" ");
+//            String cur_time[] = mMessage.getSendDate().split(" ");
+//            if(!(tmp_time[0].equals(cur_time[0]) && tmp_time[1].equals(cur_time[1]) && tmp_time[2].equals(cur_time[2])))
+//            {
+//                Message dateMsg = new Message("2");
+//                ref.push().setValue(dateMsg);
+//            }
+//        }
         ref.push().setValue(mMessage);
         sendMsg.setText("");
     }
-
     public void initDB(final String rommname) {
         myDatabase = database.getReference("message").child(rommname);
         userDatabase = database.getReference("users");
-
         myDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Message mMessage;
-                String type = dataSnapshot.child("type").getValue().toString();
-                String time = dataSnapshot.child("sendDate").getValue().toString();
-
-                if(type.equals("0") || type.equals("1")) {
-                    String receiver = dataSnapshot.child("receiver").getValue().toString();
-                    String sender = dataSnapshot.child("sender").getValue().toString();
-                    String photo = dataSnapshot.child("photo").getValue().toString();
-                    String contents = dataSnapshot.child("contents").getValue().toString();
-
-                    mMessage = new Message(type, sender, receiver, time);
-                    mMessage.setPhoto(photo);
-                    mMessage.setContents(contents);
-
-                    if (type.equals("1")) {
-                        String chk = dataSnapshot.child("chk").getValue().toString();
-                        String date = dataSnapshot.child("date").getValue().toString();
-                        mMessage.setChatroomname(chatroomname);
-                        mMessage.setDate(date);
-                        mMessage.setChk(chk);
-                        mMessage.setMessageName(dataSnapshot.getKey());
-                    }
-                }
-                else if( type.equals("2"))
-                {
-                    mMessage = new Message("2");
-                    time = time.split(" ")[0] + " " +time.split(" ")[1] + " " +time.split(" ")[2];
-                    mMessage.setSendDate(time);
-                }
-                else
-                {
-                    mMessage = new Message("3");
-                }
+                mMessage = dataSnapshot.getValue(Message.class);
                 chatAdapter.add(mMessage);
-            }
-
+                }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s)
             {
-                String type = dataSnapshot.child("type").getValue().toString();
-                if (type.equals("1"))
-                {
-                    String chk = dataSnapshot.child("chk").getValue().toString();
-                    String date = dataSnapshot.child("date").getValue().toString();
-                    chatAdapter.getItemByDate(date).setChk(chk);
-                    chatAdapter.notifyDataSetChanged();
-                    listView.setAdapter(chatAdapter);
-                }
+                Message mMessage;
+                mMessage = dataSnapshot.getValue(Message.class);
+                chatAdapter.getItemByName(mMessage.getMessageName()).setChk(mMessage.getChk());
+                chatAdapter.notifyDataSetChanged();
             }
-
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
             }
-
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 

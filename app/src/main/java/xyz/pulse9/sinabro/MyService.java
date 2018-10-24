@@ -36,7 +36,7 @@ public class MyService extends FirebaseMessagingService {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channelId);
         Intent notificationIntent = new Intent(getApplicationContext(), ConnectActivity.class);
         notificationIntent.putExtra("chatroomname", remoteMessage.getData().get("roomname"));
-        notificationIntent.putExtra("receiveruid", remoteMessage.getData().get("receiveruid"));
+        notificationIntent.putExtra("receiveruid", remoteMessage.getData().get("senderuid"));
 
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);

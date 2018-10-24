@@ -1,31 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/login_bg"
     tools:context=".ChatRoomListFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="9"
-        android:fontFamily="@font/aarial"
-        android:gravity="center_vertical"
-        android:text="@string/chatRoomList"
-        android:background="#66FFFAFA"
-        android:textSize="20sp"
-        android:textAlignment="center"
-        android:textColor="@color/sianbro_black_color"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        android:background="@drawable/login_bg"
+        tools:context=".ChatRoomListFragment">
 
-    <com.baoyz.swipemenulistview.SwipeMenuListView
-    android:id="@+id/chat_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
-</LinearLayout>
+        <!-- TODO: Update blank fragment layout -->
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:fontFamily="@font/aarial"
+            android:gravity="center_vertical"
+            android:text="@string/chatRoomList"
+            android:background="#66FFFAFA"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:textColor="@color/sianbro_black_color"
+            android:textStyle="bold" />
+
+        <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@+id/chat_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/noTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Nothing available"
+        android:textSize="30sp"
+        android:visibility="gone" />
+</FrameLayout>

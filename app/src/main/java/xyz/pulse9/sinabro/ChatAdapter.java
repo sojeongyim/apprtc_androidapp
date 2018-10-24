@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,11 +35,15 @@ import java.util.Locale;
 import static org.webrtc.ContextUtils.getApplicationContext;
 
 public class ChatAdapter extends ArrayAdapter {
-
+//    General Message = "0";
+//    Offer Plan for Video Conferrence = "1";
+//    Show Date of Last Message = "2";
+//    Start Conferrence Message = "3";
     private static final String ITEM_VIEW_TYPE_MSG = "0";
     private static final String ITEM_VIEW_TYPE_CALL = "1";
     private static final String ITEM_VIEW_TYPE_DATE = "2";
     private static final String ITEM_VIEW_TYPE_CONF = "3";
+    private static final String ITEM_VIEW_TYPE_END = "4";
 
     List<Message> msgs = new ArrayList();
 
@@ -60,9 +66,6 @@ public class ChatAdapter extends ArrayAdapter {
         msgs.add(object);
         super.add(object);
     }
-    public String getType(int Pos) {
-        return msgs.get(Pos).getType();
-    }
     @Override
     public int getCount() {
         return msgs.size();
@@ -71,14 +74,14 @@ public class ChatAdapter extends ArrayAdapter {
     public Message getItem(int index) {
         return (Message) msgs.get(index);
     }
-    public Message getItemByDate(String date)
+    public Message getItemByName(String Name)
     {
         for(Message k : msgs)
         {
-            if(k.getType().equals("1"))
-            {
-                k.getDate().equals(date);
-                return k;
+            if(k.getType().equals("1")) {
+                if (k.getMessageName().equals(Name)) {
+                    return k;
+                }
             }
         }
         return null;
@@ -88,11 +91,11 @@ public class ChatAdapter extends ArrayAdapter {
         LayoutInflater inflater;
         inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
-        final String curuid = curuser.getUid();
         LinearLayout chatMessageContainer;
+
+        final String curuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final Message msg = msgs.get(position);
-        String viewType = getType(position);
+        String viewType = msg.getType();
 
         boolean message_left = true;
         int align= 0;
@@ -116,7 +119,6 @@ public class ChatAdapter extends ArrayAdapter {
                 TextView leftText = convertView.findViewById(R.id.leftTime);
                 ImageView rightchatPhoto = convertView.findViewById(R.id.rightmessagepic);
                 chatMessageContainer = convertView.findViewById(R.id.textLinear);
-
                 rightchatPhoto.setVisibility(View.GONE);
 
                 String t[] = msg.getSendDate().split(" ");
@@ -129,7 +131,6 @@ public class ChatAdapter extends ArrayAdapter {
                             .transform(new CropCircleTransformation())
                             .into(rightchatPhoto);
                     rightchatPhoto.setVisibility(View.VISIBLE);
-
                     rightText.setText(t2);
                 }
                 else
@@ -139,20 +140,20 @@ public class ChatAdapter extends ArrayAdapter {
                 TextView titleTextView = (TextView) convertView.findViewById(R.id.contentsTxt);
                 titleTextView.setText(msg.getContents());
                 titleTextView.setBackground(this.getContext().getResources().getDrawable((message_left ? R.drawable.inbox_out_shot_res2 : R.drawable.inbox_in_shot_res2)));
-
                 titleTextView.setTextColor(Color.parseColor(message_left ? "#0f2013" : "#c7c7c7")); //sinabro_black  &  sinabro_gray
                 chatMessageContainer.setGravity(align);
 
-                if(position!=0)
+                if(msgs.size()>0 && position > 0)
                 {
+                    Log.d("JANGMIN", "Position : " + position);
                     Message prev_msg = msgs.get(position-1);
-                    if (prev_msg.getSender().equals(msg.getSender()) && !prev_msg.getType().equals("2"))
-                    {
-                        if(message_left) {
-                        }
-                        else
+                    if(!prev_msg.getType().equals("2") && !prev_msg.getType().equals("3")&& !prev_msg.getType().equals("4") ) {
+                        if (prev_msg.getSender().equals(msg.getSender()))
                         {
-                            rightchatPhoto.setVisibility(View.INVISIBLE);
+                            if (message_left) {
+                            } else {
+                                rightchatPhoto.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
                 }
@@ -214,12 +215,13 @@ public class ChatAdapter extends ArrayAdapter {
                         tmp.setContents("Planing Conference");
                         tmp.setPhoto(msg.getPhoto());
                         tmp.setDate(msg.getDate());
+                        tmp.setMessageName(msg.getMessageName());
+                        tmp.setChatroomname(msg.getChatroomname());
                         tmp.setChk("1");
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference ref;
                         ref = database.getReference("message").child(msg.getChatroomname());
-
                         ref.child(msg.getMessageName()).setValue(tmp);
                     }
                 });
@@ -236,17 +238,21 @@ public class ChatAdapter extends ArrayAdapter {
                         tmp.setContents("Planing Conference");
                         tmp.setPhoto(msg.getPhoto());
                         tmp.setDate(msg.getDate());
+                        tmp.setMessageName(msg.getMessageName());
+                        tmp.setChatroomname(msg.getChatroomname());
                         tmp.setChk("2");
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference ref;
                         ref = database.getReference("message").child(msg.getChatroomname());
-
                         ref.child(msg.getMessageName()).setValue(tmp);
                     }
                 });
                 TextView date = convertView.findViewById(R.id.dataTime);
-                date.setText(msg.getDate());
+                String[] k = msg.getDate().split("/");
+                k[1] = String.valueOf(Integer.parseInt(k[1]) +1);
+                String tmp = k[0] + "/" + k[1] + "/" +k[2] + "/" +k[3] + "/" +k[4];
+                date.setText(tmp);
                 break;
             case ITEM_VIEW_TYPE_DATE:
                 convertView = inflater.inflate(R.layout.chat_date,parent, false);
@@ -256,7 +262,26 @@ public class ChatAdapter extends ArrayAdapter {
             case ITEM_VIEW_TYPE_CONF:
                 convertView = inflater.inflate(R.layout.chat_startconf,parent, false);
                 break;
+            case ITEM_VIEW_TYPE_END:
+                convertView = inflater.inflate(R.layout.chat_end,parent, false);
+                TextView durationTxt = convertView.findViewById(R.id.durationTxt);
+                int sec = Integer.parseInt(msg.getCallTime());
+                int min = sec/60;
+                sec = sec%60;
+                durationTxt.setText(min + " : " + sec);
+                break;
         }
+        convertView.setAlpha(getAlpha(position));
         return convertView;
+
+    }
+
+    private float getAlpha(int position) {
+        float min = 0.5f;
+        float alpha = Math.abs(getCount() - position - 1);
+        alpha = (255f - alpha * 7f) / 255f;
+        Log.d("ALPHA", String.valueOf(Math.max(min, alpha)));
+        Log.d("ALPHA", "It is alpha : " + String.valueOf(alpha));
+        return Math.max(min, alpha);
     }
 }

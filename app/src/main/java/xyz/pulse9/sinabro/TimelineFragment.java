@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -107,6 +108,7 @@ public class TimelineFragment extends YouTubePlayerSupportFragment{
 //                toast.show();
 //                Intent intent = new Intent(getActivity(), LoginActivity.class);
 //                startActivity(intent);
+
 //                getActivity().finish();
 //
 //            }
@@ -134,6 +136,7 @@ public class TimelineFragment extends YouTubePlayerSupportFragment{
 ////                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
 //            }
 //        });
+
 
 //        button = (Button)getView().findViewById(R.id.youtubeButton);
 //        youtubeView = (YouTubePlayerView)getView().findViewById(R.id.youtubeView);

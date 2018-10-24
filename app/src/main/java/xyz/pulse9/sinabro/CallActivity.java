@@ -67,7 +67,6 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
                                                       PeerConnectionClient.PeerConnectionEvents,
                                                       CallFragment.OnCallEvents {
   private static final String TAG = CallActivity.class.getSimpleName();
-
   public static final String EXTRA_ROOMID = "org.appspot.apprtc.ROOMID";
   public static final String EXTRA_URLPARAMETERS = "org.appspot.apprtc.URLPARAMETERS";
   public static final String EXTRA_LOOPBACK = "org.appspot.apprtc.LOOPBACK";
@@ -166,6 +165,7 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
   private boolean isError;
   private boolean callControlFragmentVisible = true;
   private long callStartedTimeMs = 0;
+  private long callConnectedTimeMs = 0;
   private boolean micEnabled = true;
   private boolean screencaptureEnabled = false;
   private static Intent mediaProjectionPermissionResultData;
@@ -592,6 +592,7 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
   // Should be called from UI thread
   private void callConnected() {
     final long delta = System.currentTimeMillis() - callStartedTimeMs;
+    callConnectedTimeMs = System.currentTimeMillis();
     Log.i(TAG, "Call connected: delay=" + delta + "ms");
     if (peerConnectionClient == null || isError) {
       Log.w(TAG, "Call is connected in closed or error state");
@@ -645,6 +646,10 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
     } else {
       setResult(RESULT_CANCELED);
     }
+    Intent intent = new Intent();
+    long duration = System.currentTimeMillis() - callConnectedTimeMs;
+    intent.putExtra("millisec", duration);
+    setResult(RESULT_OK, intent);
     finish();
   }
 

@@ -29,6 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -56,6 +57,7 @@ public class ChatRoomListFragment extends Fragment{
     FirebaseUser curuser;
     private OnFragmentInteractionListener mListener;
     public SwipeMenuListView listView;
+    private TextView noTxt;
     ChatRoomAdapter chatRoomAdapter;
 
     public ChatRoomListFragment() {
@@ -86,7 +88,7 @@ public class ChatRoomListFragment extends Fragment{
         curuser = FirebaseAuth.getInstance().getCurrentUser();
 
         listView = getView().findViewById(R.id.chat_list);
-
+        noTxt = getView().findViewById(R.id.noTxt);
         listView.setAdapter(chatRoomAdapter);
         listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         chatRoomAdapter.registerDataSetObserver(new DataSetObserver() {
@@ -112,9 +114,21 @@ public class ChatRoomListFragment extends Fragment{
                 startActivity(intent);
             }
         });
-
         userDatabase= FirebaseDatabase.getInstance().getReference("users").child(curuser.getUid()).child("rooms");
+        userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getChildrenCount()==0)
+                {
+                    noTxt.setVisibility(View.VISIBLE);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         userDatabase.addChildEventListener(new ChildEventListener() {
             String chatroomname;
             String lastcontents;
@@ -125,13 +139,9 @@ public class ChatRoomListFragment extends Fragment{
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                chatroomname = dataSnapshot.getRef().getKey();
-                receiveruid = dataSnapshot.child("receiver").getValue().toString();
-                receivernick = dataSnapshot.child("nickname").getValue().toString();
-                lastcontents = dataSnapshot.child("lastcontents").getValue().toString();
-                receiverphoto = dataSnapshot.child("photo").getValue().toString();
-                lastTime = dataSnapshot.child("time").getValue().toString();
-                ChatRoom chatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, lastcontents, lastTime);
+                ChatRoom chatRoom;
+                chatRoom = dataSnapshot.getValue(ChatRoom.class);
+                chatRoom.setRoomName(dataSnapshot.getRef().getKey());
                 chatRoomAdapter.add(chatRoom);
                 chatRoomAdapter.sortList();
                 chatRoomAdapter.notifyDataSetChanged();
@@ -145,6 +155,10 @@ public class ChatRoomListFragment extends Fragment{
                 chatRoomAdapter.refresh(chatroomname, lastcontents, lastTime);
                 chatRoomAdapter.sortList();
                 chatRoomAdapter.notifyDataSetChanged();
+                if(dataSnapshot.getChildrenCount()==0)
+                {
+                    noTxt.setVisibility(View.VISIBLE);
+                }
                 listView.setAdapter(chatRoomAdapter);
             }
             @Override
