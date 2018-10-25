@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.mtp.MtpStorageInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+
 import com.google.android.gms.common.api.Api;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -29,7 +39,18 @@ import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.RequestHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -65,6 +86,8 @@ public class TimelineFragment extends Fragment{
         // Required empty public constructor
     }
 
+
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -90,8 +113,53 @@ public class TimelineFragment extends Fragment{
         myDataset.add(new MyData("ivG_NZojm-8"));
         myDataset.add(new MyData("7bR8TG2HgVA"));
 
-
-
+        GetYoutubeInfo getYoutubeInfo = new GetYoutubeInfo();
+        getYoutubeInfo.execute();
+//        StringRequest stringRequest = new StringRequest(
+//                Request.Method.GET,
+//                "https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE",
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//
+//                        //***
+//                        Log.d("sojeongjson","result: "+response);
+//                        Toast.makeText(getActivity(),"success:"+response,Toast.LENGTH_SHORT);
+//
+//                        //**
+//                        try {
+//
+//                            JSONObject jsonObject = new JSONObject(response);
+//                            JSONArray jsonArray = jsonObject.getJSONArray("items");
+//
+//                            JSONObject object = jsonArray.getJSONObject(0);
+//                            JSONObject snippet = object.getJSONObject("snippet");
+//
+//                            String title = snippet.getString("title");
+//
+//
+//                            Log.d("stuff: ", "" + title);
+//
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(getActivity(), "error: "+error.getMessage(), Toast.LENGTH_LONG).show();
+//                        Log.e("sojeong","error: "+error);
+//                    }
+//                });
+//
+//        // Request (if not using Singleton [RequestHandler]
+//        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+//        requestQueue.add(stringRequest);
+//
+//        // Request with RequestHandler (Singleton: if created)
+////            RequestHandler.getInstance(itemView.getContext()).addToRequestQueue(stringRequest);
 
         ImageButton setting_butt = (ImageButton) getView().findViewById(R.id.setting);
 
@@ -119,6 +187,7 @@ public class TimelineFragment extends Fragment{
                 toast.show();
             }
         });
+
 
     }
 
@@ -234,6 +303,10 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                         player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
                         player.loadVideo(videoCode);
                         player.play();
+//                        GetVideoInfo getVideoInfo = new GetVideoInfo();
+//                        getVideoInfo.execute();
+
+
                     }
                 }
 
@@ -252,11 +325,120 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     Toast toast = Toast.makeText(view.getContext().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
                     toast.show();
                 }
+
             });
 
 
 
         }
+
+//        public class GetVideoInfo extends AsyncTask<Void,Void,Void>{
+//
+//            @Override
+//            protected Void doInBackground(Void... voids) {
+//                // volley
+//                StringRequest stringRequest = new StringRequest(
+//                        Request.Method.GET,
+//                        "https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE",
+//                        new Response.Listener<String>() {
+//                            @Override
+//                            public void onResponse(String response) {
+//
+//                                //***
+//                                Log.d("sojeongjson","result: "+response);
+//                                Toast.makeText(itemView.getContext(),"success:"+response,Toast.LENGTH_SHORT);
+//
+//                                //**
+//                                try {
+//
+//                                    JSONObject jsonObject = new JSONObject(response);
+//                                    JSONArray jsonArray = jsonObject.getJSONArray("items");
+//
+//                                    JSONObject object = jsonArray.getJSONObject(0);
+//                                    JSONObject snippet = object.getJSONObject("snippet");
+//
+//                                    String title = snippet.getString("title");
+//
+//
+//                                    Log.d("stuff: ", "" + title);
+//
+//
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        },
+//                        new Response.ErrorListener() {
+//                            @Override
+//                            public void onErrorResponse(VolleyError error) {
+//                                Toast.makeText(itemView.getContext(), "error: "+error.getMessage(), Toast.LENGTH_LONG).show();
+//                                Log.e("sojeong","error: "+error);
+//                            }
+//                        });
+//
+//                // Request (if not using Singleton [RequestHandler]
+//                RequestQueue requestQueue = Volley.newRequestQueue(itemView.getContext());
+//                requestQueue.add(stringRequest);
+//
+//                // Request with RequestHandler (Singleton: if created)
+////            RequestHandler.getInstance(itemView.getContext()).addToRequestQueue(stringRequest);
+//
+//                return null;
+//            }
+//        }
+
+//        public void getVideoInfo(){
+//
+//            // volley
+//            StringRequest stringRequest = new StringRequest(
+//                    Request.Method.GET,
+//                    "https://www.googleapis.com/youtube/v3/videos?id=" + videoCode + "&key=" +
+//                            ApiToken +
+//                            "&part=snippet,contentDetails,statistics,status",
+//                    new com.android.volley.Response.Listener<String>() {
+//                        @Override
+//                        public void onResponse(String response) {
+//
+//                            //***
+//                            Log.d("sojeongjson","result: "+response);
+//                            Toast.makeText(itemView.getContext(),"success:"+response,Toast.LENGTH_SHORT);
+//
+//                            //**
+//                            try {
+//
+//                                JSONObject jsonObject = new JSONObject(response);
+//                                JSONArray jsonArray = jsonObject.getJSONArray("items");
+//
+//                                JSONObject object = jsonArray.getJSONObject(0);
+//                                JSONObject snippet = object.getJSONObject("snippet");
+//
+//                                String title = snippet.getString("title");
+//
+//
+//                                Log.d("stuff: ", "" + title);
+//
+//
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    },
+//                    new com.android.volley.Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//                            Toast.makeText(itemView.getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+//                        }
+//                    }){};
+//
+//            // Request (if not using Singleton [RequestHandler]
+//             RequestQueue requestQueue = Volley.newRequestQueue(itemView.getContext());
+//             requestQueue.add(stringRequest);
+//
+//            // Request with RequestHandler (Singleton: if created)
+////            RequestHandler.getInstance(itemView.getContext()).addToRequestQueue(stringRequest);
+//
+//
+//        }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -297,6 +479,8 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 }
 
+
+
 class MyData{
     public String video_code;
 
@@ -308,3 +492,173 @@ class MyData{
 
 
 
+class GetYoutubeInfo extends AsyncTask<Void, Void, Void> {
+
+    String errorString = null;
+
+    @Override
+
+    protected void onPreExecute() {
+
+        super.onPreExecute();
+    }
+
+    @Override
+    protected void onPostExecute(Void result) {
+
+        super.onPostExecute(result);
+
+
+
+        Log.d("sojeong", "result - " + result);
+
+        if (result == null) {
+            Log.d("sojeong", "error - " + errorString);
+
+        } else {
+            Log.d("sojeong", "success - " + result);
+
+        }
+
+    }
+
+    @Override
+    protected Void doInBackground(Void... params) {
+        HttpHandler sh = new HttpHandler();
+
+        // Making a request to url and getting response
+        String jsonStr = sh.makeServiceCall("https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE");
+        String youtube="";
+        //  Log.e(TAG, "Response from url: " + jsonStr);
+
+        if (jsonStr != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+
+                // Getting JSON Array node
+                JSONArray contacts = jsonObj.getJSONArray("items");
+
+                for (int i = 0; i < contacts.length(); i++) {
+                    JSONObject c = contacts.getJSONObject(i);
+
+                    youtube = c.getString("title");
+
+                }
+
+            } catch (final JSONException e) {
+                // Log.e(TAG, "Json parsing error: " + e.getMessage());
+
+
+            }
+        } else {
+            //Log.e(TAG, "Couldn't get json from server.");
+
+
+        }
+        Log.e("sojeong","youtube:"+youtube);
+        return null;
+
+
+
+
+//        StringRequest stringRequest = new StringRequest(
+//                Request.Method.GET,
+//                "https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE",
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//
+//                        //***
+//                        Log.e("sojeong","result: "+response);
+//
+//                        //**
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.e("sojeong","error: "+error);
+//                    }
+//                });
+
+////        String searchKeyword = params[0];
+//
+//        String serverURL = "https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE";
+//
+//        //String postParameters = "keyword=" + searchKeyword;
+//
+//
+//        StringBuffer buffer = new StringBuffer();
+//
+//
+//        try {
+//
+//            URL url = new URL(serverURL);
+//
+//            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+//
+//            httpURLConnection.setReadTimeout(5000);
+//
+//            httpURLConnection.setConnectTimeout(5000);
+//
+//            httpURLConnection.setRequestMethod("GET");
+//
+//            httpURLConnection.setDoInput(true);
+//
+//            httpURLConnection.connect();
+//
+//            OutputStream outputStream = httpURLConnection.getOutputStream();
+//
+//            outputStream.write(buffer.toString().getBytes("UTF-8"));
+//            //요기 부분이 서버로 값을 전송하는 부분
+//
+//            outputStream.flush();
+//
+//            outputStream.close();
+//
+//            int responseStatusCode = httpURLConnection.getResponseCode();
+//
+//            Log.d("sojeong", "response code - " + responseStatusCode);
+//
+//            InputStream inputStream;
+//
+//            if (responseStatusCode == HttpURLConnection.HTTP_OK) {
+//
+//                inputStream = httpURLConnection.getInputStream();
+//
+//            } else {
+//
+//                inputStream = httpURLConnection.getErrorStream();
+//
+//            }
+//
+//            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+//
+//            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+//
+//            StringBuilder sb = new StringBuilder();
+//
+//            String line;
+//
+//            while ((line = bufferedReader.readLine()) != null) {
+//
+//                sb.append(line);
+//            }
+//
+//            bufferedReader.close();
+//
+//            return sb.toString().trim();
+//
+//        } catch (Exception e) {
+//
+//            Log.d("sojeong", "InsertData: Error ", e);
+//
+//            errorString = e.toString();
+//
+//            return null;
+//
+//        }
+
+//        return null;
+    }
+}
