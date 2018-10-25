@@ -12,8 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -37,8 +36,8 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
             Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.navigation_timeline:
-                    YouTubePlayerSupportFragment yfragment = new TimelineFragment();
-                    loadyoutubeFragment(yfragment);
+                    fragment = new TimelineFragment();
+                    loadFragment(fragment);
                     item.setChecked(true);
                     return true;
                 case R.id.navigation_chatings:
@@ -102,18 +101,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         transaction.replace(R.id.flContainer, fragment);
         transaction.commit();
     }
-
-    private void loadyoutubeFragment(YouTubePlayerSupportFragment fragment) {
-        //sojeong
-        fragment = new YouTubePlayerSupportFragment();
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction()
-                .replace(R.id.flContainer, fragment)
-                .addToBackStack(null)
-                .commit();
-        //
-    }
-
 
     @Override
     public void onFragmentInteraction(Uri uri) {
