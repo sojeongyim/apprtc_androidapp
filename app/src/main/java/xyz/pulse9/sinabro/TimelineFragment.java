@@ -2,6 +2,7 @@ package xyz.pulse9.sinabro;
 
 import android.content.Context;
 import android.content.Intent;
+import android.mtp.MtpStorageInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.common.api.Api;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -157,43 +159,6 @@ public class TimelineFragment extends Fragment{
         return v;
     }
 
-
-    public void initYouTube(final String video_code) {
-        youTubePlayerFragment= YouTubePlayerSupportFragment.newInstance();
-
-//        youTubePlayerFragment = (YouTubePlayerSupportFragment)getChildFragmentManager().findFragmentById(R.id.youtubeView);
-        //이거해서 오류남 -> null pointer error
-
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.add(R.id.youtubeView, youTubePlayerFragment).commit();
-
-        youTubePlayerFragment.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", new YouTubePlayer.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-                Log.i("Detail","YouTube Player onInitializationSuccess");
-
-                // Don't do full screen
-//                    player.setFullscreen(false);
-                if (!wasRestored) {
-                    player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
-                    player.loadVideo(video_code);
-                    player.play();
-//                        cueVideoIfNeeded();
-                }
-            }
-
-            @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-                String errorMessage = youTubeInitializationResult.toString();
-                Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
-                Log.d("errorMessage:", errorMessage);
-
-            }
-        });
-
-    }
-
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -240,7 +205,7 @@ public class TimelineFragment extends Fragment{
 
 class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<MyData> mDataset;
-    public static Fragment mfragment;
+    private static Fragment mfragment;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -248,49 +213,27 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public ImageButton fold;
-//        YouTubePlayerView youtubeView;
-        Button button;
-        YouTubePlayer.OnInitializedListener listener;
         String videoCode;
-
+        String ApiToken = "AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE";
 
         public ViewHolder(View view)
         {
             super(view);
-//            button = (Button)view.findViewById(R.id.youtubeButton);
-//            youtubeView = (YouTubePlayerView)view.findViewById(R.id.youtubeView);
             fold = (ImageButton)view.findViewById(R.id.timeline_tab);
             YouTubePlayerSupportFragment youTubePlayerFragment= YouTubePlayerSupportFragment.newInstance();
             FragmentTransaction transaction = mfragment.getChildFragmentManager().beginTransaction();
             transaction.add(R.id.youtubeView, youTubePlayerFragment).commit();
-            listener = new YouTubePlayer.OnInitializedListener() {
 
-
-                @Override
-                public void onInitializationSuccess(YouTubePlayer.Provider provider,
-                                                    YouTubePlayer youTubePlayer,
-                                                    boolean b) {
-                    youTubePlayer.loadVideo(videoCode);
-                }
-                @Override
-                public void onInitializationFailure(
-                        YouTubePlayer.Provider provider,
-                        YouTubeInitializationResult youTubeInitializationResult) {
-                }
-            };
-
-            youTubePlayerFragment.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", new YouTubePlayer.OnInitializedListener() {
+            youTubePlayerFragment.initialize(ApiToken, new YouTubePlayer.OnInitializedListener() {
                 @Override
                 public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-                    Log.i("Detail","YouTube Player onInitializationSuccess");
+                    Log.i("youtube","YouTube Player onInitializationSuccess");
 
-                    // Don't do full screen
 //                    player.setFullscreen(false);
                     if (!wasRestored) {
                         player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
                         player.loadVideo(videoCode);
                         player.play();
-//                        cueVideoIfNeeded();
                     }
                 }
 
@@ -302,12 +245,6 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
                 }
             });
-//            button.setOnClickListener(new View.OnClickListener(){
-//                @Override
-//                public void onClick(View v) {
-//                    youtubeView.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", listener);
-//                }
-//            });
 
             fold.setOnClickListener(new View.OnClickListener() {
                 @Override
