@@ -113,53 +113,8 @@ public class TimelineFragment extends Fragment{
         myDataset.add(new MyData("ivG_NZojm-8"));
         myDataset.add(new MyData("7bR8TG2HgVA"));
 
-        GetYoutubeInfo getYoutubeInfo = new GetYoutubeInfo();
-        getYoutubeInfo.execute();
-//        StringRequest stringRequest = new StringRequest(
-//                Request.Method.GET,
-//                "https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE",
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//
-//                        //***
-//                        Log.d("sojeongjson","result: "+response);
-//                        Toast.makeText(getActivity(),"success:"+response,Toast.LENGTH_SHORT);
-//
-//                        //**
-//                        try {
-//
-//                            JSONObject jsonObject = new JSONObject(response);
-//                            JSONArray jsonArray = jsonObject.getJSONArray("items");
-//
-//                            JSONObject object = jsonArray.getJSONObject(0);
-//                            JSONObject snippet = object.getJSONObject("snippet");
-//
-//                            String title = snippet.getString("title");
-//
-//
-//                            Log.d("stuff: ", "" + title);
-//
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(getActivity(), "error: "+error.getMessage(), Toast.LENGTH_LONG).show();
-//                        Log.e("sojeong","error: "+error);
-//                    }
-//                });
-//
-//        // Request (if not using Singleton [RequestHandler]
-//        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-//        requestQueue.add(stringRequest);
-//
-//        // Request with RequestHandler (Singleton: if created)
-////            RequestHandler.getInstance(itemView.getContext()).addToRequestQueue(stringRequest);
+//        GetYoutubeInfo getYoutubeInfo = new GetYoutubeInfo();
+//        getYoutubeInfo.execute();
 
         ImageButton setting_butt = (ImageButton) getView().findViewById(R.id.setting);
 
@@ -271,7 +226,6 @@ public class TimelineFragment extends Fragment{
 
 }
 
-
 class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<MyData> mDataset;
     private static Fragment mfragment;
@@ -282,6 +236,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public ImageButton fold;
+        public TextView TitleText;
         String videoCode;
         String ApiToken = "AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE";
 
@@ -289,6 +244,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         {
             super(view);
             fold = (ImageButton)view.findViewById(R.id.timeline_tab);
+            TitleText = (TextView)view.findViewById(R.id.title);
             YouTubePlayerSupportFragment youTubePlayerFragment= YouTubePlayerSupportFragment.newInstance();
             FragmentTransaction transaction = mfragment.getChildFragmentManager().beginTransaction();
             transaction.add(R.id.youtubeView, youTubePlayerFragment).commit();
@@ -303,8 +259,8 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                         player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
                         player.loadVideo(videoCode);
                         player.play();
-//                        GetVideoInfo getVideoInfo = new GetVideoInfo();
-//                        getVideoInfo.execute();
+                        GetYoutubeInfo getVideoInfo = new GetYoutubeInfo();
+                        getVideoInfo.execute();
 
 
                     }
@@ -328,235 +284,62 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
             });
 
-
-
         }
 
-//        public class GetVideoInfo extends AsyncTask<Void,Void,Void>{
+        class GetYoutubeInfo extends AsyncTask<String, String, String > {
+
+            String errorString = null;
+
+            @Override
+
+            protected void onPreExecute() {
+
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+
+                super.onPostExecute(result);
+                TitleText.setText(result);
+
+            }
+
+            @Override
+            protected String doInBackground(String... params) {
+                HttpHandler sh = new HttpHandler();
+//        String videocode=params[0];
+//        String ApiToken=params[1];
+                // Making a request to url and getting response
+                String jsonStr = sh.makeServiceCall("https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE");
+                String Title="";
+                //  Log.e(TAG, "Response from url: " + jsonStr);
+
+                if (jsonStr != null) {
+                    try {
+                        JSONObject jsonObj = new JSONObject(jsonStr);
+                        // Getting JSON Array node
+                        JSONArray contactsItem = jsonObj.getJSONArray("items");
+//                JSONArray contactsTitle = contactsItem.toJSONObject(contactsItem).getJSONArray("title");
+//                Log.e("sojeong","contactsTitle : "+contactsTitle);
+                        JSONObject c = contactsItem.getJSONObject(0);
+                        String snippet= c.getString("snippet");
 //
-//            @Override
-//            protected Void doInBackground(Void... voids) {
-//                // volley
-//                StringRequest stringRequest = new StringRequest(
-//                        Request.Method.GET,
-//                        "https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE",
-//                        new Response.Listener<String>() {
-//                            @Override
-//                            public void onResponse(String response) {
-//
-//                                //***
-//                                Log.d("sojeongjson","result: "+response);
-//                                Toast.makeText(itemView.getContext(),"success:"+response,Toast.LENGTH_SHORT);
-//
-//                                //**
-//                                try {
-//
-//                                    JSONObject jsonObject = new JSONObject(response);
-//                                    JSONArray jsonArray = jsonObject.getJSONArray("items");
-//
-//                                    JSONObject object = jsonArray.getJSONObject(0);
-//                                    JSONObject snippet = object.getJSONObject("snippet");
-//
-//                                    String title = snippet.getString("title");
-//
-//
-//                                    Log.d("stuff: ", "" + title);
-//
-//
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        },
-//                        new Response.ErrorListener() {
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//                                Toast.makeText(itemView.getContext(), "error: "+error.getMessage(), Toast.LENGTH_LONG).show();
-//                                Log.e("sojeong","error: "+error);
-//                            }
-//                        });
-//
-//                // Request (if not using Singleton [RequestHandler]
-//                RequestQueue requestQueue = Volley.newRequestQueue(itemView.getContext());
-//                requestQueue.add(stringRequest);
-//
-//                // Request with RequestHandler (Singleton: if created)
-////            RequestHandler.getInstance(itemView.getContext()).addToRequestQueue(stringRequest);
-//
-//                return null;
-//            }
-//        }
-
-//        public void getVideoInfo(){
-//
-//            // volley
-//            StringRequest stringRequest = new StringRequest(
-//                    Request.Method.GET,
-//                    "https://www.googleapis.com/youtube/v3/videos?id=" + videoCode + "&key=" +
-//                            ApiToken +
-//                            "&part=snippet,contentDetails,statistics,status",
-//                    new com.android.volley.Response.Listener<String>() {
-//                        @Override
-//                        public void onResponse(String response) {
-//
-//                            //***
-//                            Log.d("sojeongjson","result: "+response);
-//                            Toast.makeText(itemView.getContext(),"success:"+response,Toast.LENGTH_SHORT);
-//
-//                            //**
-//                            try {
-//
-//                                JSONObject jsonObject = new JSONObject(response);
-//                                JSONArray jsonArray = jsonObject.getJSONArray("items");
-//
-//                                JSONObject object = jsonArray.getJSONObject(0);
-//                                JSONObject snippet = object.getJSONObject("snippet");
-//
-//                                String title = snippet.getString("title");
-//
-//
-//                                Log.d("stuff: ", "" + title);
-//
-//
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    },
-//                    new com.android.volley.Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//                            Toast.makeText(itemView.getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-//                        }
-//                    }){};
-//
-//            // Request (if not using Singleton [RequestHandler]
-//             RequestQueue requestQueue = Volley.newRequestQueue(itemView.getContext());
-//             requestQueue.add(stringRequest);
-//
-//            // Request with RequestHandler (Singleton: if created)
-////            RequestHandler.getInstance(itemView.getContext()).addToRequestQueue(stringRequest);
-//
-//
-//        }
-    }
-
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<MyData> myDataset, Fragment fragment) {
-        mDataset = myDataset;
-        mfragment = fragment;
-
-    }
-
-    // Create new views (invoked by the layout manager)
-    @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
-        // create a new view
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.timeline_onelayout, parent, false);
-        // set the view's size, margins, paddings and layout parameters
-
-        ViewHolder vh = new ViewHolder(v);
-
-        return vh;
-    }
+                        Log.e("sojeong","snippet : "+snippet);
+                        JSONObject jsonObject = new JSONObject(snippet);
+                        Title=jsonObject.getString("title");
+                    } catch (final JSONException e) {
+                        // Log.e(TAG, "Json parsing error: " + e.getMessage());
 
 
+                    }
+                } else {
+                    //Log.e(TAG, "Couldn't get json from server.");
 
-    // Replace the contents of a view (invoked by the layout manager)
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.videoCode=mDataset.get(position).video_code;
-    }
-
-    // Return the size of your dataset (invoked by the layout manager)
-    @Override
-    public int getItemCount() {
-        return mDataset.size();
-    }
-}
-
-
-
-class MyData{
-    public String video_code;
-
-    public MyData(String code){
-        this.video_code = code;
-    }
-}
-
-
-
-
-class GetYoutubeInfo extends AsyncTask<Void, Void, Void> {
-
-    String errorString = null;
-
-    @Override
-
-    protected void onPreExecute() {
-
-        super.onPreExecute();
-    }
-
-    @Override
-    protected void onPostExecute(Void result) {
-
-        super.onPostExecute(result);
-
-
-
-        Log.d("sojeong", "result - " + result);
-
-        if (result == null) {
-            Log.d("sojeong", "error - " + errorString);
-
-        } else {
-            Log.d("sojeong", "success - " + result);
-
-        }
-
-    }
-
-    @Override
-    protected Void doInBackground(Void... params) {
-        HttpHandler sh = new HttpHandler();
-
-        // Making a request to url and getting response
-        String jsonStr = sh.makeServiceCall("https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE");
-        String youtube="";
-        //  Log.e(TAG, "Response from url: " + jsonStr);
-
-        if (jsonStr != null) {
-            try {
-                JSONObject jsonObj = new JSONObject(jsonStr);
-
-                // Getting JSON Array node
-                JSONArray contacts = jsonObj.getJSONArray("items");
-
-                for (int i = 0; i < contacts.length(); i++) {
-                    JSONObject c = contacts.getJSONObject(i);
-
-                    youtube = c.getString("title");
 
                 }
 
-            } catch (final JSONException e) {
-                // Log.e(TAG, "Json parsing error: " + e.getMessage());
-
-
-            }
-        } else {
-            //Log.e(TAG, "Couldn't get json from server.");
-
-
-        }
-        Log.e("sojeong","youtube:"+youtube);
-        return null;
+                return Title;
 
 
 
@@ -660,5 +443,56 @@ class GetYoutubeInfo extends AsyncTask<Void, Void, Void> {
 //        }
 
 //        return null;
+            }
+        }
+    }
+
+    // Provide a suitable constructor (depends on the kind of dataset)
+    public MyAdapter(ArrayList<MyData> myDataset, Fragment fragment) {
+        mDataset = myDataset;
+        mfragment = fragment;
+
+    }
+
+    // Create new views (invoked by the layout manager)
+    @Override
+    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                   int viewType) {
+        // create a new view
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.timeline_onelayout, parent, false);
+        // set the view's size, margins, paddings and layout parameters
+
+        ViewHolder vh = new ViewHolder(v);
+
+        return vh;
+    }
+
+
+
+    // Replace the contents of a view (invoked by the layout manager)
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        // - get element from your dataset at this position
+        // - replace the contents of the view with that element
+        holder.videoCode=mDataset.get(position).video_code;
+    }
+
+    // Return the size of your dataset (invoked by the layout manager)
+    @Override
+    public int getItemCount() {
+        return mDataset.size();
     }
 }
+
+class MyData{
+    public String video_code;
+
+    public MyData(String code){
+        this.video_code = code;
+    }
+}
+
+
+
+

@@ -15,7 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-
+//youtube metadata json받아올 때 필요함
 
 public class HttpHandler {
 
