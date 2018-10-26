@@ -113,8 +113,6 @@ public class TimelineFragment extends Fragment{
         myDataset.add(new MyData("ivG_NZojm-8"));
         myDataset.add(new MyData("7bR8TG2HgVA"));
 
-//        GetYoutubeInfo getYoutubeInfo = new GetYoutubeInfo();
-//        getYoutubeInfo.execute();
 
         ImageButton setting_butt = (ImageButton) getView().findViewById(R.id.setting);
 
@@ -229,16 +227,17 @@ public class TimelineFragment extends Fragment{
 class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<MyData> mDataset;
     private static Fragment mfragment;
+    private static String ApiToken = "AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE";
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public ImageButton fold;
-        public TextView TitleText;
-        String videoCode;
-        String ApiToken = "AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE";
+        private ImageButton fold;
+        private TextView TitleText;
+        private String videoCode;
+
 
         public ViewHolder(View view)
         {
@@ -256,11 +255,12 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
 //                    player.setFullscreen(false);
                     if (!wasRestored) {
+//                        GetYoutubeInfo getVideoInfo = new GetYoutubeInfo(videoCode);
+//                        getVideoInfo.execute();
                         player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
                         player.loadVideo(videoCode);
                         player.play();
-                        GetYoutubeInfo getVideoInfo = new GetYoutubeInfo();
-                        getVideoInfo.execute();
+
 
 
                     }
@@ -287,11 +287,12 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         }
 
         class GetYoutubeInfo extends AsyncTask<String, String, String > {
+            String videocode;
 
-            String errorString = null;
-
+            GetYoutubeInfo(String videocode){
+                this.videocode=videocode;
+            }
             @Override
-
             protected void onPreExecute() {
 
                 super.onPreExecute();
@@ -308,10 +309,9 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             @Override
             protected String doInBackground(String... params) {
                 HttpHandler sh = new HttpHandler();
-//        String videocode=params[0];
-//        String ApiToken=params[1];
+
                 // Making a request to url and getting response
-                String jsonStr = sh.makeServiceCall("https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE");
+                String jsonStr = sh.makeServiceCall("https://www.googleapis.com/youtube/v3/videos?id="+videocode+"&part=snippet&key="+ApiToken);
                 String Title="";
                 //  Log.e(TAG, "Response from url: " + jsonStr);
 
@@ -341,108 +341,6 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
                 return Title;
 
-
-
-
-//        StringRequest stringRequest = new StringRequest(
-//                Request.Method.GET,
-//                "https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE",
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//
-//                        //***
-//                        Log.e("sojeong","result: "+response);
-//
-//                        //**
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.e("sojeong","error: "+error);
-//                    }
-//                });
-
-////        String searchKeyword = params[0];
-//
-//        String serverURL = "https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE";
-//
-//        //String postParameters = "keyword=" + searchKeyword;
-//
-//
-//        StringBuffer buffer = new StringBuffer();
-//
-//
-//        try {
-//
-//            URL url = new URL(serverURL);
-//
-//            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-//
-//            httpURLConnection.setReadTimeout(5000);
-//
-//            httpURLConnection.setConnectTimeout(5000);
-//
-//            httpURLConnection.setRequestMethod("GET");
-//
-//            httpURLConnection.setDoInput(true);
-//
-//            httpURLConnection.connect();
-//
-//            OutputStream outputStream = httpURLConnection.getOutputStream();
-//
-//            outputStream.write(buffer.toString().getBytes("UTF-8"));
-//            //요기 부분이 서버로 값을 전송하는 부분
-//
-//            outputStream.flush();
-//
-//            outputStream.close();
-//
-//            int responseStatusCode = httpURLConnection.getResponseCode();
-//
-//            Log.d("sojeong", "response code - " + responseStatusCode);
-//
-//            InputStream inputStream;
-//
-//            if (responseStatusCode == HttpURLConnection.HTTP_OK) {
-//
-//                inputStream = httpURLConnection.getInputStream();
-//
-//            } else {
-//
-//                inputStream = httpURLConnection.getErrorStream();
-//
-//            }
-//
-//            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-//
-//            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-//
-//            StringBuilder sb = new StringBuilder();
-//
-//            String line;
-//
-//            while ((line = bufferedReader.readLine()) != null) {
-//
-//                sb.append(line);
-//            }
-//
-//            bufferedReader.close();
-//
-//            return sb.toString().trim();
-//
-//        } catch (Exception e) {
-//
-//            Log.d("sojeong", "InsertData: Error ", e);
-//
-//            errorString = e.toString();
-//
-//            return null;
-//
-//        }
-
-//        return null;
             }
         }
     }
