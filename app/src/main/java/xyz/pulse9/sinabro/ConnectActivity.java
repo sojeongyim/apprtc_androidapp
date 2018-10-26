@@ -151,7 +151,6 @@ public class ConnectActivity extends AppCompatActivity {
         {
             initDB(chatroomname);
         }
-
         chatAdapter = new ChatAdapter(this.getApplicationContext(), R.layout.chat_message);
         listView = findViewById(R.id.chatListview);
         listView.setAdapter(chatAdapter);
@@ -171,8 +170,20 @@ public class ConnectActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                if(chatAdapter.getItem(i).getType().equals("3"))
+                if(chatAdapter.getItem(i).getType().equals("3") && Integer.parseInt(chatAdapter.getItem(i).getRoomCnt())<3)
                 {
+                    final DatabaseReference tmp = database.getReference("message").child(chatroomname)
+                            .child(chatAdapter.getItem(i).getMessageName()).child("roomCnt");
+                    tmp.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            tmp.setValue(Integer.parseInt(dataSnapshot.getValue().toString())+1);
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                     connectToRoom(chatAdapter.getItem(i).getVidRoomName());
                 }
             }

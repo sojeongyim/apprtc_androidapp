@@ -42,6 +42,7 @@ public class Message {
     private String MessageName;
     private String vidRoomName;
     private String callTime;
+    private String roomCnt;
 
     public Message(String type, String sender, String receiver)
     {
@@ -133,13 +134,18 @@ public class Message {
     public void setVidRoomName(String vidRoomName) {
         this.vidRoomName = vidRoomName;
     }
-
     public String getCallTime() {
         return callTime;
     }
-
     public void setCallTime(String callTime) {
         this.callTime = callTime;
     }
+    public String getRoomCnt() {
+        return roomCnt;
+    }
+    public void setRoomCnt(String roomCnt) {
+        this.roomCnt = roomCnt;
+    }
 }
+
 
