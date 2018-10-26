@@ -3,6 +3,7 @@ package xyz.pulse9.sinabro;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,21 +14,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.facebook.login.LoginManager;
-import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.firebase.auth.FirebaseAuth;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -40,11 +38,15 @@ import java.util.ArrayList;
  * Use the {@link TimelineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TimelineFragment extends YouTubePlayerSupportFragment {
+public class TimelineFragment extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private String mParam1;
+    private String mParam2;
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -52,22 +54,17 @@ public class TimelineFragment extends YouTubePlayerSupportFragment {
     private OnFragmentInteractionListener mListener;
     YouTubePlayerSupportFragment youTubePlayerFragment;
 
-    public ImageButton fold;
-    YouTubePlayerView youtubeView;
-    YouTubePlayer youTubePlayer;
-    Button button;
-    YouTubePlayer.OnInitializedListener listener;
-
 
 
     public TimelineFragment() {
         // Required empty public constructor
     }
 
+
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.timeline_recyclerview);
 
 
@@ -81,17 +78,17 @@ public class TimelineFragment extends YouTubePlayerSupportFragment {
 
         // specify an adapter (see also next example)
 
-//        myDataset = new ArrayList<>();
-//        mAdapter = new MyAdapter(myDataset);
-//        mRecyclerView.setAdapter(mAdapter);
-//        myDataset.add(new MyData("uO4BMId9e0w"));
-//        myDataset.add(new MyData("bL54g7RF5hk"));
-//        myDataset.add(new MyData("CHoPhkCzdrc"));
-//        myDataset.add(new MyData("ivG_NZojm-8"));
-//        myDataset.add(new MyData("7bR8TG2HgVA"));
+        myDataset = new ArrayList<>();
+        mAdapter = new MyAdapter(myDataset,this);
+        mRecyclerView.setAdapter(mAdapter);
+        myDataset.add(new MyData("uO4BMId9e0w"));
+        myDataset.add(new MyData("bL54g7RF5hk"));
+        myDataset.add(new MyData("CHoPhkCzdrc"));
+        myDataset.add(new MyData("ivG_NZojm-8"));
+        myDataset.add(new MyData("7bR8TG2HgVA"));
 
-
-
+//        GetYoutubeInfo getYoutubeInfo = new GetYoutubeInfo();
+//        getYoutubeInfo.execute();
 
         ImageButton setting_butt = (ImageButton) getView().findViewById(R.id.setting);
 
@@ -101,11 +98,11 @@ public class TimelineFragment extends YouTubePlayerSupportFragment {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-                LoginManager.getInstance().logOut();
                 Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Logout Complete", Toast.LENGTH_SHORT);
                 toast.show();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
+
                 getActivity().finish();
 
             }
@@ -115,49 +112,9 @@ public class TimelineFragment extends YouTubePlayerSupportFragment {
             public void onClick(View view) {
                 Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
                 toast.show();
-//                FragmentManager fm = getFragmentManager();
-//                FragmentTransaction ft = fm.beginTransaction();
-//                ChatRoomListFragment llf = new ChatRoomListFragment();
-//                ft.replace(R.id.flContainer, llf);
-//                ft.commit();
-
-
-//                Calendar now = Calendar.getInstance();
-//                DatePickerDialog dpd = DatePickerDialog.newInstance(
-//                        (DatePickerDialog.OnDateSetListener) getActivity(),
-//                        now.get(Calendar.YEAR), // Initial year selection
-//                        now.get(Calendar.MONTH), // Initial month selection
-//                        now.get(Calendar.DAY_OF_MONTH) // Inital day selection
-//                );
-//                dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
-//                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
             }
         });
 
-//        button = (Button)getView().findViewById(R.id.youtubeButton);
-//        youtubeView = (YouTubePlayerView)getView().findViewById(R.id.youtubeView);
-//        fold = (ImageButton)getView().findViewById(R.id.timeline_tab);
-//
-//        listener = new YouTubePlayer.OnInitializedListener() {
-//            @Override
-//            public void onInitializationSuccess(YouTubePlayer.Provider provider,
-//                                                YouTubePlayer youTubePlayer,
-//                                                boolean b) {
-//                youTubePlayer.loadVideo("uO4BMId9e0w");
-//            }
-//            @Override
-//            public void onInitializationFailure(
-//                    YouTubePlayer.Provider provider,
-//                    YouTubeInitializationResult youTubeInitializationResult) {
-//            }
-//        };
-//        button.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                youtubeView.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", listener);
-//            }
-//        });
-////        initYouTube();
 
     }
 
@@ -187,38 +144,12 @@ public class TimelineFragment extends YouTubePlayerSupportFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View v=inflater.inflate(R.layout.fragment_timeline, container, false);
 
-//        initYouTube();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_timeline, container, false);
+
+        return v;
     }
-    private void initYouTube() {
-        youTubePlayerFragment= YouTubePlayerSupportFragment.newInstance();
-        if (youTubePlayerFragment == null) {
-            youTubePlayerFragment = (YouTubePlayerSupportFragment)getChildFragmentManager().findFragmentById(R.id.youtubeView);
-            youTubePlayerFragment.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", new YouTubePlayer.OnInitializedListener() {
-                @Override
-                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-                    Log.i("Detail","YouTube Player onInitializationSuccess");
-
-                    // Don't do full screen
-                    player.setFullscreen(false);
-                    if (!wasRestored) {
-                        youTubePlayer = player;
-//                        cueVideoIfNeeded();
-                    }
-                }
-
-                @Override
-                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-                    Log.i("Detail", "Failed: "+youTubeInitializationResult);
-
-                }
-            });
-        }
-    }
-
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -263,10 +194,9 @@ public class TimelineFragment extends YouTubePlayerSupportFragment {
 
 }
 
-
 class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<MyData> mDataset;
-
+    private static Fragment mfragment;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -274,36 +204,42 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public ImageButton fold;
-        YouTubePlayerView youtubeView;
-        Button button;
-        YouTubePlayer.OnInitializedListener listener;
+        public TextView TitleText;
         String videoCode;
-
+        String ApiToken = "AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE";
 
         public ViewHolder(View view)
         {
             super(view);
-            button = (Button)view.findViewById(R.id.youtubeButton);
-            youtubeView = (YouTubePlayerView)view.findViewById(R.id.youtubeView);
             fold = (ImageButton)view.findViewById(R.id.timeline_tab);
+            TitleText = (TextView)view.findViewById(R.id.title);
+            YouTubePlayerSupportFragment youTubePlayerFragment= YouTubePlayerSupportFragment.newInstance();
+            FragmentTransaction transaction = mfragment.getChildFragmentManager().beginTransaction();
+            transaction.add(R.id.youtubeView, youTubePlayerFragment).commit();
 
-            listener = new YouTubePlayer.OnInitializedListener() {
+            youTubePlayerFragment.initialize(ApiToken, new YouTubePlayer.OnInitializedListener() {
                 @Override
-                public void onInitializationSuccess(YouTubePlayer.Provider provider,
-                                                    YouTubePlayer youTubePlayer,
-                                                    boolean b) {
-                    youTubePlayer.loadVideo(videoCode);
+                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
+                    Log.i("youtube","YouTube Player onInitializationSuccess");
+
+//                    player.setFullscreen(false);
+                    if (!wasRestored) {
+                        player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
+                        player.loadVideo(videoCode);
+                        player.play();
+                        GetYoutubeInfo getVideoInfo = new GetYoutubeInfo();
+                        getVideoInfo.execute();
+
+
+                    }
                 }
+
                 @Override
-                public void onInitializationFailure(
-                        YouTubePlayer.Provider provider,
-                        YouTubeInitializationResult youTubeInitializationResult) {
-                }
-            };
-            button.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    youtubeView.initialize("AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE", listener);
+                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+                    String errorMessage = youTubeInitializationResult.toString();
+                    Toast.makeText(itemView.getContext(), errorMessage, Toast.LENGTH_LONG).show();
+                    Log.d("errorMessage:", errorMessage);
+
                 }
             });
 
@@ -313,14 +249,177 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     Toast toast = Toast.makeText(view.getContext().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
                     toast.show();
                 }
+
             });
 
+        }
+
+        class GetYoutubeInfo extends AsyncTask<String, String, String > {
+
+            String errorString = null;
+
+            @Override
+
+            protected void onPreExecute() {
+
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+
+                super.onPostExecute(result);
+                TitleText.setText(result);
+
+            }
+
+            @Override
+            protected String doInBackground(String... params) {
+                HttpHandler sh = new HttpHandler();
+//        String videocode=params[0];
+//        String ApiToken=params[1];
+                // Making a request to url and getting response
+                String jsonStr = sh.makeServiceCall("https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE");
+                String Title="";
+                //  Log.e(TAG, "Response from url: " + jsonStr);
+
+                if (jsonStr != null) {
+                    try {
+                        JSONObject jsonObj = new JSONObject(jsonStr);
+                        // Getting JSON Array node
+                        JSONArray contactsItem = jsonObj.getJSONArray("items");
+//                JSONArray contactsTitle = contactsItem.toJSONObject(contactsItem).getJSONArray("title");
+//                Log.e("sojeong","contactsTitle : "+contactsTitle);
+                        JSONObject c = contactsItem.getJSONObject(0);
+                        String snippet= c.getString("snippet");
+//
+                        Log.e("sojeong","snippet : "+snippet);
+                        JSONObject jsonObject = new JSONObject(snippet);
+                        Title=jsonObject.getString("title");
+                    } catch (final JSONException e) {
+                        // Log.e(TAG, "Json parsing error: " + e.getMessage());
+
+
+                    }
+                } else {
+                    //Log.e(TAG, "Couldn't get json from server.");
+
+
+                }
+
+                return Title;
+
+
+
+
+//        StringRequest stringRequest = new StringRequest(
+//                Request.Method.GET,
+//                "https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE",
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//
+//                        //***
+//                        Log.e("sojeong","result: "+response);
+//
+//                        //**
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.e("sojeong","error: "+error);
+//                    }
+//                });
+
+////        String searchKeyword = params[0];
+//
+//        String serverURL = "https://www.googleapis.com/youtube/v3/videos?id=7bR8TG2HgVA&part=snippet&key=AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE";
+//
+//        //String postParameters = "keyword=" + searchKeyword;
+//
+//
+//        StringBuffer buffer = new StringBuffer();
+//
+//
+//        try {
+//
+//            URL url = new URL(serverURL);
+//
+//            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+//
+//            httpURLConnection.setReadTimeout(5000);
+//
+//            httpURLConnection.setConnectTimeout(5000);
+//
+//            httpURLConnection.setRequestMethod("GET");
+//
+//            httpURLConnection.setDoInput(true);
+//
+//            httpURLConnection.connect();
+//
+//            OutputStream outputStream = httpURLConnection.getOutputStream();
+//
+//            outputStream.write(buffer.toString().getBytes("UTF-8"));
+//            //요기 부분이 서버로 값을 전송하는 부분
+//
+//            outputStream.flush();
+//
+//            outputStream.close();
+//
+//            int responseStatusCode = httpURLConnection.getResponseCode();
+//
+//            Log.d("sojeong", "response code - " + responseStatusCode);
+//
+//            InputStream inputStream;
+//
+//            if (responseStatusCode == HttpURLConnection.HTTP_OK) {
+//
+//                inputStream = httpURLConnection.getInputStream();
+//
+//            } else {
+//
+//                inputStream = httpURLConnection.getErrorStream();
+//
+//            }
+//
+//            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+//
+//            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+//
+//            StringBuilder sb = new StringBuilder();
+//
+//            String line;
+//
+//            while ((line = bufferedReader.readLine()) != null) {
+//
+//                sb.append(line);
+//            }
+//
+//            bufferedReader.close();
+//
+//            return sb.toString().trim();
+//
+//        } catch (Exception e) {
+//
+//            Log.d("sojeong", "InsertData: Error ", e);
+//
+//            errorString = e.toString();
+//
+//            return null;
+//
+//        }
+
+//        return null;
+            }
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<MyData> myDataset) {
+    public MyAdapter(ArrayList<MyData> myDataset, Fragment fragment) {
         mDataset = myDataset;
+        mfragment = fragment;
+
     }
 
     // Create new views (invoked by the layout manager)
@@ -333,8 +432,11 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // set the view's size, margins, paddings and layout parameters
 
         ViewHolder vh = new ViewHolder(v);
+
         return vh;
     }
+
+
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
@@ -342,7 +444,6 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.videoCode=mDataset.get(position).video_code;
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)
