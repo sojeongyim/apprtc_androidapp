@@ -172,8 +172,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // ...
             }
         }
-
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        else {
+            mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {

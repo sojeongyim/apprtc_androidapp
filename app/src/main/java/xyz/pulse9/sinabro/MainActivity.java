@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
 
+//        FirebaseMessaging.getInstance().subscribeToTopic("news");
+//        FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users");
