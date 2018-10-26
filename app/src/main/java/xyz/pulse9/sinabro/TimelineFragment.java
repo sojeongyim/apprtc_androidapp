@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.GradientDrawable;
 import android.mtp.MtpStorageInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -31,6 +32,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -89,7 +91,6 @@ public class TimelineFragment extends Fragment{
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
         // specify an adapter (see also next example)
 
 //        myDataset = new ArrayList<>();
@@ -448,11 +449,13 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     }
     @Override
     public void onBindViewHolder(VideoViewHolder holder, int position) {
-//        GridLayoutManager.LayoutParams layoutParams=(GridLayoutManager.LayoutParams) createViewHolder().itemView.getLayoutParams();
-//        layoutParams.height=layoutParams.getSpanSize();
-//        viewH
+//        GridLayoutManager.LayoutParams layoutParams=(GridLayoutManager.LayoutParams)holder.itemView.getLayoutParams();
+//        layoutParams.height=layoutParams.width;
+//        holder.itemView.requestLayout();
+
         GetYoutubeInfo getVideoInfo = new GetYoutubeInfo(youtubeVideoList.get(position).getVideoCode(),holder);
         getVideoInfo.execute();
+
         holder.videoWeb.loadData(youtubeVideoList.get(position).getVideoUrl(), "text/html" , "utf-8" );
     }
 
@@ -485,10 +488,14 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
             super.onPostExecute(result);
             holder.TitleText.setText(Title);
             holder.descriptionText.setText(description);
+
             holder.tagText.setText(tag);
             holder.channel_name.setText(channelName);
+//            holder.channel_img.setImageBitmap(UrlBitmap);
 
-            holder.channel_img.setImageBitmap(UrlBitmap);
+            Picasso.get().load(channelImgUrl)
+                    .transform(new CropCircleTransformation())
+                    .into(holder.channel_img);
 
         }
 
@@ -548,13 +555,13 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
                     thumnail_parsing=new JSONObject(thumbnails_to_url);
                     channelImgUrl= thumnail_parsing.getString("url");
                     Log.e("sojeong","channel_url: "+channelImgUrl);
-                    try{
-                        InputStream in = new java.net.URL(channelImgUrl).openStream();
-                        UrlBitmap = BitmapFactory.decodeStream(in);
-                    }catch(Exception e){
-                        Log.e("sojeong","channel bitmap error: "+e.getMessage());
-                        e.printStackTrace();
-                    }
+//                    try{
+//                        InputStream in = new java.net.URL(channelImgUrl).openStream();
+//                        UrlBitmap = BitmapFactory.decodeStream(in);
+//                    }catch(Exception e){
+//                        Log.e("sojeong","channel bitmap error: "+e.getMessage());
+//                        e.printStackTrace();
+//                    }
 
                 } catch (final JSONException e) {
                     Log.e("sojeong", "Json parsing error: " + e.getMessage());
