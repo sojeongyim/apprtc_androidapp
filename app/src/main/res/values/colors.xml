@@ -6,6 +6,7 @@
     <color name="cursorColor">#d6f456</color>
     <color name="nomalColor">#00ffffff</color>
     <color name="lineOnTouch">#00ffffff</color>
+    <color name="white">#ffffff</color>
 
 
     <!-- Screens background color-->

@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,9 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,8 +21,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.LoggingBehavior;
-import com.facebook.login.Login;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -42,24 +37,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{   //login page(첫화면)
 
     final String TAG = "Jangmin_AUTH";
     final int RC_SIGN_IN = 222;
     GoogleSignInClient mGoogleSignInClient;
-
     private FirebaseAuth mAuth;
     private ImageView fb;
     private ImageView ggl;
+    private TextView withoutLogin;
     LoginButton loginButton;
-
-    private EditText idinput;
-    private EditText pwdinput;
-    private Button forgot_password;
-    private TextView textlogin;
-    private ImageButton loginBtn;
     private ProgressDialog mProgress;
     private CallbackManager mCallbackManager;
 
@@ -78,26 +66,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
 
-
-        loginBtn=findViewById(R.id.loginBtn);
+        withoutLogin =findViewById(R.id.withoutLGtxt);
+        withoutLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         fb=findViewById(R.id.fakeFB);
-        forgot_password = findViewById(R.id.forgot_password);
-        idinput=findViewById(R.id.UserID);
-        pwdinput=findViewById(R.id.Password);
-        textlogin=findViewById(R.id.textlogin);
-
-        loginBtn.setOnClickListener(this);
         fb.setOnClickListener(this);
-        forgot_password.setOnClickListener(this);
-        idinput.setOnClickListener(this);
-        pwdinput.setOnClickListener(this);
-        textlogin.setOnClickListener(this);
-
-
-
-
-
-        // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
         loginButton = findViewById(R.id.login_button);
         loginButton.setReadPermissions("email", "public_profile");
@@ -121,12 +100,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-
-
-
         mAuth = FirebaseAuth.getInstance();
-//        FacebookSdk.sdkInitialize(this.getApplicationContext());
-
         ggl=findViewById(R.id.fakeGoogle);
         ggl.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,22 +111,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                registerUser();
                 loginButton.performClick();
             }
         });
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-    }
-
-    private void registerUser() {
-        Intent regIntent = new Intent(this, RegisterActivity.class);
-        startActivity(regIntent);
     }
 
     @Override
@@ -176,7 +142,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         mProgress.show();

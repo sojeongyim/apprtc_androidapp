@@ -10,6 +10,8 @@
         Please enter a room name. Room names are shared with everyone, so think
         of something unique and send it to a friend.
     </string>
+    <string name="withoutLogin"><u>Or just want to try out?</u></string>
+
     <string name="favorites">Favorites</string>
     <string name="no_favorites">No favorites</string>
     <string name="invalid_url_title">Invalid URL</string>

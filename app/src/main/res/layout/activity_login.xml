@@ -15,123 +15,36 @@
 
     <ImageView
         android:id="@+id/login_logo"
-        android:layout_width="match_parent"
+        android:layout_width="156dp"
         android:layout_height="0dp"
         android:layout_gravity="top|center_horizontal"
-        android:layout_marginBottom="40dp"
         android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
         android:layout_marginTop="70dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="80dp"
         android:layout_weight="1.7"
         app:srcCompat="@drawable/login_logo" />
 
 
-    <EditText
-        android:id="@+id/UserID"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_weight="0.5"
-        android:fontFamily="@font/myriad_pro_light"
-        android:gravity="bottom"
-        android:hint="h e l l o @ n i c e a p p . c o  "
-        android:inputType="text|textPersonName"
-        android:textAlignment="center"
-        android:textColor="@color/sianbro_gray_color"
-        android:textColorHint="@color/sianbro_gray_color" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_weight="0.2"
-        android:paddingBottom="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/login_line" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="0.5"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/Password"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="40dp"
-            android:layout_weight="6"
-            android:fontFamily="@font/myriad_pro_light"
-            android:gravity="bottom"
-            android:hint="*******"
-            android:inputType="textPassword"
-            android:textAlignment="center"
-            android:textColor="@color/sianbro_gray_color"
-            android:textColorHint="@color/sianbro_gray_color" />
-
-        <ImageButton
-            android:id="@+id/loginBtn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom"
-            android:adjustViewBounds="false"
-            android:background="#00ffffff"
-            android:padding="5dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/button" />
-
-    </LinearLayout>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_weight="0.2"
-        android:paddingBottom="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/login_line" />
-
-
-    <Button
-        android:id="@+id/forgot_password"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_weight="0.2"
-        android:background="#00ffffff"
-        android:fontFamily="@font/myriad_pro_regular"
-        android:text="F o r g o t     P a s s w o r d ?"
-        android:textColor="@color/sianbro_gray_color"
-        android:textSize="12sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
         android:layout_marginTop="20dp"
-        android:layout_weight="0.5"
-        android:orientation="horizontal">
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
 
         <ImageView
             android:id="@+id/fakeGoogle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/gl_login_anim"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1.5"
             android:clickable="true"
-            android:scaleType="fitXY" />
-
+            app:srcCompat="@drawable/gl_login_anim" />
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
@@ -142,31 +55,24 @@
 
         <ImageView
             android:id="@+id/fakeFB"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/fb_login_anim"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="3dp"
+            android:layout_weight="1.5"
+
             android:clickable="true"
-            android:scaleType="fitXY" />
+            app:srcCompat="@drawable/fb_login_anim" />
+
+        <TextView
+            android:id="@+id/withoutLGtxt"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/withoutLogin"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/textlogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:layout_marginTop="5dp"
-        android:fontFamily="@font/myriad_pro_regular"
-        android:text="P a s s w o r d l e s s   A u t h e n t i o n"
-        android:textAlignment="center"
-        android:textColor="@color/sianbro_gray_color"
-        android:textSize="12sp" />
 
     <ImageView
         android:id="@+id/pulse9_logo"

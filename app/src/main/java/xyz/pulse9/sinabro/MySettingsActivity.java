@@ -29,21 +29,14 @@ public class MySettingsActivity extends AppCompatActivity implements View.OnClic
         if(getCheck())
         {
             notiCheck.setBackgroundDrawable(getResources().getDrawable(R.drawable.on_res));
-//            FirebaseMessaging.getInstance().subscribeToTopic("msg");
         }
         else
         {
             notiCheck.setBackgroundDrawable(getResources().getDrawable(R.drawable.off_res));
-//            FirebaseMessaging.getInstance().unsubscribeFromTopic("msg");
         }
-
-        FirebaseMessaging.getInstance().subscribeToTopic("msg");
-
         notiCheck.setChecked(getCheck());
-
         lgoutBtn.setOnClickListener(this);
         notiCheck.setOnClickListener(this);
-
     }
 
     @Override

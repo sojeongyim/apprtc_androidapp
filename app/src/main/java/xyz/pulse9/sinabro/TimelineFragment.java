@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -97,14 +98,8 @@ public class TimelineFragment extends Fragment{
         setting_butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Logout Complete", Toast.LENGTH_SHORT);
-                toast.show();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                Intent intent = new Intent(getActivity(), MySettingsActivity.class);
                 startActivity(intent);
-
-                getActivity().finish();
-
             }
         });
         notice_butt.setOnClickListener(new View.OnClickListener() {
@@ -145,9 +140,6 @@ public class TimelineFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.fragment_timeline, container, false);
-
-        // Inflate the layout for this fragment
-
         return v;
     }
 

@@ -182,16 +182,10 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     Thread.setDefaultUncaughtExceptionHandler(new UnhandledExceptionHandler(this));
-
     // Set window styles for fullscreen-window size. Needs to be done before
     // adding content.
     // {"android.permission.MODIFY_AUDIO_SETTINGS",
     //      "android.permission.RECORD_AUDIO", "android.permission.INTERNET"};
-
-
-
-
-
 
 
     requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -476,6 +470,7 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
   @Override
   public void onStop() {
     super.onStop();
+    disconnect();
     activityRunning = false;
     // Don't stop the video when using screencapture to allow user to show other apps to the remote
     // end.
@@ -844,12 +839,10 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
       }
     });
   }
-
   @Override
   public void onChannelError(final String description) {
     reportError(description);
   }
-
   // -----Implementation of PeerConnectionClient.PeerConnectionEvents.---------
   // Send local peer connection SDP and ICE candidates to remote party.
   // All callbacks are invoked from peer connection client looper thread and
