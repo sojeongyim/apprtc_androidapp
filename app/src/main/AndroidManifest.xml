@@ -56,14 +56,14 @@
         <activity android:name=".mDatePicker" />
         <activity android:name=".mTimePicker" />
         <activity android:name=".TestActivity" />
-        <receiver android:name=".PushInAppReceiver"/>
+
+        <receiver android:name=".PushInAppReceiver" />
 
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -103,7 +103,9 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".MySettingsActivity">
+        </activity>
     </application>
 
 </manifest>
