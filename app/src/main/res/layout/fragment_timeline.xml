@@ -55,7 +55,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9"
-        android:fitsSystemWindows="false">
+        android:fitsSystemWindows="false"
+        android:background="#848686">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/timeline_recyclerview"
