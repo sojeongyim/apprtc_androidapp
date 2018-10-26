@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
             Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.navigation_timeline:
-                    YouTubePlayerSupportFragment yfragment = new TimelineFragment();
+                    YouTubePlayerSupportFragment yfragment = YouTubePlayerSupportFragment.newInstance();
                     loadyoutubeFragment(yfragment);
                     item.setChecked(true);
                     return true;
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
 
+//        FirebaseMessaging.getInstance().subscribeToTopic("news");
+//        FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users");
