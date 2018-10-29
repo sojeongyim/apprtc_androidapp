@@ -225,7 +225,6 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
         @Override
         protected void onPostExecute(String result) {
-
             super.onPostExecute(result);
             holder.TitleText.setText(Title);
             holder.descriptionText.setText(description);
@@ -233,7 +232,6 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
             holder.tagText.setText(tag);
             holder.channel_name.setText(channelName);
             holder.channel_img.setImageBitmap(UrlBitmap);
-
         }
 
         @Override
