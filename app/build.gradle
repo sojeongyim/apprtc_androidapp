@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId "xyz.pulse9.sinabro"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 26
 
         versionCode 15664

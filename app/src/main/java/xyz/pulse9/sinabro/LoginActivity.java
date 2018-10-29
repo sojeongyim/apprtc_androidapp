@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     LoginButton loginButton;
     private ProgressDialog mProgress;
     private CallbackManager mCallbackManager;
+    private NetworkInfo activeNetwork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,13 +108,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         ggl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signIn();
+                ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                activeNetwork = cm.getActiveNetworkInfo();
+                if(activeNetwork!=null) {
+                    signIn();
+                }else{
+                    Toast.makeText(LoginActivity.this,"Please connect to the internet",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginButton.performClick();
+                ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                activeNetwork = cm.getActiveNetworkInfo();
+                if(activeNetwork!=null) {
+                    loginButton.performClick();
+                }else{
+                    Toast.makeText(LoginActivity.this,"Please connect to the internet",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -142,8 +157,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
+
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+
         mProgress.show();
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -160,7 +177,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                 });
+
     }
+
     private void updateUI(FirebaseUser curuser) {
         if (curuser != null) {
             Log.d(TAG, "Auth Successed");

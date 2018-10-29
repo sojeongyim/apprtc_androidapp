@@ -1,16 +1,22 @@
 package xyz.pulse9.sinabro;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
 import android.mtp.MtpStorageInfo;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
+import android.net.NetworkRequest;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -27,6 +33,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +61,7 @@ import java.util.Vector;
  * Use the {@link TimelineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TimelineFragment extends Fragment{
+public class TimelineFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -83,6 +90,30 @@ public class TimelineFragment extends Fragment{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+//        ConnectivityManager cm = (ConnectivityManager) getContext()
+//                .getSystemService( Context.CONNECTIVITY_SERVICE );
+//
+//        NetworkRequest.Builder builder = new NetworkRequest.Builder();
+//
+//        cm.registerNetworkCallback(
+//                builder.build(),
+//                new ConnectivityManager.NetworkCallback()
+//                {
+//                    @Override
+//                    public void onAvailable( Network network )
+//                    {
+//                        //네트워크 연결됨
+//                    }
+//
+//                    @Override
+//                    public void onLost( Network network )
+//                    {
+//                        //네트워크 끊어짐
+//                    }
+//                } );
+
+
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.timeline_recyclerview);
         mRecyclerView.setHasFixedSize(true);
 
@@ -90,17 +121,16 @@ public class TimelineFragment extends Fragment{
         mRecyclerView.setLayoutManager(mLayoutManager);
         // specify an adapter (see also next example)
 
-//        myDataset = new ArrayList<>();
-//        mAdapter = new MyAdapter(myDataset,this);
-//        mRecyclerView.setAdapter(mAdapter);
-//        myDataset.add(new MyData("uO4BMId9e0w"));
-//        myDataset.add(new MyData("CHoPhkCzdrc"));
-//        myDataset.add(new MyData("ivG_NZojm-8"));
-//        myDataset.add(new MyData("7bR8TG2HgVA"));
         youtubeVideos.add( new YouTubeVideos("pjVdCUxvfXA"));
         youtubeVideos.add( new YouTubeVideos("6__TKYYJAkI"));
         youtubeVideos.add( new YouTubeVideos("69eq1zD5oWM"));
         youtubeVideos.add( new YouTubeVideos("7bR8TG2HgVA"));
+        youtubeVideos.add( new YouTubeVideos("6VIQIx5dTY0"));
+        youtubeVideos.add( new YouTubeVideos("Hl3jkH_ySDU"));
+        youtubeVideos.add( new YouTubeVideos("6moe9Ot7Mbg"));
+        youtubeVideos.add( new YouTubeVideos("kCON0eEmoq4"));
+        youtubeVideos.add( new YouTubeVideos("9jFZdu0zTEA"));
+        youtubeVideos.add( new YouTubeVideos("1q_t6RNuH8c"));
         VideoAdapter videoAdapter = new VideoAdapter(youtubeVideos);
         mRecyclerView.setAdapter(videoAdapter);
 
@@ -198,6 +228,7 @@ public class TimelineFragment extends Fragment{
 }
 class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     List<YouTubeVideos> youtubeVideoList;
+    private NetworkInfo activeNetwork;
     public VideoAdapter() {
     }
     public VideoAdapter(List<YouTubeVideos> youtubeVideoList) {
@@ -213,11 +244,41 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 //        GridLayoutManager.LayoutParams layoutParams=(GridLayoutManager.LayoutParams)holder.itemView.getLayoutParams();
 //        layoutParams.height=layoutParams.width;
 //        holder.itemView.requestLayout();
+        ConnectivityManager cm = (ConnectivityManager)holder.itemView.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        activeNetwork = cm.getActiveNetworkInfo();
+        if(activeNetwork!=null) {
+            GetYoutubeInfo getVideoInfo = new GetYoutubeInfo(youtubeVideoList.get(position).getVideoCode(),holder);
+            getVideoInfo.execute();
+            holder.videoWeb.setVisibility(View.VISIBLE);
+            holder.videoWeb.loadData(youtubeVideoList.get(position).getVideoUrl(), "text/html" , "utf-8" );
 
-        GetYoutubeInfo getVideoInfo = new GetYoutubeInfo(youtubeVideoList.get(position).getVideoCode(),holder);
-        getVideoInfo.execute();
+        }else{
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext());
+            alertDialogBuilder.setTitle("internet disconnected");
 
-        holder.videoWeb.loadData(youtubeVideoList.get(position).getVideoUrl(), "text/html" , "utf-8" );
+            alertDialogBuilder
+                    .setMessage("Please connect to the internet")
+                    .setCancelable(false)
+                    .setNegativeButton("ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(
+                                        DialogInterface dialog, int id) {
+                                    // 다이얼로그를 취소한다
+                                    dialog.cancel();
+                                }
+                            });
+
+            // 다이얼로그 생성
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // 다이얼로그 보여주기
+            alertDialog.show();
+
+
+        }
+
+
+
     }
 
     class GetYoutubeInfo extends AsyncTask<String, String, String > {
@@ -225,12 +286,14 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
         String videocode="";
         String Title="";
         String description="";
-        String tag="";
+        String newtag="";
         String channelId="";
         String channelName="";
         String channelImgUrl="";
+        String likeCount="";
         Bitmap UrlBitmap=null;
         VideoViewHolder holder;
+
 
 
         GetYoutubeInfo(String VideoUrl,VideoViewHolder holder){
@@ -248,9 +311,10 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
             super.onPostExecute(result);
             holder.TitleText.setText(Title);
             holder.descriptionText.setText(description);
-            holder.tagText.setText(tag);
+            holder.tagText.setText(newtag);
             holder.channel_name.setText(channelName);
-
+            holder.likeCountText.setText(likeCount);
+            holder.thumbs.setVisibility(View.VISIBLE);
 //            holder.channel_img.setImageBitmap(UrlBitmap);
 
             Picasso.get().load(channelImgUrl)
@@ -265,7 +329,7 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
         protected String doInBackground(String... params) {
 
             HttpHandler videoHttp = new HttpHandler();
-            String videoInfo = videoHttp.makeServiceCall("https://www.googleapis.com/youtube/v3/videos?id="+videocode+"&part=snippet&key="+ApiToken);
+            String videoInfo = videoHttp.makeServiceCall("https://www.googleapis.com/youtube/v3/videos?id="+videocode+"&part=snippet,statistics&key="+ApiToken);
 
             if (videoInfo != null) {
                 try {
@@ -273,10 +337,12 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
                     JSONArray items = videoJson.getJSONArray("items");
                     JSONObject item = items.getJSONObject(0);
                     String snippet= item.getString("snippet");
+                    String statistic = item.getString("statistics");
                     Log.e("sojeong","snippet : "+snippet);
+                    Log.e("sojeong","statistic : "+statistic);
 
                     JSONObject snippetOB = new JSONObject(snippet);
-
+                    JSONObject statisticOB = new JSONObject(statistic);
                     if(snippetOB.has("title")) {
                         Title = snippetOB.getString("title");
                     }
@@ -286,7 +352,21 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
                     }
 
                     if(snippetOB.has("tags")) {
-                        tag = snippetOB.getString("tags");
+                        String tag = snippetOB.getString("tags");
+                        tag=tag.replaceAll("\\[","");
+                        tag=tag.replaceAll("]","");
+                        tag=tag.replaceAll("\"","");
+                        String[] tagparsing = tag.split(",");
+                        for(int i=0;i<tagparsing.length;i++){
+                            tagparsing[i].replaceAll("\"","");
+                            tagparsing[i]="#"+tagparsing[i];
+                            newtag+=tagparsing[i]+" ";
+                        }
+                    }
+
+                    if(statisticOB.has("likeCount")){
+                            likeCount = statisticOB.getString("likeCount");
+                        Log.e("sojeong","likeCount: "+likeCount);
                     }
 
                     channelId = snippetOB.getString("channelId");
@@ -346,10 +426,11 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
         ImageView channel_img;
         TextView channel_name;
         ImageButton fold;
-        TextView likeCount;
+        TextView likeCountText;
         TextView TitleText;
         TextView descriptionText;
         TextView tagText;
+        ImageView thumbs;
 
         public VideoViewHolder(View itemView) {
             super(itemView);
@@ -357,10 +438,11 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
             channel_img=(ImageView)itemView.findViewById(R.id.channel_img);
             channel_name=(TextView)itemView.findViewById(R.id.channel_name);
             fold = (ImageButton)itemView.findViewById(R.id.timeline_tab);
-            likeCount = (TextView)itemView.findViewById(R.id.likeCount);
+            likeCountText = (TextView)itemView.findViewById(R.id.likeCount);
             TitleText = (TextView)itemView.findViewById(R.id.title);
             descriptionText = (TextView)itemView.findViewById(R.id.description);
             tagText = (TextView)itemView.findViewById(R.id.tag);
+            thumbs = (ImageView)itemView.findViewById(R.id.thumbs);
             videoWeb.getSettings().setJavaScriptEnabled(true);
             videoWeb.setWebChromeClient(new WebChromeClient() {
             } );
@@ -430,6 +512,8 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     }
 
 }
+
+
 class YouTubeVideos {
     String videoUrl;
     String videoCode;
