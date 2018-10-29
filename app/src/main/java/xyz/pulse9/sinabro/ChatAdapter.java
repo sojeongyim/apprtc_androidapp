@@ -31,6 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import static org.webrtc.ContextUtils.getApplicationContext;
 
@@ -44,23 +45,9 @@ public class ChatAdapter extends ArrayAdapter {
     private static final String ITEM_VIEW_TYPE_DATE = "2";
     private static final String ITEM_VIEW_TYPE_CONF = "3";
     private static final String ITEM_VIEW_TYPE_END = "4";
-
     List<Message> msgs = new ArrayList();
-
     public ChatAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
-    }
-    public long DateConverter(String year, String month, String day, String hour, String minute) {
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, Integer.parseInt(year));
-        c.set(Calendar.MONTH, Integer.parseInt(month));
-        c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day));
-        c.set(Calendar.HOUR, Integer.parseInt(hour));
-        c.set(Calendar.MINUTE, Integer.parseInt(minute));
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-
-        return (long)(c.getTimeInMillis() / 1000L);
     }
     public void add(Message object) {
         msgs.add(object);
@@ -92,6 +79,11 @@ public class ChatAdapter extends ArrayAdapter {
         inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         LinearLayout chatMessageContainer;
+        TimeZone tz = Calendar.getInstance().getTimeZone();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
+        sdf.setTimeZone(tz);
+        sdf2.setTimeZone(tz);
 
         final String curuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final Message msg = msgs.get(position);
@@ -121,10 +113,8 @@ public class ChatAdapter extends ArrayAdapter {
                 chatMessageContainer = convertView.findViewById(R.id.textLinear);
                 rightchatPhoto.setVisibility(View.GONE);
 
-                String t[] = msg.getSendDate().split(" ");
-                String t2 = t[3];
-                t = t2.split(":");
-                t2 = t[0]+":"+t[1];
+                Date confDate2 = new Date(Long.parseLong(msg.getSendDate())*1000L);
+                String t2 = sdf2.format(confDate2); // I assume your timestamp is in seconds and you're converting to milliseconds?
 
                 if(!message_left) {
                     Picasso.get().load(msg.getPhoto())
@@ -145,7 +135,6 @@ public class ChatAdapter extends ArrayAdapter {
 
                 if(msgs.size()>0 && position > 0)
                 {
-                    Log.d("JANGMIN", "Position : " + position);
                     Message prev_msg = msgs.get(position-1);
                     if(!prev_msg.getType().equals("2") && !prev_msg.getType().equals("3")&& !prev_msg.getType().equals("4") ) {
                         if (prev_msg.getSender().equals(msg.getSender()))
@@ -201,28 +190,17 @@ public class ChatAdapter extends ArrayAdapter {
                         denyBtn.setVisibility(View.GONE);
                         resultBtn.setText("Accepted");
                         resultBtn.setVisibility(View.VISIBLE);
-                        msg.setChk("1");
 
-                        String tmp_time = msg.getDate();
-                        Long tmp_time2 = DateConverter(tmp_time.split("/")[0], tmp_time.split("/")[1], tmp_time.split("/")[2], tmp_time.split("/")[3], tmp_time.split("/")[4]);
-                        tmp_time2  = tmp_time2-43200;
+                        Long tmp_time = Long.parseLong(msg.getDate());
 
                         final DatabaseReference alarmDatabase = FirebaseDatabase.getInstance().getReference("alarm");
-                        Alarm tmp_alarm = new Alarm(tmp_time2, msg.getChatroomname(), msg.getReceiver(), msg.getSender());
+                        Alarm tmp_alarm = new Alarm(tmp_time, msg.getChatroomname(), msg.getReceiver(), msg.getSender());
                         alarmDatabase.push().setValue(tmp_alarm);
-
-                        Message tmp = new Message("1", msg.getSender(), msg.getReceiver(), msg.getSendDate());   //test
-                        tmp.setContents("Planing Conference");
-                        tmp.setPhoto(msg.getPhoto());
-                        tmp.setDate(msg.getDate());
-                        tmp.setMessageName(msg.getMessageName());
-                        tmp.setChatroomname(msg.getChatroomname());
-                        tmp.setChk("1");
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference ref;
                         ref = database.getReference("message").child(msg.getChatroomname());
-                        ref.child(msg.getMessageName()).setValue(tmp);
+                        ref.child(msg.getMessageName()).child("chk").setValue("1");
                     }
                 });
                 denyBtn.setOnClickListener(new View.OnClickListener() {
@@ -232,27 +210,16 @@ public class ChatAdapter extends ArrayAdapter {
                         acceptBtn.setVisibility(View.GONE);
                         resultBtn.setText("Denied");
                         resultBtn.setVisibility(View.VISIBLE);
-                        msg.setChk("2");
-
-                        Message tmp = new Message("1", msg.getSender(), msg.getReceiver(), msg.getSendDate());   //test
-                        tmp.setContents("Planing Conference");
-                        tmp.setPhoto(msg.getPhoto());
-                        tmp.setDate(msg.getDate());
-                        tmp.setMessageName(msg.getMessageName());
-                        tmp.setChatroomname(msg.getChatroomname());
-                        tmp.setChk("2");
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference ref;
                         ref = database.getReference("message").child(msg.getChatroomname());
-                        ref.child(msg.getMessageName()).setValue(tmp);
+                        ref.child(msg.getMessageName()).child("chk").setValue("2");
                     }
                 });
                 TextView date = convertView.findViewById(R.id.dataTime);
-                String[] k = msg.getDate().split("/");
-                k[1] = String.valueOf(Integer.parseInt(k[1]) +1);
-                String tmp = k[0] + "/" + k[1] + "/" +k[2] + "/" +k[3] + "/" +k[4];
-                date.setText(tmp);
+                Date confDate = new Date(Long.parseLong(msg.getDate())*1000L);
+                date.setText(sdf.format(confDate));
                 break;
             case ITEM_VIEW_TYPE_DATE:
                 convertView = inflater.inflate(R.layout.chat_date,parent, false);

@@ -49,7 +49,7 @@ public class Message {
         this.type=type;
         this.sender=sender;
         this.receiver=receiver;
-        this.sendDate = Calendar.getInstance().getTime().toString();
+        this.sendDate = String.valueOf(System.currentTimeMillis() / 1000L);
     }
     public Message()
     {
@@ -61,13 +61,6 @@ public class Message {
         this.callTime=callTime;
     }
 
-    public Message(String type, String sender, String receiver, String sendDate)
-    {
-        this.type=type;
-        this.sender=sender;
-        this.receiver=receiver;
-        this.sendDate=sendDate;
-    }
     public String getMessageName() {
         return MessageName;
     }
@@ -95,14 +88,8 @@ public class Message {
     public String getSendDate() {
         return sendDate;
     }
-    public void setSendDate(String sendDate) {
-        this.sendDate = sendDate;
-    }
     public String getSender() {
         return sender;
-    }
-    public void setSender(String sender) {
-        this.sender = sender;
     }
     public String getContents() {
         return contents;
@@ -112,9 +99,6 @@ public class Message {
     }
     public String getReceiver() {
         return receiver;
-    }
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
     }
     public String getDate() {
         return date;
@@ -131,20 +115,8 @@ public class Message {
     public String getVidRoomName() {
         return vidRoomName;
     }
-    public void setVidRoomName(String vidRoomName) {
-        this.vidRoomName = vidRoomName;
-    }
     public String getCallTime() {
         return callTime;
-    }
-    public void setCallTime(String callTime) {
-        this.callTime = callTime;
-    }
-    public String getRoomCnt() {
-        return roomCnt;
-    }
-    public void setRoomCnt(String roomCnt) {
-        this.roomCnt = roomCnt;
     }
 }
 

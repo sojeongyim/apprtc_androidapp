@@ -73,22 +73,6 @@ public class ChatRoom {
     public String getTime() {
         return time;
     }
-    public Date getDate_Time()
-    {
-        Date date;
-        String test = this.time;
-
-        SimpleDateFormat parserSDF = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.ENGLISH);
-        try {
-            date = parserSDF.parse(test);
-            Log.d("JMTEST", "GETTIME() : " + date.getTime());
-            return date;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public void setTime(String time) {
         this.time = time;
     }

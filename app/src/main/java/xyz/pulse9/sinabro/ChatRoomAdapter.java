@@ -10,10 +10,14 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class ChatRoomAdapter extends ArrayAdapter {
     List<ChatRoom> ChatRooms = new ArrayList<ChatRoom>();
@@ -43,20 +47,7 @@ public class ChatRoomAdapter extends ArrayAdapter {
         Comparator<ChatRoom> Asc = new Comparator<ChatRoom>() {
             @Override
             public int compare(ChatRoom item1, ChatRoom item2) {
-                int ret = 0;
-                if(item1.getDate_Time().after(item2.getDate_Time()))
-                {
-                    ret = -1;
-                }
-                else if (item1.getDate_Time().equals(item2.getDate_Time()))
-                {
-                    ret = 0 ;
-                }
-                else if (item1.getDate_Time().before(item2.getDate_Time()))
-                {
-                    ret = 1;
-                }
-                return ret;
+                return -(item1.getTime().compareTo(item2.getTime()));
             }
         };
         Collections.sort(ChatRooms, Asc);
@@ -90,10 +81,14 @@ public class ChatRoomAdapter extends ArrayAdapter {
         msgText.setText(chatRoom.getNickname());
         msgText2.setText(chatRoom.getLastcontents());
         String time = chatRoom.getTime();
-        String times[] = time.split(" ");
-        time = times[0] + " " + times[1] + " " + times[2] + " " + times[3];
-        times = time.split(":");
-        time = times[0] + ":" + times[1];
+
+
+        Date confDate2 = new Date(Long.parseLong(chatRoom.getTime())*1000L);
+        Calendar cal2 = Calendar.getInstance();
+        TimeZone tz2 = cal2.getTimeZone();
+        SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
+        sdf2.setTimeZone(tz2);
+        time = sdf2.format(confDate2);
 
         msgText3.setText(time);
         return row;

@@ -170,22 +170,22 @@ public class ConnectActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                if(chatAdapter.getItem(i).getType().equals("3") && Integer.parseInt(chatAdapter.getItem(i).getRoomCnt())<3)
-                {
-                    final DatabaseReference tmp = database.getReference("message").child(chatroomname)
-                            .child(chatAdapter.getItem(i).getMessageName()).child("roomCnt");
-                    tmp.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            tmp.setValue(Integer.parseInt(dataSnapshot.getValue().toString())+1);
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
+//                if(chatAdapter.getItem(i).getType().equals("3") && Integer.parseInt(chatAdapter.getItem(i).getRoomCnt())<3)
+//                {
+//                    final DatabaseReference tmp = database.getReference("message").child(chatroomname)
+//                            .child(chatAdapter.getItem(i).getMessageName()).child("roomCnt");
+//                    tmp.addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                            tmp.setValue(Integer.parseInt(dataSnapshot.getValue().toString())+1);
+//                        }
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                        }
+//                    });
                     connectToRoom(chatAdapter.getItem(i).getVidRoomName());
-                }
+//                }
             }
         });
         vidBtn = (ImageButton) findViewById(R.id.vidBtn);
@@ -204,7 +204,6 @@ public class ConnectActivity extends AppCompatActivity {
                             case R.id.emailLo:
                                 Intent intent = new Intent(ConnectActivity.this, mDatePicker.class);
                                 startActivityForResult(intent, 1);
-
                                 break;
                         }
                         bottomSheetDialog.dismiss();
@@ -238,7 +237,7 @@ public class ConnectActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode==RESULT_OK) {
             if (requestCode == 1) {
-                String result = data.getStringExtra("result");
+                long result = data.getLongExtra("result", 0);
                 Intent intent = new Intent(ConnectActivity.this, mTimePicker.class);
                 intent.putExtra("result",result);
                 startActivityForResult(intent, 2);
@@ -251,19 +250,21 @@ public class ConnectActivity extends AppCompatActivity {
                     initDB(chatroomname);
                 }
                 ref = database.getReference("message").child(chatroomname);
-                String result2 = data.getStringExtra("result");
-//                String[] k = result2.split("/");
-//                k[1] = String.valueOf(Integer.parseInt(k[1]) +1);
-//                result2 = k[0] + "/" + k[1] + "/" +k[2] + "/" +k[3] + "/" +k[4];
+                long result2 = data.getLongExtra("result", 0);
                 Message tmp = new Message("1", uid, receiveruid);   //test
                 String tmp_name = ref.push().getKey();
                 tmp.setMessageName(tmp_name);
                 tmp.setContents("Planing Conference");
                 tmp.setPhoto(senderphoto);
-                tmp.setDate(result2);
+                tmp.setDate(String.valueOf(result2));
                 tmp.setChk("0");
                 tmp.setChatroomname(chatroomname);
                 ref.child(tmp_name).setValue(tmp);
+
+                ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, "Video Call Plan", tmp.getSendDate());
+                ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, "Video Call Plan", tmp.getSendDate());
+                userDatabase.child(uid).child("rooms").child(chatroomname).setValue(updateChatRoom);
+                userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(updateChatRoom2);
             }
             else if(requestCode==VIDCALL)
             {
@@ -578,17 +579,6 @@ public class ConnectActivity extends AppCompatActivity {
         ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, sendMsg.getText().toString(), mMessage.getSendDate());
         userDatabase.child(uid).child("rooms").child(chatroomname).setValue(updateChatRoom);
         userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(updateChatRoom2);
-//        if(chatAdapter.getCount()!=0)
-//        {
-//            Message tmp = chatAdapter.getItem(chatAdapter.getCount()-1);
-//            String tmp_time[] = tmp.getSendDate().split(" ");
-//            String cur_time[] = mMessage.getSendDate().split(" ");
-//            if(!(tmp_time[0].equals(cur_time[0]) && tmp_time[1].equals(cur_time[1]) && tmp_time[2].equals(cur_time[2])))
-//            {
-//                Message dateMsg = new Message("2");
-//                ref.push().setValue(dateMsg);
-//            }
-//        }
         ref.push().setValue(mMessage);
         sendMsg.setText("");
     }

@@ -643,6 +643,11 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
     }
     Intent intent = new Intent();
     long duration = System.currentTimeMillis() - callConnectedTimeMs;
+
+    Log.d("JANGIN", "System : " + System.currentTimeMillis());
+    Log.d("JANGIN", "Call : " + callConnectedTimeMs);
+    Log.d("JANGIN", "Duration : " + duration);
+
     intent.putExtra("millisec", duration);
     setResult(RESULT_OK, intent);
     finish();
