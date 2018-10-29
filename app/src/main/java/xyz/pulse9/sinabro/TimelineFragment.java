@@ -229,6 +229,7 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
         String channelId="";
         String channelName="";
         String channelImgUrl="";
+        String likeCount="";
         Bitmap UrlBitmap=null;
         VideoViewHolder holder;
 
@@ -251,6 +252,7 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
             holder.descriptionText.setText(description);
             holder.tagText.setText(tag);
             holder.channel_name.setText(channelName);
+            holder.likeCountText.setText(likeCount);
 //            holder.channel_img.setImageBitmap(UrlBitmap);
 
             Picasso.get().load(channelImgUrl)
@@ -267,7 +269,7 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
         protected String doInBackground(String... params) {
 
             HttpHandler videoHttp = new HttpHandler();
-            String videoInfo = videoHttp.makeServiceCall("https://www.googleapis.com/youtube/v3/videos?id="+videocode+"&part=snippet&key="+ApiToken);
+            String videoInfo = videoHttp.makeServiceCall("https://www.googleapis.com/youtube/v3/videos?id="+videocode+"&part=snippet,statistics&key="+ApiToken);
 
             if (videoInfo != null) {
                 try {
@@ -289,6 +291,19 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
                     if(snippetOB.has("tags")) {
                         tag = snippetOB.getString("tags");
+                        String[] tagparsing = tag.split(",");
+                        for(int i=0;i<tagparsing.length;i++){
+                            tagparsing[i].replaceAll("\"","");
+                            tagparsing[i]="#"+tagparsing[i];
+                        }
+                    }
+
+                    if(snippetOB.has("statistics")){
+                        String statistics = snippetOB.getString("statistics");
+                        JSONObject statisticsOB = new JSONObject(statistics);
+                        if(statisticsOB.has("likeCount")) {
+                            likeCount = statisticsOB.getString("likeCount");
+                        }
                     }
 
                     channelId = snippetOB.getString("channelId");
@@ -348,7 +363,7 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
         ImageView channel_img;
         TextView channel_name;
         ImageButton fold;
-        TextView likeCount;
+        TextView likeCountText;
         TextView TitleText;
         TextView descriptionText;
         TextView tagText;
@@ -359,7 +374,7 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
             channel_img=(ImageView)itemView.findViewById(R.id.channel_img);
             channel_name=(TextView)itemView.findViewById(R.id.channel_name);
             fold = (ImageButton)itemView.findViewById(R.id.timeline_tab);
-            likeCount = (TextView)itemView.findViewById(R.id.likeCount);
+            likeCountText = (TextView)itemView.findViewById(R.id.likeCount);
             TitleText = (TextView)itemView.findViewById(R.id.title);
             descriptionText = (TextView)itemView.findViewById(R.id.description);
             tagText = (TextView)itemView.findViewById(R.id.tag);
