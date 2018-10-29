@@ -192,7 +192,6 @@ public class ChatAdapter extends ArrayAdapter {
                         resultBtn.setVisibility(View.VISIBLE);
 
                         Long tmp_time = Long.parseLong(msg.getDate());
-
                         final DatabaseReference alarmDatabase = FirebaseDatabase.getInstance().getReference("alarm");
                         Alarm tmp_alarm = new Alarm(tmp_time, msg.getChatroomname(), msg.getReceiver(), msg.getSender());
                         alarmDatabase.push().setValue(tmp_alarm);

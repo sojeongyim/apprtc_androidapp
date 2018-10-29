@@ -614,4 +614,12 @@ public class ConnectActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void setSharedPref(String roomname)
+    {
+        SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("cur_roomname", roomname);
+        editor.commit();
+    }
 }
