@@ -109,15 +109,34 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/thumbs"
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/thumbs"
-                android:visibility="invisible"/>
+                android:scaleType="centerInside">
+
+                <ImageButton
+                    android:id="@+id/heart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="#00ffffff"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/heart"
+                    android:visibility="invisible"/>
+
+                <ImageButton
+                    android:id="@+id/heart_check"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="#00ffffff"
+                    android:scaleType="fitCenter"
+                    android:visibility="invisible"
+                    app:srcCompat="@drawable/heart_check" />
+
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/likeCount"
