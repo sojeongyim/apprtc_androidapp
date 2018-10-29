@@ -246,7 +246,6 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
         @Override
         protected void onPostExecute(String result) {
-
             super.onPostExecute(result);
             holder.TitleText.setText(Title);
             holder.descriptionText.setText(description);
@@ -261,8 +260,6 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
 
             makeTextViewResizable(holder.descriptionText, 3, "More", true);
-
-
         }
 
         @Override
