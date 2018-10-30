@@ -118,7 +118,36 @@ public class Message {
         return vidRoomName;
     }
     public String getCallTime() {
+
         return callTime;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+
+    public void setSendDate(String sendDate) {
+        this.sendDate = sendDate;
+    }
+
+    public void setVidRoomName(String vidRoomName) {
+        this.vidRoomName = vidRoomName;
+    }
+
+    public void setCallTime(String callTime) {
+        this.callTime = callTime;
+    }
+
+    public String getRoomCnt() {
+        return roomCnt;
+    }
+
+    public void setRoomCnt(String roomCnt) {
+        this.roomCnt = roomCnt;
     }
 }
 

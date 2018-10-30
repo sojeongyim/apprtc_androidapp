@@ -125,6 +125,8 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
   // Peer connection statistics callback period in ms.
   private static final int STAT_CALLBACK_PERIOD = 1000;
 
+  String roomId;
+
   private class ProxyRenderer implements VideoRenderer.Callbacks {
     private VideoRenderer.Callbacks target;
 
@@ -177,6 +179,8 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
   private CallFragment callFragment;
   private HudFragment hudFragment;
   private CpuMonitor cpuMonitor;
+
+  private String MsgName;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -272,8 +276,9 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
       return;
     }
 
+    MsgName = intent.getStringExtra("MsgName");
     // Get Intent parameters.
-    String roomId = intent.getStringExtra(EXTRA_ROOMID);
+    roomId = intent.getStringExtra(EXTRA_ROOMID);
     Log.d(TAG, "Room ID: " + roomId);
     if (roomId == null || roomId.length() == 0) {
 //      logAndToast(getString(R.string.missing_url));
@@ -375,7 +380,7 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
     }
 
     fullscreenRenderer.setMirror(false);
-    pipRenderer.setMirror(false);;
+    pipRenderer.setMirror(false);
   }
 
   @TargetApi(17)
@@ -657,6 +662,8 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
     Log.d("JANGIN", "Call : " + callConnectedTimeMs);
     Log.d("JANGIN", "Duration : " + duration);
 
+
+    intent.putExtra("MsgName", MsgName);
     intent.putExtra("millisec", duration);
     setResult(RESULT_OK, intent);
     finish();

@@ -122,6 +122,10 @@ public class ChatRoomListFragment extends Fragment{
                 {
                     noTxt.setVisibility(View.VISIBLE);
                 }
+                else
+                {
+                    noTxt.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -146,6 +150,14 @@ public class ChatRoomListFragment extends Fragment{
                 chatRoomAdapter.sortList();
                 chatRoomAdapter.notifyDataSetChanged();
                 listView.setAdapter(chatRoomAdapter);
+                if(dataSnapshot.getChildrenCount()==0)
+                {
+                    noTxt.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    noTxt.setVisibility(View.GONE);
+                }
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -163,7 +175,14 @@ public class ChatRoomListFragment extends Fragment{
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                if(dataSnapshot.getChildrenCount()==0)
+                {
+                    noTxt.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    noTxt.setVisibility(View.GONE);
+                }
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
