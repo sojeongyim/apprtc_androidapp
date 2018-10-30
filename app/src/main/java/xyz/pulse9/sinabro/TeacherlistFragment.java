@@ -34,22 +34,17 @@ import com.squareup.picasso.Target;
 import java.util.ArrayList;
 
 public class TeacherlistFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private ViewPager mViewPager;
     private TabLayout tabLayout;
     private ImageButton left_arrow;
     private ImageButton right_arrow;
     private final int TEACHER_NUM=7;
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference("users");
 
 
     public TeacherlistFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -60,14 +55,16 @@ public class TeacherlistFragment extends Fragment {
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        tabLayout = (TabLayout) getView().findViewById(R.id.tab_layout);
-        left_arrow =(ImageButton)getView().findViewById(R.id.left_arrow);
-        right_arrow =(ImageButton)getView().findViewById(R.id.right_arrow);
+        tabLayout = getView().findViewById(R.id.tab_layout);
+        left_arrow = getView().findViewById(R.id.left_arrow);
+        right_arrow = getView().findViewById(R.id.right_arrow);
 
+        final mPagerAdapter adapter = new mPagerAdapter(getFragmentManager(), tabLayout.getTabCount());
 
         ArrayList<View> views =new ArrayList<>();
         for(int i=0;i<TEACHER_NUM;i++) {
             views.add(i, getLayoutInflater().inflate(R.layout.customtab, null));
+
             Log.e("sojeong","views.get(i).getId(): "+views.get(i).getId());
             Picasso.get().load("https://lh6.googleusercontent.com/-7dn3fkKbLIU/AAAAAAAAAAI/AAAAAAAAAAA/AAN31DX8GDsT--0HuOqbPFZYERKwcG5x5A/s96-c/photo.jpg")
                     .transform(new CropCircleTransformation())
@@ -75,17 +72,10 @@ public class TeacherlistFragment extends Fragment {
             tabLayout.addTab(tabLayout.newTab().setCustomView(views.get(i)));
         }
 
-
-//        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.user1));
-
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
         mViewPager = (ViewPager) getView().findViewById(R.id.pager);
-        final mPagerAdapter adapter = new mPagerAdapter(getFragmentManager(), tabLayout.getTabCount());
         mViewPager.setAdapter(adapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
