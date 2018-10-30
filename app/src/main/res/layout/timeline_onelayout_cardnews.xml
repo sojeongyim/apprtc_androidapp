@@ -68,9 +68,16 @@
             android:background="#00ffffff">
 
             <android.support.v4.view.ViewPager
-                android:id="@+id/cardnews"
+                android:id="@+id/cardnews_pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:visibility="invisible"/>
+
+            <!--<ImageView-->
+            <!--android:id="@+id/cardnews"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:visibility="invisible"/>-->
 
         </FrameLayout>
 
@@ -123,7 +130,6 @@
                 android:textColor="@color/sianbro_black_color"
                 android:textStyle="bold" />
         </LinearLayout>
-
 
 
     </LinearLayout>

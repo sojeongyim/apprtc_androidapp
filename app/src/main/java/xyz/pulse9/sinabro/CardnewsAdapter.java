@@ -11,15 +11,14 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 public class CardnewsAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
 
-
-    public CardnewsAdapter(FragmentManager fm, int NumOfTabs) {
-        super(fm);
-        this.mNumOfTabs = NumOfTabs;
+    public CardnewsAdapter(FragmentManager fragmentManager) {
+        super(fragmentManager);
     }
 
 
     @Override
     public Fragment getItem(int position) {
+//        int drawable[]={R.drawable.kr1,R.drawable.kr2,};
         int drawable[]={R.drawable.kr1,R.drawable.kr2,R.drawable.kr3,R.drawable.kr4,R.drawable.kr5,R.drawable.kr6,R.drawable.kr7
         ,R.drawable.kr8,R.drawable.kr9,R.drawable.kr10,R.drawable.kr11};
 

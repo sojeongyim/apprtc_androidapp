@@ -1,5 +1,6 @@
 package xyz.pulse9.sinabro;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,8 +15,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -216,11 +219,11 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     @Override
     public VideoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if(viewType==1){
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_onelayout_cardnews, parent, false);
-        }else {
+//        if(viewType==1){
+//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_onelayout_cardnews, parent, false);
+//        }else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_onelayout_youtube, parent, false);
-        }
+//        }
         return new VideoViewHolder(view);
     }
 
@@ -309,10 +312,10 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
                     }
                 });
             }else{
-//                mPagerAdapter adapter = new CardnewsAdapter(holder.itemView.getContext(),);
-//                cardnewspager.setAdapter(adapter);
+                CardnewsAdapter adapter = new CardnewsAdapter(((AppCompatActivity)holder.itemView.getContext()).getSupportFragmentManager());
+                holder.cardnewspager.setAdapter(adapter);
 //                holder.cardimage.setImageResource(youtubeVideoList.get(position).getDrawables());
-//                holder.cardimage.setVisibility(View.VISIBLE);
+                holder.cardnewspager.setVisibility(View.VISIBLE);
             }
 
 
@@ -344,7 +347,6 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
         WebView videoWeb;
         ImageView channel_img;
         TextView channel_name;
-        ImageButton fold;
         TextView likeCountText;
         TextView TitleText;
         TextView descriptionText;
@@ -374,7 +376,6 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
             videoWeb = (WebView) itemView.findViewById(R.id.youtubeView);
             channel_img=(ImageView)itemView.findViewById(R.id.channel_img);
             channel_name=(TextView)itemView.findViewById(R.id.channel_name);
-            fold = (ImageButton)itemView.findViewById(R.id.timeline_tab);
             likeCountText = (TextView)itemView.findViewById(R.id.likeCount);
             TitleText = (TextView)itemView.findViewById(R.id.title);
             descriptionText = (TextView)itemView.findViewById(R.id.description);
