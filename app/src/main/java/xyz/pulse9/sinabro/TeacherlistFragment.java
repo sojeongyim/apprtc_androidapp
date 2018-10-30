@@ -2,6 +2,7 @@ package xyz.pulse9.sinabro;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,11 +14,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.provider.FirebaseInitProvider;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
@@ -55,7 +60,6 @@ public class TeacherlistFragment extends Fragment {
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
         tabLayout = (TabLayout) getView().findViewById(R.id.tab_layout);
         left_arrow =(ImageButton)getView().findViewById(R.id.left_arrow);
         right_arrow =(ImageButton)getView().findViewById(R.id.right_arrow);
@@ -64,7 +68,10 @@ public class TeacherlistFragment extends Fragment {
         ArrayList<View> views =new ArrayList<>();
         for(int i=0;i<TEACHER_NUM;i++) {
             views.add(i, getLayoutInflater().inflate(R.layout.customtab, null));
-            views.get(i).findViewById(R.id.myicon).setBackgroundResource(R.drawable.user1); //icon teacherclass 만들어 저장할것
+            Log.e("sojeong","views.get(i).getId(): "+views.get(i).getId());
+            Picasso.get().load("https://lh6.googleusercontent.com/-7dn3fkKbLIU/AAAAAAAAAAI/AAAAAAAAAAA/AAN31DX8GDsT--0HuOqbPFZYERKwcG5x5A/s96-c/photo.jpg")
+                    .transform(new CropCircleTransformation())
+                    .into((ImageView) views.get(i).findViewById(R.id.myicon));
             tabLayout.addTab(tabLayout.newTab().setCustomView(views.get(i)));
         }
 
