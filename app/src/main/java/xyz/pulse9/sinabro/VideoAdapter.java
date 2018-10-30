@@ -168,6 +168,8 @@ class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         else    //cardnews
         {
+
+            final String current_cardnewsCode = youtubeVideoList.get(position).getCardnewsCode();
             ((ImageViewHolder)holder).timeline_tab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -176,12 +178,65 @@ class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
 
-//                    getCardnewsCode
 
             CardnewsAdapter adapter = new CardnewsAdapter(((AppCompatActivity)holder.itemView.getContext()).getSupportFragmentManager(),11);
             ((ImageViewHolder)holder).cardnewspager.setAdapter(adapter);
 //                holder.cardimage.setImageResource(youtubeVideoList.get(position).getDrawables());
             ((ImageViewHolder)holder).cardnewspager.setVisibility(View.VISIBLE);
+
+
+            ((ImageViewHolder) holder).timeLineDB.child(current_cardnewsCode).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    ((ImageViewHolder) holder).likeCountText.setText(Long.toString(dataSnapshot.getChildrenCount()));
+
+                    if (((ImageViewHolder) holder).curuser != null && dataSnapshot.child(((ImageViewHolder) holder).uid).getValue() != null) {
+                        ((ImageViewHolder) holder).heart_check.setVisibility(View.VISIBLE);
+                        ((ImageViewHolder) holder).heart.setVisibility(View.INVISIBLE);
+                    } else {
+                        ((ImageViewHolder) holder).heart_check.setVisibility(View.INVISIBLE);
+                        ((ImageViewHolder) holder).heart.setVisibility(View.VISIBLE);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            ((ImageViewHolder) holder).heart.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    if (((ImageViewHolder) holder).curuser != null) {
+                        ((ImageViewHolder) holder).timeLineDB.child(current_cardnewsCode).child(((ImageViewHolder) holder).uid).setValue("1");
+                    } else {
+                        view.startAnimation(clickanimation);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+                        builder.setTitle("Sinabro");
+                        builder.setMessage("Please Sign up this beautiful app! ");
+                        builder.setNegativeButton("ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(
+                                            DialogInterface dialog, int id) {
+                                        // 다이얼로그를 취소한다
+                                        dialog.cancel();
+                                    }
+                                });
+                        builder.show();
+                    }
+
+                }
+            });
+            ((ImageViewHolder) holder).heart_check.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    ((ImageViewHolder) holder).timeLineDB.child(current_cardnewsCode).child(((ImageViewHolder) holder).uid).removeValue();
+                }
+            });
         }
 
 
