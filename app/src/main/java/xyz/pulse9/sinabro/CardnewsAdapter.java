@@ -17,7 +17,6 @@ public class CardnewsAdapter extends FragmentStatePagerAdapter {
         this.mNumOfTabs = NumOfTabs;
     }
 
-
     @Override
     public Fragment getItem(int position) {
         int drawable[]={R.drawable.kr1,R.drawable.kr2,R.drawable.kr3,R.drawable.kr4,R.drawable.kr5,R.drawable.kr6,R.drawable.kr7
