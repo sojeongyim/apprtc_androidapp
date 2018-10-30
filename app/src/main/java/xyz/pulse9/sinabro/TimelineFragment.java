@@ -88,7 +88,6 @@ public class TimelineFragment extends Fragment {
     }
 
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -103,8 +102,8 @@ public class TimelineFragment extends Fragment {
 
         Resources res = getResources();
         String[] youtubeCodes= res.getStringArray(R.array.youtubeCode);
-
-        youtubeVideos.add(new Data(R.drawable.kr1));
+        int[] drawabb = {R.drawable.kr1,R.drawable.kr2};
+        youtubeVideos.add(new Data(drawabb));
 
         for(int i=0;i<youtubeCodes.length;i++){
             youtubeVideos.add( new Data(youtubeCodes[i]));
@@ -217,10 +216,18 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     @Override
     public VideoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_onelayout, parent, false);
+        if(viewType==1){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_onelayout_cardnews, parent, false);
+        }else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_onelayout_youtube, parent, false);
+        }
         return new VideoViewHolder(view);
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return youtubeVideoList.get(position).getType();
+    }
 
     @Override
     public void onBindViewHolder(final VideoViewHolder holder, int position) {
@@ -239,6 +246,9 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
         activeNetwork = cm.getActiveNetworkInfo();
         if(activeNetwork!=null) {
             if(youtubeVideoList.get(position).getVideoCode()!=null) {
+                holder.videoWeb.getSettings().setJavaScriptEnabled(true);
+                holder.videoWeb.setWebChromeClient(new WebChromeClient() {
+                } );
                 GetYoutubeInfo getVideoInfo = new GetYoutubeInfo(current_videoCode, holder);
                 getVideoInfo.execute();
                 holder.videoWeb.setVisibility(View.VISIBLE);
@@ -379,9 +389,7 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
 //            cardimage=(ImageView)itemView.findViewById(R.id.cardnews);
 
-            videoWeb.getSettings().setJavaScriptEnabled(true);
-            videoWeb.setWebChromeClient(new WebChromeClient() {
-            } );
+
 
         }
 
@@ -532,7 +540,6 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
 
 
-
     public static void makeTextViewResizable(final TextView tv, final int maxLine, final String expandText, final boolean viewMore) {
 
         if (tv.getTag() == null) {
@@ -602,10 +609,13 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 class Data {
     String videoUrl=null;
     String videoCode=null;
-    int drawables =0;
+    // List Draw
+    int[] drawables;
+    int type=0;
 
-    public Data(int drawables) {
+    public Data(int[] drawables ) {
         this.drawables=drawables;
+        this.type=1;
     }
 
     public Data(String videoCode) {
@@ -617,11 +627,13 @@ class Data {
         return videoUrl;
     }
 
-    public int getDrawables(){return drawables;}
+    public int[] getDrawables(){return drawables;}
 
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
     }
+
+    public int getType(){return type;}
 
     public String getVideoCode() {
         return videoCode;
