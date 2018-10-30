@@ -132,6 +132,8 @@ public class ConnectActivity extends AppCompatActivity {
         chatroomname = intent2.getStringExtra("chatroomname");
         receiveruid = intent2.getStringExtra("receiveruid");
 
+        setSharedPref(chatroomname);
+
         userDatabase = database.getReference("users");
         userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -261,17 +263,12 @@ public class ConnectActivity extends AppCompatActivity {
                 tmp.setChatroomname(chatroomname);
                 ref.child(tmp_name).setValue(tmp);
 
-                ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, "Video Call Plan", tmp.getSendDate());
-                ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, "Video Call Plan", tmp.getSendDate());
-                userDatabase.child(uid).child("rooms").child(chatroomname).setValue(updateChatRoom);
-                userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(updateChatRoom2);
             }
             else if(requestCode==VIDCALL)
             {
                 Long result = data.getLongExtra("millisec", 0);
                 Log.d("JANGMIN", "How long ~~? : " + String.valueOf(result));
                 Message tmpMessage = new Message("4", String.valueOf(result/1000));
-
                 DatabaseReference ref;
                 ref = database.getReference("message").child(chatroomname);
                 ref.push().setValue(tmpMessage);
@@ -281,12 +278,12 @@ public class ConnectActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-
+        setSharedPref("");
     }
     @Override
     public void onResume() {
         super.onResume();
-
+        setSharedPref(chatroomname);
     }
     /**
      * Get a value from the shared preference or from the intent, if it does not
@@ -575,10 +572,7 @@ public class ConnectActivity extends AppCompatActivity {
             initDB(chatroomname);
         }
         ref = database.getReference("message").child(chatroomname);
-        ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, sendMsg.getText().toString(), mMessage.getSendDate());
-        ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, sendMsg.getText().toString(), mMessage.getSendDate());
-        userDatabase.child(uid).child("rooms").child(chatroomname).setValue(updateChatRoom);
-        userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(updateChatRoom2);
+
         ref.push().setValue(mMessage);
         sendMsg.setText("");
     }
@@ -591,7 +585,11 @@ public class ConnectActivity extends AppCompatActivity {
                 Message mMessage;
                 mMessage = dataSnapshot.getValue(Message.class);
                 chatAdapter.add(mMessage);
-                }
+                userDatabase.child(uid).child("rooms").child(chatroomname).child("lastcontents").setValue(mMessage.getContents());
+                userDatabase.child(uid).child("rooms").child(chatroomname).child("time").setValue(mMessage.getSendDate());
+                userDatabase.child(receiveruid).child("rooms").child(chatroomname).child("lastcontents").setValue(mMessage.getContents());
+                userDatabase.child(receiveruid).child("rooms").child(chatroomname).child("time").setValue(mMessage.getSendDate());
+            }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s)
             {
@@ -613,6 +611,18 @@ public class ConnectActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        setSharedPref("");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        setSharedPref("");
     }
 
     public void setSharedPref(String roomname)

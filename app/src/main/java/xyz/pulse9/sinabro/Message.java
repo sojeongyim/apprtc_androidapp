@@ -59,6 +59,8 @@ public class Message {
     {
         this.type=type;
         this.callTime=callTime;
+        this.sendDate = String.valueOf(System.currentTimeMillis() / 1000L);
+        this.contents = "Video Call End";
     }
 
     public String getMessageName() {

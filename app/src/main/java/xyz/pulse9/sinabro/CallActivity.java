@@ -66,7 +66,7 @@ import xyz.pulse9.sinabro.PeerConnectionClient.PeerConnectionParameters;
 public class CallActivity extends Activity implements AppRTCClient.SignalingEvents,
                                                       PeerConnectionClient.PeerConnectionEvents,
                                                       CallFragment.OnCallEvents {
-  private static final String TAG = CallActivity.class.getSimpleName();
+  private static final String TAG = "JANGMIN_CALL";
   public static final String EXTRA_ROOMID = "org.appspot.apprtc.ROOMID";
   public static final String EXTRA_URLPARAMETERS = "org.appspot.apprtc.URLPARAMETERS";
   public static final String EXTRA_LOOPBACK = "org.appspot.apprtc.LOOPBACK";
@@ -642,8 +642,14 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
       setResult(RESULT_CANCELED);
     }
     Intent intent = new Intent();
-    long duration = System.currentTimeMillis() - callConnectedTimeMs;
-
+    long duration;
+    if(callConnectedTimeMs ==0)
+    {
+      duration = 0;
+    }
+    else {
+      duration = System.currentTimeMillis() - callConnectedTimeMs;
+    }
     Log.d("JANGIN", "System : " + System.currentTimeMillis());
     Log.d("JANGIN", "Call : " + callConnectedTimeMs);
     Log.d("JANGIN", "Duration : " + duration);
@@ -839,7 +845,7 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
     runOnUiThread(new Runnable() {
       @Override
       public void run() {
-//        logAndToast("Remote end hung up; dropping PeerConnection");
+        logAndToast("Remote end hung up; dropping PeerConnection");
         disconnect();
       }
     });
@@ -916,7 +922,7 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
     runOnUiThread(new Runnable() {
       @Override
       public void run() {
-//        logAndToast("ICE disconnected");
+        logAndToast("ICE disconnected");
         iceConnected = false;
         disconnect();
       }
@@ -924,7 +930,9 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
   }
 
   @Override
-  public void onPeerConnectionClosed() {}
+  public void onPeerConnectionClosed() {
+    logAndToast("Peer Closed");
+  }
 
   @Override
   public void onPeerConnectionStatsReady(final StatsReport[] reports) {

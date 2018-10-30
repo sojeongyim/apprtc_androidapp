@@ -21,7 +21,7 @@ public class MyService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        if(getCheck())
+        if(SettingsCheck() && inRoomCheck(remoteMessage.getData().get("roomname")))
         {
             String channelId = "channel";
             String channelName = "sinabro";
@@ -60,8 +60,14 @@ public class MyService extends FirebaseMessagingService {
         }
     }
 
-    private boolean getCheck(){
+    private boolean SettingsCheck(){
         SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);
         return pref.getBoolean("notiChk", true);
+    }
+    private boolean inRoomCheck(String roomname)
+    {
+        SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);
+        String cur_room = pref.getString("cur_roomname", "");
+        return !cur_room.equals(roomname);
     }
 }

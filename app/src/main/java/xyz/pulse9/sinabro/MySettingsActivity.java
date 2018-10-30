@@ -75,17 +75,12 @@ public class MySettingsActivity extends AppCompatActivity implements View.OnClic
     {
         if(chk)
         {
-            notiCheck.setBackgroundDrawable(getResources().getDrawable(R.drawable.on));
-            FirebaseMessaging.getInstance().subscribeToTopic("msg");
 
             Toast toast = Toast.makeText(getApplicationContext(),"Turn on Notification", Toast.LENGTH_SHORT);
             toast.show();
         }
         else
         {
-            notiCheck.setBackgroundDrawable(getResources().getDrawable(R.drawable.off));
-            FirebaseMessaging.getInstance().unsubscribeFromTopic("msg");
-
             Toast toast = Toast.makeText(getApplicationContext(),"Turn off Notification", Toast.LENGTH_SHORT);
             toast.show();
         }
