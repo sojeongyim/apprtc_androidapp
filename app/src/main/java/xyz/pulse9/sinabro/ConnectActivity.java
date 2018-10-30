@@ -172,22 +172,10 @@ public class ConnectActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-//                if(chatAdapter.getItem(i).getType().equals("3") && Integer.parseInt(chatAdapter.getItem(i).getRoomCnt())<3)
-//                {
-//                    final DatabaseReference tmp = database.getReference("message").child(chatroomname)
-//                            .child(chatAdapter.getItem(i).getMessageName()).child("roomCnt");
-//                    tmp.addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                            tmp.setValue(Integer.parseInt(dataSnapshot.getValue().toString())+1);
-//                        }
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                        }
-//                    });
-                    connectToRoom(chatAdapter.getItem(i).getVidRoomName());
-//                }
+                if(chatAdapter.getItem(i).getType().equals("3"))
+                {
+                    connectToRoom(chatAdapter.getItem(i).getVidRoomName(), chatAdapter.getItem(i).getMessageName());
+                }
             }
         });
         vidBtn = (ImageButton) findViewById(R.id.vidBtn);
@@ -201,7 +189,6 @@ public class ConnectActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         switch (view.getId()) {
                             case R.id.msgLo:
-                                connectToRoom(chatroomname);
                                 break;
                             case R.id.emailLo:
                                 Intent intent = new Intent(ConnectActivity.this, mDatePicker.class);
@@ -275,7 +262,7 @@ public class ConnectActivity extends AppCompatActivity {
                 Message tmpMessage = new Message("4", String.valueOf(result/1000));
                 DatabaseReference ref;
                 ref = database.getReference("message").child(chatroomname);
-                ref.push().setValue(tmpMessage);
+                ref.child(data.getStringExtra("MsgName")+"1").setValue(tmpMessage);
             }
         }
     }
@@ -339,7 +326,7 @@ public class ConnectActivity extends AppCompatActivity {
             }
         }
     }
-    private void connectToRoom(String roomId) {
+    private void connectToRoom(String roomId, String messageName) {
         String roomUrl = sharedPref.getString(
                 keyprefRoomServerUrl, getString(R.string.pref_room_server_url_default));
         // Video call enabled flag.
@@ -541,8 +528,7 @@ public class ConnectActivity extends AppCompatActivity {
                 intent.putExtra(CallActivity.EXTRA_NEGOTIATED, negotiated);
                 intent.putExtra(CallActivity.EXTRA_ID, id);
             }
-
-//            startActivity(intent);
+            intent.putExtra("MsgName", messageName);
             startActivityForResult(intent, VIDCALL);
         }
     }
@@ -582,7 +568,6 @@ public class ConnectActivity extends AppCompatActivity {
         userDatabase.child(uid).child("rooms").child(chatroomname).setValue(updateChatRoom);
         userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(updateChatRoom2);
 
-
         ref.push().setValue(mMessage);
         sendMsg.setText("");
     }
@@ -605,8 +590,10 @@ public class ConnectActivity extends AppCompatActivity {
             {
                 Message mMessage;
                 mMessage = dataSnapshot.getValue(Message.class);
-                chatAdapter.getItemByName(mMessage.getMessageName()).setChk(mMessage.getChk());
-                chatAdapter.notifyDataSetChanged();
+                if(mMessage.getType().equals("1")) {
+                    chatAdapter.getItemByName(mMessage.getMessageName()).setChk(mMessage.getChk());
+                    chatAdapter.notifyDataSetChanged();
+                }
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
