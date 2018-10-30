@@ -21,7 +21,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import xyz.pulse9.sinabro.util.BottomNavigationViewHelper;
 
-public class MainActivity extends AppCompatActivity implements ChatRoomListFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, TeacherlistFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements ChatRoomListFragment.OnFragmentInteractionListener, TeacherlistFragment.OnFragmentInteractionListener {
     final String TAG = "MainActivity";
     private FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
 
