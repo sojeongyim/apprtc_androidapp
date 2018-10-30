@@ -1,5 +1,4 @@
 package xyz.pulse9.sinabro;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
@@ -8,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
@@ -55,13 +55,139 @@ class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
         if(viewType==1){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_onelayout_cardnews, parent, false);
+            return new ImageViewHolder(view);
         }else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_onelayout_youtube, parent, false);
+            return new VideoViewHolder(view);
         }
-        return new ImageViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        final Animation clickanimation=AnimationUtils.loadAnimation(holder.itemView.getContext(),R.anim.clickanimaiton);
+
+        if(holder instanceof VideoViewHolder)
+        {
+            final String current_videoCode = youtubeVideoList.get(position).getVideoCode();
+            ((VideoViewHolder) holder).timeline_tab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    view.startAnimation(clickanimation);
+                    Toast.makeText( ((VideoViewHolder)holder).itemView.getContext(),"Coming Soon...",Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            ConnectivityManager cm = (ConnectivityManager)holder.itemView.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            activeNetwork = cm.getActiveNetworkInfo();
+            if(activeNetwork!=null) {
+                    ((VideoViewHolder) holder).videoWeb.getSettings().setJavaScriptEnabled(true);
+                    ((VideoViewHolder) holder).videoWeb.setWebChromeClient(new WebChromeClient() {
+                    } );
+                    GetYoutubeInfo getVideoInfo = new GetYoutubeInfo(current_videoCode, ((VideoViewHolder) holder));
+                    getVideoInfo.execute();
+                    ((VideoViewHolder) holder).videoWeb.setVisibility(View.VISIBLE);
+                    ((VideoViewHolder) holder).videoWeb.loadData(youtubeVideoList.get(position).getVideoUrl(), "text/html", "utf-8");
+
+                    ((VideoViewHolder) holder).timeLineDB.child(current_videoCode).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            ((VideoViewHolder) holder).likeCountText.setText(Long.toString(dataSnapshot.getChildrenCount()));
+                            Log.e("sojeong", "curser: " + ((VideoViewHolder) holder).curuser);
+                            Log.e("sojeong", "uid: " + ((VideoViewHolder) holder).uid);
+                            Log.e("sojeong", "getvalue: " + dataSnapshot.child(((VideoViewHolder) holder).uid).getValue());
+                            if (((VideoViewHolder) holder).curuser != null && dataSnapshot.child(((VideoViewHolder) holder).uid).getValue() != null) {
+                                ((VideoViewHolder) holder).heart_check.setVisibility(View.VISIBLE);
+                                ((VideoViewHolder) holder).heart.setVisibility(View.INVISIBLE);
+                            } else {
+                                ((VideoViewHolder) holder).heart_check.setVisibility(View.INVISIBLE);
+                                ((VideoViewHolder) holder).heart.setVisibility(View.VISIBLE);
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    ((VideoViewHolder) holder).heart.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View view) {
+                            if (((VideoViewHolder) holder).curuser != null) {
+                                ((VideoViewHolder) holder).timeLineDB.child(current_videoCode).child(((VideoViewHolder) holder).uid).setValue("1");
+                            } else {
+                                view.startAnimation(clickanimation);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+                                builder.setTitle("Sinabro");
+                                builder.setMessage("Please Sign up this beautiful app! ");
+                                builder.setNegativeButton("ok",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(
+                                                    DialogInterface dialog, int id) {
+                                                // 다이얼로그를 취소한다
+                                                dialog.cancel();
+                                            }
+                                        });
+                                builder.show();
+                            }
+
+                        }
+                    });
+                    ((VideoViewHolder) holder).heart_check.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View view) {
+                            ((VideoViewHolder) holder).timeLineDB.child(current_videoCode).child(((VideoViewHolder) holder).uid).removeValue();
+                        }
+                    });
+
+            }else{
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext());
+                alertDialogBuilder.setTitle("internet disconnected");
+
+                alertDialogBuilder
+                        .setMessage("Please connect to the internet")
+                        .setCancelable(false)
+                        .setNegativeButton("ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(
+                                            DialogInterface dialog, int id) {
+                                        // 다이얼로그를 취소한다
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // 다이얼로그 생성
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // 다이얼로그 보여주기
+                alertDialog.show();
+            }
+
+        }
+        else    //cardnews
+        {
+            ((ImageViewHolder)holder).timeline_tab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    view.startAnimation(clickanimation);
+                    Toast.makeText(holder.itemView.getContext(),"Coming Soon...",Toast.LENGTH_SHORT).show();
+                }
+            });
+
+//                    getCardnewsCode
+
+            CardnewsAdapter adapter = new CardnewsAdapter(((AppCompatActivity)holder.itemView.getContext()).getSupportFragmentManager(),11);
+            ((ImageViewHolder)holder).cardnewspager.setAdapter(adapter);
+//                holder.cardimage.setImageResource(youtubeVideoList.get(position).getDrawables());
+            ((ImageViewHolder)holder).cardnewspager.setVisibility(View.VISIBLE);
+        }
+
+
+
+
+
 
     }
 
@@ -70,12 +196,15 @@ class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return youtubeVideoList.get(position).getType();
     }
 
+    @Override
+    public int getItemCount() {
+        return youtubeVideoList.size();
+    }
 
-    static class VideoViewHolder extends RecyclerView.ViewHolder{
+    class VideoViewHolder extends RecyclerView.ViewHolder{
         WebView videoWeb;
         ImageView channel_img;
         TextView channel_name;
-        ImageButton fold;
         TextView likeCountText;
         TextView TitleText;
         TextView descriptionText;
@@ -105,7 +234,6 @@ class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             videoWeb = (WebView) itemView.findViewById(R.id.youtubeView);
             channel_img=(ImageView)itemView.findViewById(R.id.channel_img);
             channel_name=(TextView)itemView.findViewById(R.id.channel_name);
-            fold = (ImageButton)itemView.findViewById(R.id.timeline_tab);
             likeCountText = (TextView)itemView.findViewById(R.id.likeCount);
             TitleText = (TextView)itemView.findViewById(R.id.title);
             descriptionText = (TextView)itemView.findViewById(R.id.description);
@@ -119,15 +247,10 @@ class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
     }
-    static class ImageViewHolder extends RecyclerView.ViewHolder{
-        WebView videoWeb;
+    class ImageViewHolder extends RecyclerView.ViewHolder{
         ImageView channel_img;
         TextView channel_name;
-        ImageButton fold;
         TextView likeCountText;
-        TextView TitleText;
-        TextView descriptionText;
-        TextView tagText;
         ImageButton heart;
         ImageButton heart_check;
         ImageButton timeline_tab;
@@ -136,7 +259,6 @@ class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         FirebaseUser curuser;
         DatabaseReference timeLineDB;
         ViewPager cardnewspager;
-//        ImageView cardimage;
 
 
         public ImageViewHolder(View itemView) {
@@ -149,25 +271,17 @@ class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             Log.e("sojeong","curser: "+curuser);
             Log.e("sojeong","uid: "+uid);
             timeLineDB= FirebaseDatabase.getInstance().getReference("timeline");
-
-            videoWeb = (WebView) itemView.findViewById(R.id.youtubeView);
             channel_img=(ImageView)itemView.findViewById(R.id.channel_img);
             channel_name=(TextView)itemView.findViewById(R.id.channel_name);
-            fold = (ImageButton)itemView.findViewById(R.id.timeline_tab);
             likeCountText = (TextView)itemView.findViewById(R.id.likeCount);
-            TitleText = (TextView)itemView.findViewById(R.id.title);
-            descriptionText = (TextView)itemView.findViewById(R.id.description);
-            tagText = (TextView)itemView.findViewById(R.id.tag);
             heart = (ImageButton) itemView.findViewById(R.id.heart);
             heart_check = (ImageButton)itemView.findViewById(R.id.heart_check);
             timeline_tab=(ImageButton)itemView.findViewById(R.id.timeline_tab);
             cardnewspager = (ViewPager)itemView.findViewById(R.id.cardnews_pager);
-//            cardimage=(ImageView)itemView.findViewById(R.id.cardnews);
 
         }
 
     }
-
     class GetYoutubeInfo extends AsyncTask<String, String, String > {
         String ApiToken = "AIzaSyD5DB011LhNQGjoAPqRzqKhuOMPkOf__KE";
         String videocode="";
@@ -179,8 +293,6 @@ class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         String channelImgUrl="";
         String likeCount="";
         VideoViewHolder holder;
-
-
 
         GetYoutubeInfo(String VideoUrl,VideoViewHolder holder){
             this.videocode=VideoUrl;
@@ -306,11 +418,6 @@ class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return youtubeVideoList.size();
-    }
-
     public static void makeTextViewResizable(final TextView tv, final int maxLine, final String expandText, final boolean viewMore) {
 
         if (tv.getTag() == null) {
@@ -345,7 +452,6 @@ class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         });
 
     }
-
     private static SpannableStringBuilder addClickablePartTextViewResizable(final Spanned strSpanned, final TextView tv,
                                                                             final int maxLine, final String spanableText, final boolean viewMore) {
         String str = strSpanned.toString();

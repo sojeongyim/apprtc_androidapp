@@ -12,7 +12,7 @@ public class CardnewsAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
 
 
-    public CardnewsAdapter(FragmentManager fm, int NumOfTabs) {
+    public CardnewsAdapter(FragmentManager fm,int NumOfTabs ) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
     }

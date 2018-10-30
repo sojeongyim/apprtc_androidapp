@@ -34,6 +34,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
+                android:src="@drawable/user1"
                 android:background="#00ffffff"
                 android:paddingBottom="2dp"
                 android:paddingTop="2dp"
@@ -41,6 +42,7 @@
 
             <TextView
                 android:id="@+id/channel_name"
+                android:text="S I N A B R O"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
