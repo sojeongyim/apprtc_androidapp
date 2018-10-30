@@ -3,7 +3,7 @@ package xyz.pulse9.sinabro;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -12,7 +12,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,7 +50,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -100,9 +101,14 @@ public class TimelineFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         // specify an adapter (see also next example)
 
-        youtubeVideos.add( new Data("I_UsYTs3Xno"));
-        youtubeVideos.add( new Data("-cGJJnc0F3I"));
-        youtubeVideos.add( new Data("EjI5askNjxc"));
+        Resources res = getResources();
+        String[] youtubeCodes= res.getStringArray(R.array.youtubeCode);
+
+        youtubeVideos.add(new Data(R.drawable.kr1));
+
+        for(int i=0;i<youtubeCodes.length;i++){
+            youtubeVideos.add( new Data(youtubeCodes[i]));
+        }
         VideoAdapter videoAdapter = new VideoAdapter(youtubeVideos);
         mRecyclerView.setAdapter(videoAdapter);
 
@@ -210,7 +216,8 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     }
     @Override
     public VideoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from( parent.getContext()).inflate(R.layout.timeline_onelayout_youtube, parent, false);
+        View view;
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_onelayout, parent, false);
         return new VideoViewHolder(view);
     }
 
@@ -231,65 +238,72 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
         ConnectivityManager cm = (ConnectivityManager)holder.itemView.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         activeNetwork = cm.getActiveNetworkInfo();
         if(activeNetwork!=null) {
-            GetYoutubeInfo getVideoInfo = new GetYoutubeInfo(current_videoCode,holder);
-            getVideoInfo.execute();
-            holder.videoWeb.setVisibility(View.VISIBLE);
-            holder.videoWeb.loadData(youtubeVideoList.get(position).getVideoUrl(), "text/html" , "utf-8" );
+            if(youtubeVideoList.get(position).getVideoCode()!=null) {
+                GetYoutubeInfo getVideoInfo = new GetYoutubeInfo(current_videoCode, holder);
+                getVideoInfo.execute();
+                holder.videoWeb.setVisibility(View.VISIBLE);
+                holder.videoWeb.loadData(youtubeVideoList.get(position).getVideoUrl(), "text/html", "utf-8");
 
-            holder.timeLineDB.child(current_videoCode).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    holder.likeCountText.setText(Long.toString(dataSnapshot.getChildrenCount()));
-                    Log.e("sojeong","curser: "+holder.curuser);
-                    Log.e("sojeong","uid: "+holder.uid);
-                    Log.e("sojeong","getvalue: "+dataSnapshot.child(holder.uid).getValue());
-                    if(holder.curuser != null && dataSnapshot.child(holder.uid).getValue() != null) {
+                holder.timeLineDB.child(current_videoCode).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        holder.likeCountText.setText(Long.toString(dataSnapshot.getChildrenCount()));
+                        Log.e("sojeong", "curser: " + holder.curuser);
+                        Log.e("sojeong", "uid: " + holder.uid);
+                        Log.e("sojeong", "getvalue: " + dataSnapshot.child(holder.uid).getValue());
+                        if (holder.curuser != null && dataSnapshot.child(holder.uid).getValue() != null) {
                             holder.heart_check.setVisibility(View.VISIBLE);
                             holder.heart.setVisibility(View.INVISIBLE);
-                    }else{
-                        holder.heart_check.setVisibility(View.INVISIBLE);
-                        holder.heart.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.heart_check.setVisibility(View.INVISIBLE);
+                            holder.heart.setVisibility(View.VISIBLE);
+                        }
+
                     }
 
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-            holder.heart.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    if(holder.curuser !=null) {
-                        holder.timeLineDB.child(current_videoCode).child(holder.uid).setValue("1");
-                    }else{
-                        view.startAnimation(clickanimation);
-                        AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
-                        builder.setTitle("Sinabro");
-                        builder.setMessage("Please Sign up this beautiful app! ");
-                        builder.setNegativeButton("ok",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(
-                                            DialogInterface dialog, int id) {
-                                        // 다이얼로그를 취소한다
-                                        dialog.cancel();
-                                    }
-                                });
-                        builder.show();
                     }
+                });
 
-                }
-            });
-            holder.heart_check.setOnClickListener(new View.OnClickListener() {
+                holder.heart.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View view) {
-                    holder.timeLineDB.child(current_videoCode).child(holder.uid).removeValue();
-                }
-            });
+                    @Override
+                    public void onClick(View view) {
+                        if (holder.curuser != null) {
+                            holder.timeLineDB.child(current_videoCode).child(holder.uid).setValue("1");
+                        } else {
+                            view.startAnimation(clickanimation);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+                            builder.setTitle("Sinabro");
+                            builder.setMessage("Please Sign up this beautiful app! ");
+                            builder.setNegativeButton("ok",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(
+                                                DialogInterface dialog, int id) {
+                                            // 다이얼로그를 취소한다
+                                            dialog.cancel();
+                                        }
+                                    });
+                            builder.show();
+                        }
+
+                    }
+                });
+                holder.heart_check.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        holder.timeLineDB.child(current_videoCode).child(holder.uid).removeValue();
+                    }
+                });
+            }else{
+//                mPagerAdapter adapter = new CardnewsAdapter(holder.itemView.getContext(),);
+//                cardnewspager.setAdapter(adapter);
+//                holder.cardimage.setImageResource(youtubeVideoList.get(position).getDrawables());
+//                holder.cardimage.setVisibility(View.VISIBLE);
+            }
 
 
         }else{
@@ -332,6 +346,9 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
         String uid="";
         FirebaseUser curuser;
         DatabaseReference timeLineDB;
+        ViewPager cardnewspager;
+//        ImageView cardimage;
+
 
         public VideoViewHolder(View itemView) {
             super(itemView);
@@ -355,6 +372,13 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
             heart = (ImageButton) itemView.findViewById(R.id.heart);
             heart_check = (ImageButton)itemView.findViewById(R.id.heart_check);
             timeline_tab=(ImageButton)itemView.findViewById(R.id.timeline_tab);
+
+            cardnewspager = (ViewPager)itemView.findViewById(R.id.cardnews_pager);
+
+
+
+//            cardimage=(ImageView)itemView.findViewById(R.id.cardnews);
+
             videoWeb.getSettings().setJavaScriptEnabled(true);
             videoWeb.setWebChromeClient(new WebChromeClient() {
             } );
@@ -576,12 +600,11 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
 
 class Data {
-    String videoUrl;
-    String videoCode;
-    Drawable[] drawables =null;
-    int flag=0;
+    String videoUrl=null;
+    String videoCode=null;
+    int drawables =0;
 
-    public Data(Drawable[] drawables,int flag) {  //flag=1
+    public Data(int drawables) {
         this.drawables=drawables;
     }
 
@@ -593,9 +616,13 @@ class Data {
     public String getVideoUrl() {
         return videoUrl;
     }
+
+    public int getDrawables(){return drawables;}
+
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
     }
+
     public String getVideoCode() {
         return videoCode;
     }
