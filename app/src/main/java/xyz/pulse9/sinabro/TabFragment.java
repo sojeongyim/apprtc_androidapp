@@ -6,38 +6,31 @@ package xyz.pulse9.sinabro;
 
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class TabFragment extends Fragment {
     private String teacherToken;
@@ -46,6 +39,7 @@ public class TabFragment extends Fragment {
     private String uid;
     FirebaseUser curuser;
     TextView followertext;
+    ImageView profile_image;
     TextView user_name;
     String targetUID;
     private String chatRoomname;
@@ -54,6 +48,8 @@ public class TabFragment extends Fragment {
     ImageButton plus_button;
     LinearLayoutCompat profile_card;
     String nickname;
+    String profileImg_url;
+    Animation clickanimation;
 
     public void setTeacherToken(String teacherToken){
         this.teacherToken=teacherToken;
@@ -90,10 +86,11 @@ public class TabFragment extends Fragment {
         userDatabase = FirebaseDatabase.getInstance().getReference("users");
         followerDB = userDatabase.child(teacherToken).child("follower");
         ischatExist(teacherToken);
+        clickanimation = AnimationUtils.loadAnimation(getContext(),R.anim.clickanimaiton);
 
 
         followertext =(TextView)getView().findViewById(R.id.follower_num);
-        ImageView profile_image = (ImageView) getView().findViewById(R.id.profile_image);
+        profile_image = (ImageView) getView().findViewById(R.id.profile_image);
         heart_butt = (ImageButton) getView().findViewById(R.id.user_heart);
         heart_butt_check = (ImageButton) getView().findViewById(R.id.heart_check);
         plus_button = (ImageButton)getView().findViewById(R.id.plus_button);
@@ -109,11 +106,15 @@ public class TabFragment extends Fragment {
             profile_card.setClipToOutline(true);
         }
 
-        userDatabase.child(teacherToken).child("nickname").addValueEventListener(new ValueEventListener() {
+        userDatabase.child(teacherToken).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                nickname = dataSnapshot.getValue().toString();
+                nickname = dataSnapshot.child("nickname").getValue().toString();
+                profileImg_url = dataSnapshot.child("photo").getValue().toString();
                 user_name.setText(nickname);
+                Picasso.get().load(profileImg_url)
+                        .transform(new CropCircleTransformation())
+                        .into(profile_image);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -126,6 +127,7 @@ public class TabFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
+//                view.startAnimation(clickanimation);
                 Intent intent = new Intent(getActivity(), ConnectActivity.class);
                 intent.putExtra("chatroomname", chatRoomname);
                 intent.putExtra("receiveruid", teacherToken);
@@ -172,6 +174,7 @@ public class TabFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
+                view.startAnimation(clickanimation);
                 Toast toast = Toast.makeText(getActivity(),"Coming Soon...", Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -183,7 +186,7 @@ public class TabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.tab_fragment_1, container, false);
+        return inflater.inflate(R.layout.teacher_one, container, false);
 
     }
 

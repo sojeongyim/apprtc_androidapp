@@ -4,13 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.GradientDrawable;
-import android.mtp.MtpStorageInfo;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
-import android.net.NetworkRequest;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,18 +26,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.login.LoginManager;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -55,7 +48,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -80,9 +73,10 @@ public class TimelineFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private static Animation clickanimation;
 //    private ArrayList<MyData> myDataset;
 
-    private Vector<YouTubeVideos> youtubeVideos = new Vector<YouTubeVideos>();
+    private Vector<Data> youtubeVideos = new Vector<Data>();
 
     // TODO: Rename and change types of parameters
     private OnFragmentInteractionListener mListener;
@@ -97,29 +91,7 @@ public class TimelineFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-//        ConnectivityManager cm = (ConnectivityManager) getContext()
-//                .getSystemService( Context.CONNECTIVITY_SERVICE );
-//
-//        NetworkRequest.Builder builder = new NetworkRequest.Builder();
-//
-//        cm.registerNetworkCallback(
-//                builder.build(),
-//                new ConnectivityManager.NetworkCallback()
-//                {
-//                    @Override
-//                    public void onAvailable( Network network )
-//                    {
-//                        //네트워크 연결됨
-//                    }
-//
-//                    @Override
-//                    public void onLost( Network network )
-//                    {
-//                        //네트워크 끊어짐
-//                    }
-//                } );
-
+        clickanimation= AnimationUtils.loadAnimation(getContext(),R.anim.clickanimaiton);
 
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.timeline_recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -128,16 +100,9 @@ public class TimelineFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         // specify an adapter (see also next example)
 
-        youtubeVideos.add( new YouTubeVideos("pjVdCUxvfXA"));
-        youtubeVideos.add( new YouTubeVideos("6__TKYYJAkI"));
-        youtubeVideos.add( new YouTubeVideos("69eq1zD5oWM"));
-        youtubeVideos.add( new YouTubeVideos("7bR8TG2HgVA"));
-        youtubeVideos.add( new YouTubeVideos("6VIQIx5dTY0"));
-        youtubeVideos.add( new YouTubeVideos("Hl3jkH_ySDU"));
-        youtubeVideos.add( new YouTubeVideos("6moe9Ot7Mbg"));
-        youtubeVideos.add( new YouTubeVideos("kCON0eEmoq4"));
-        youtubeVideos.add( new YouTubeVideos("9jFZdu0zTEA"));
-        youtubeVideos.add( new YouTubeVideos("1q_t6RNuH8c"));
+        youtubeVideos.add( new Data("I_UsYTs3Xno"));
+        youtubeVideos.add( new Data("-cGJJnc0F3I"));
+        youtubeVideos.add( new Data("EjI5askNjxc"));
         VideoAdapter videoAdapter = new VideoAdapter(youtubeVideos);
         mRecyclerView.setAdapter(videoAdapter);
 
@@ -146,6 +111,7 @@ public class TimelineFragment extends Fragment {
         setting_butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view.startAnimation(clickanimation);
                 Intent intent = new Intent(getActivity(), MySettingsActivity.class);
                 startActivity(intent);
             }
@@ -153,6 +119,7 @@ public class TimelineFragment extends Fragment {
         notice_butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view.startAnimation(clickanimation);
                 Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -234,16 +201,16 @@ public class TimelineFragment extends Fragment {
 
 }
 class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
-    List<YouTubeVideos> youtubeVideoList;
+    List<Data> youtubeVideoList;
     private NetworkInfo activeNetwork;
     public VideoAdapter() {
     }
-    public VideoAdapter(List<YouTubeVideos> youtubeVideoList) {
+    public VideoAdapter(List<Data> youtubeVideoList) {
         this.youtubeVideoList = youtubeVideoList;
     }
     @Override
     public VideoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from( parent.getContext()).inflate(R.layout.timeline_onelayout, parent, false);
+        View view = LayoutInflater.from( parent.getContext()).inflate(R.layout.timeline_onelayout_youtube, parent, false);
         return new VideoViewHolder(view);
     }
 
@@ -251,10 +218,12 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     @Override
     public void onBindViewHolder(final VideoViewHolder holder, int position) {
         final String current_videoCode = youtubeVideoList.get(position).getVideoCode();
+        final Animation clickanimation=AnimationUtils.loadAnimation(holder.itemView.getContext(),R.anim.clickanimaiton);
 
         holder.timeline_tab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                view.startAnimation(clickanimation);
                 Toast.makeText(holder.itemView.getContext(),"Coming Soon...",Toast.LENGTH_SHORT).show();
             }
         });
@@ -271,15 +240,12 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     holder.likeCountText.setText(Long.toString(dataSnapshot.getChildrenCount()));
-
-                    if(holder.uid != null) {
-                        if (dataSnapshot.child(current_videoCode).child(holder.uid).getValue() != null) {
+                    Log.e("sojeong","curser: "+holder.curuser);
+                    Log.e("sojeong","uid: "+holder.uid);
+                    Log.e("sojeong","getvalue: "+dataSnapshot.child(holder.uid).getValue());
+                    if(holder.curuser != null && dataSnapshot.child(holder.uid).getValue() != null) {
                             holder.heart_check.setVisibility(View.VISIBLE);
                             holder.heart.setVisibility(View.INVISIBLE);
-                        } else {
-                            holder.heart_check.setVisibility(View.INVISIBLE);
-                            holder.heart.setVisibility(View.VISIBLE);
-                        }
                     }else{
                         holder.heart_check.setVisibility(View.INVISIBLE);
                         holder.heart.setVisibility(View.VISIBLE);
@@ -297,7 +263,24 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
                 @Override
                 public void onClick(View view) {
-                    holder.timeLineDB.child(current_videoCode).child(holder.uid).setValue("1");
+                    if(holder.curuser !=null) {
+                        holder.timeLineDB.child(current_videoCode).child(holder.uid).setValue("1");
+                    }else{
+                        view.startAnimation(clickanimation);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+                        builder.setTitle("Sinabro");
+                        builder.setMessage("Please Sign up this beautiful app! ");
+                        builder.setNegativeButton("ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(
+                                            DialogInterface dialog, int id) {
+                                        // 다이얼로그를 취소한다
+                                        dialog.cancel();
+                                    }
+                                });
+                        builder.show();
+                    }
+
                 }
             });
             holder.heart_check.setOnClickListener(new View.OnClickListener() {
@@ -330,12 +313,7 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
             // 다이얼로그 보여주기
             alertDialog.show();
-
-
         }
-
-
-
     }
 
     public class VideoViewHolder extends RecyclerView.ViewHolder{
@@ -351,7 +329,7 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
         ImageButton heart_check;
         ImageButton timeline_tab;
 
-        String uid;
+        String uid="";
         FirebaseUser curuser;
         DatabaseReference timeLineDB;
 
@@ -359,7 +337,11 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
             super(itemView);
 
             curuser = FirebaseAuth.getInstance().getCurrentUser();
-            uid = curuser.getUid();
+            if(curuser!=null) {
+                uid = curuser.getUid();
+            }
+            Log.e("sojeong","curser: "+curuser);
+            Log.e("sojeong","uid: "+uid);
             timeLineDB= FirebaseDatabase.getInstance().getReference("timeline");
 
             videoWeb = (WebView) itemView.findViewById(R.id.youtubeView);
@@ -593,15 +575,21 @@ class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 }
 
 
-class YouTubeVideos {
+class Data {
     String videoUrl;
     String videoCode;
-    public YouTubeVideos() {
+    Drawable[] drawables =null;
+    int flag=0;
+
+    public Data(Drawable[] drawables,int flag) {  //flag=1
+        this.drawables=drawables;
     }
-    public YouTubeVideos(String videoCode) {
+
+    public Data(String videoCode) {
         this.videoCode=videoCode;
         this.videoUrl = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/"+videoCode+"\" frameborder=\"0\" allowfullscreen></iframe>";
     }
+
     public String getVideoUrl() {
         return videoUrl;
     }
