@@ -373,6 +373,9 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
     } else {
       startCall();
     }
+
+    fullscreenRenderer.setMirror(false);
+    pipRenderer.setMirror(false);;
   }
 
   @TargetApi(17)
@@ -739,8 +742,8 @@ public class CallActivity extends Activity implements AppRTCClient.SignalingEven
     this.isSwappedFeeds = isSwappedFeeds;
     localProxyRenderer.setTarget(isSwappedFeeds ? fullscreenRenderer : pipRenderer);
     remoteProxyRenderer.setTarget(isSwappedFeeds ? pipRenderer : fullscreenRenderer);
-    fullscreenRenderer.setMirror(isSwappedFeeds);
-    pipRenderer.setMirror(!isSwappedFeeds);
+//    fullscreenRenderer.setMirror(isSwappedFeeds);
+//    pipRenderer.setMirror(!isSwappsSwappedFeeds);
   }
 
   // -----Implementation of AppRTCClient.AppRTCSignalingEvents ---------------

@@ -263,6 +263,10 @@ public class ConnectActivity extends AppCompatActivity {
                 tmp.setChatroomname(chatroomname);
                 ref.child(tmp_name).setValue(tmp);
 
+                ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, tmp.getContents(), tmp.getSendDate());
+                ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, tmp.getContents(), tmp.getSendDate());
+                userDatabase.child(uid).child("rooms").child(chatroomname).setValue(updateChatRoom);
+                userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(updateChatRoom2);
             }
             else if(requestCode==VIDCALL)
             {
@@ -573,6 +577,12 @@ public class ConnectActivity extends AppCompatActivity {
         }
         ref = database.getReference("message").child(chatroomname);
 
+        ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, mMessage.getContents(), mMessage.getSendDate());
+        ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, mMessage.getContents(), mMessage.getSendDate());
+        userDatabase.child(uid).child("rooms").child(chatroomname).setValue(updateChatRoom);
+        userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(updateChatRoom2);
+
+
         ref.push().setValue(mMessage);
         sendMsg.setText("");
     }
@@ -612,21 +622,17 @@ public class ConnectActivity extends AppCompatActivity {
             }
         });
     }
-
     @Override
     protected void onStop() {
         super.onStop();
         setSharedPref("");
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         setSharedPref("");
     }
-
-    public void setSharedPref(String roomname)
-    {
+    public void setSharedPref(String roomname) {
         SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("cur_roomname", roomname);
