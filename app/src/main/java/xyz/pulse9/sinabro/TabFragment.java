@@ -42,19 +42,20 @@ public class TabFragment extends Fragment {
     ImageView profile_image;
     TextView user_name;
     String targetUID;
+
+    String receivernick;
+    String receiverphoto;
+
     private String chatRoomname;
     ImageButton heart_butt;
     ImageButton heart_butt_check;
     ImageButton plus_button;
     LinearLayoutCompat profile_card;
-    String nickname;
-    String profileImg_url;
     Animation clickanimation;
 
     public void setTeacherToken(String teacherToken){
         this.teacherToken=teacherToken;
     }
-
     public void ischatExist(final String Userid) {
         chatRoomname = "none";
         DatabaseReference myDB = FirebaseDatabase.getInstance().getReference("users").child(uid).child("rooms");
@@ -66,6 +67,8 @@ public class TabFragment extends Fragment {
                     targetUID = data.child("receiver").getValue().toString();
                     if(targetUID.equals(Userid))
                     {
+                        receiverphoto = data.child("photo").getValue().toString();
+                        receivernick = data.child("nickname").getValue().toString();
                         chatRoomname = data.getKey().toString();
                         Log.d("LISTOFTARGET", "it is Room name" + chatRoomname);
                     }
@@ -109,10 +112,10 @@ public class TabFragment extends Fragment {
         userDatabase.child(teacherToken).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                nickname = dataSnapshot.child("nickname").getValue().toString();
-                profileImg_url = dataSnapshot.child("photo").getValue().toString();
-                user_name.setText(nickname);
-                Picasso.get().load(profileImg_url)
+                receivernick = dataSnapshot.child("nickname").getValue().toString();
+                receiverphoto = dataSnapshot.child("photo").getValue().toString();
+                user_name.setText(receivernick);
+                Picasso.get().load(receiverphoto)
                         .transform(new CropCircleTransformation())
                         .into(profile_image);
             }
@@ -130,8 +133,14 @@ public class TabFragment extends Fragment {
 //                view.startAnimation(clickanimation);
                 Intent intent = new Intent(getActivity(), ConnectActivity.class);
                 intent.putExtra("chatroomname", chatRoomname);
-                intent.putExtra("receiveruid", teacherToken);
-                intent.putExtra("uid", uid);
+                intent.putExtra("receiverUID", teacherToken);
+//                intent.putExtra("receiveruid", teacherToken);
+//                intent.putExtra("uid", uid);
+//
+//                intent.putExtra("receivernick", receivernick);
+//                intent.putExtra("receiverphoto", receiverphoto);
+
+
                 startActivity(intent);
             }
         });

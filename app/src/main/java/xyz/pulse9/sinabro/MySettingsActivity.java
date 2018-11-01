@@ -75,13 +75,15 @@ public class MySettingsActivity extends AppCompatActivity implements View.OnClic
     {
         if(chk)
         {
-
             Toast toast = Toast.makeText(getApplicationContext(),"Turn on Notification", Toast.LENGTH_SHORT);
+            notiCheck.setBackgroundDrawable(getResources().getDrawable(R.drawable.on));
             toast.show();
         }
         else
         {
             Toast toast = Toast.makeText(getApplicationContext(),"Turn off Notification", Toast.LENGTH_SHORT);
+            notiCheck.setBackgroundDrawable(getResources().getDrawable(R.drawable.off));
+
             toast.show();
         }
     }

@@ -59,14 +59,13 @@ public class TeacherlistFragment extends Fragment {
         left_arrow = getView().findViewById(R.id.left_arrow);
         right_arrow = getView().findViewById(R.id.right_arrow);
 
-        final mPagerAdapter adapter = new mPagerAdapter(getFragmentManager(), tabLayout.getTabCount());
+        final mPagerAdapter adapter = new mPagerAdapter(getFragmentManager(), TEACHER_NUM);
 
         ArrayList<View> views =new ArrayList<>();
         for(int i=0;i<TEACHER_NUM;i++) {
             views.add(i, getLayoutInflater().inflate(R.layout.customtab, null));
-
             Log.e("sojeong","views.get(i).getId(): "+views.get(i).getId());
-            Picasso.get().load("https://lh6.googleusercontent.com/-7dn3fkKbLIU/AAAAAAAAAAI/AAAAAAAAAAA/AAN31DX8GDsT--0HuOqbPFZYERKwcG5x5A/s96-c/photo.jpg")
+            Picasso.get().load(adapter.getImage(i))
                     .transform(new CropCircleTransformation())
                     .into((ImageView) views.get(i).findViewById(R.id.myicon));
             tabLayout.addTab(tabLayout.newTab().setCustomView(views.get(i)));

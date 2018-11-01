@@ -2,6 +2,7 @@ package xyz.pulse9.sinabro;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -74,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRoomSharedPref("");
+        setUserSharedPref();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users");
@@ -130,6 +133,35 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
                     }
                 });
         builder.show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setRoomSharedPref("");
+    }
+
+    public void setRoomSharedPref(String roomname) {
+        SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("cur_roomname", roomname);
+        editor.commit();
+    }
+    public void setUserSharedPref() {
+        SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+
+        String uid = curuser.getUid();
+        String photo = curuser.getPhotoUrl().toString();
+        String email = curuser.getEmail();
+        String nickname = curuser.getDisplayName();
+        String token = FirebaseInstanceId.getInstance().getToken();
+        editor.putString("uid", uid);
+        editor.putString("photo", photo);
+        editor.putString("email", email);
+        editor.putString("nickname", nickname);
+        editor.putString("token", token);
+        editor.commit();
     }
 }
 

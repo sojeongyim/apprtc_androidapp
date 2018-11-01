@@ -58,7 +58,6 @@ public class ConnectActivity extends AppCompatActivity {
     public static final int VIDCALL = 100;
     private DatabaseReference myDatabase;
     private DatabaseReference userDatabase;
-    private String cur_pick;
 
     @Override
     public void onBackPressed() {
@@ -128,31 +127,48 @@ public class ConnectActivity extends AppCompatActivity {
 
         Intent intent2 = getIntent();
         uid = curuser.getUid();
-        cur_pick = curuser.getPhotoUrl().toString();
+        sendernick = curuser.getDisplayName();
+        senderphoto = curuser.getPhotoUrl().toString();
         chatroomname = intent2.getStringExtra("chatroomname");
-        receiveruid = intent2.getStringExtra("receiveruid");
+        receiveruid = intent2.getStringExtra("receiverUID");
+
+        if (chatroomname.equals("none"))
+        {
+            userDatabase = database.getReference("users").child(receiveruid);
+            userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    receiverphoto = dataSnapshot.child("photo").getValue().toString();
+                    receivernick = dataSnapshot.child("nickname").getValue().toString();
+                    friendsid.setText(receivernick.toUpperCase());
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+        else
+        {
+            userDatabase = database.getReference("users").child(uid).child("rooms").child(chatroomname);
+            userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    ChatRoom mChatroom = dataSnapshot.getValue(ChatRoom.class);
+                    setChatRoom(mChatroom);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        initDB(chatroomname);
 
         setSharedPref(chatroomname);
 
-        userDatabase = database.getReference("users");
-        userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                receivernick = dataSnapshot.child(receiveruid).child("nickname").getValue().toString();
-                sendernick = dataSnapshot.child(uid).child("nickname").getValue().toString();
-                receiverphoto = dataSnapshot.child(receiveruid).child("photo").getValue().toString();
-                senderphoto = dataSnapshot.child(uid).child("photo").getValue().toString();
-                friendsid.setText(receivernick.toUpperCase());
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        if (!chatroomname.equals("none"))
-        {
-            initDB(chatroomname);
-        }
         chatAdapter = new ChatAdapter(this.getApplicationContext(), R.layout.chat_message);
         listView = findViewById(R.id.chatListview);
         listView.setAdapter(chatAdapter);
@@ -553,7 +569,7 @@ public class ConnectActivity extends AppCompatActivity {
     }
     public void sendMessage(View view) {
         Message mMessage = new Message("0", uid, receiveruid);
-        mMessage.setPhoto(cur_pick);
+        mMessage.setPhoto(senderphoto);
         mMessage.setContents(sendMsg.getText().toString());
         DatabaseReference ref;
         if (chatroomname.equals("none")) {
@@ -580,10 +596,10 @@ public class ConnectActivity extends AppCompatActivity {
                 Message mMessage;
                 mMessage = dataSnapshot.getValue(Message.class);
                 chatAdapter.add(mMessage);
-                userDatabase.child(uid).child("rooms").child(chatroomname).child("lastcontents").setValue(mMessage.getContents());
-                userDatabase.child(uid).child("rooms").child(chatroomname).child("time").setValue(mMessage.getSendDate());
-                userDatabase.child(receiveruid).child("rooms").child(chatroomname).child("lastcontents").setValue(mMessage.getContents());
-                userDatabase.child(receiveruid).child("rooms").child(chatroomname).child("time").setValue(mMessage.getSendDate());
+//                userDatabase.child(uid).child("rooms").child(chatroomname).child("lastcontents").setValue(mMessage.getContents());
+//                userDatabase.child(uid).child("rooms").child(chatroomname).child("time").setValue(mMessage.getSendDate());
+//                userDatabase.child(receiveruid).child("rooms").child(chatroomname).child("lastcontents").setValue(mMessage.getContents());
+//                userDatabase.child(receiveruid).child("rooms").child(chatroomname).child("time").setValue(mMessage.getSendDate());
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s)
@@ -624,5 +640,12 @@ public class ConnectActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("cur_roomname", roomname);
         editor.commit();
+    }
+    public void setChatRoom(ChatRoom temp)
+    {
+        receiveruid = temp.getReceiver();
+        receivernick = temp.getNickname();
+        receiverphoto = temp.getPhoto();
+        friendsid.setText(receivernick.toUpperCase());
     }
 }
