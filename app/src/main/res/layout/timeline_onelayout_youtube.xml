@@ -76,39 +76,27 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="280dp"
+            android:layout_height="300dp"
             android:layout_weight="0"
             android:background="#00ffffff">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Internet disconnected!"
-                android:fontFamily="@font/aarial"
                 android:layout_gravity="center"
+                android:fontFamily="@font/aarial"
+                android:text="Internet disconnected!"
                 android:textColor="@color/sianbro_black_color"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
 
             <WebView
+                android:id="@+id/youtubeView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/youtubeView"
                 android:visibility="invisible">
 
             </WebView>
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/cardnews_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="invisible"/>
-
-            <!--<ImageView-->
-                <!--android:id="@+id/cardnews"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:visibility="invisible"/>-->
 
         </FrameLayout>
 

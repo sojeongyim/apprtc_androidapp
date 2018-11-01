@@ -1,5 +1,6 @@
 package xyz.pulse9.sinabro;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,8 +15,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -61,14 +64,16 @@ public class TimelineFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private static Animation clickanimation;
     private Vector<Data> youtubeVideos = new Vector<Data>();
+
     // TODO: Rename and change types of parameters
     public TimelineFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        clickanimation= AnimationUtils.loadAnimation(getContext(),R.anim.clickanimaiton);
+        clickanimation = AnimationUtils.loadAnimation(getContext(), R.anim.clickanimaiton);
 
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.timeline_recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -77,12 +82,12 @@ public class TimelineFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         Resources res = getResources();
-        String[] youtubeCodes= res.getStringArray(R.array.youtubeCode);
-        int[] drawabb = {R.drawable.kr1,R.drawable.kr2};
+        String[] youtubeCodes = res.getStringArray(R.array.youtubeCode);
+        int[] drawabb = {R.drawable.kr1, R.drawable.kr2};
         youtubeVideos.add(new Data(drawabb));
 
-        for(int i=0;i<youtubeCodes.length;i++){
-            youtubeVideos.add( new Data(youtubeCodes[i]));
+        for (int i = 0; i < youtubeCodes.length; i++) {
+            youtubeVideos.add(new Data(youtubeCodes[i]));
         }
         VideoAdapter videoAdapter = new VideoAdapter(youtubeVideos);
         mRecyclerView.setAdapter(videoAdapter);
@@ -100,16 +105,17 @@ public class TimelineFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 view.startAnimation(clickanimation);
-                Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Coming Soon...", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Coming Soon...", Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
 
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_timeline, container, false);
+        View v = inflater.inflate(R.layout.fragment_timeline, container, false);
         return v;
     }
 }
