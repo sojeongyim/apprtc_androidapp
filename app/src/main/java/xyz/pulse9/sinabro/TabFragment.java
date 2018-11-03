@@ -1,9 +1,5 @@
 package xyz.pulse9.sinabro;
 
-/**
- * Created by ssoww on 2018-09-15.
- */
-
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -76,7 +72,6 @@ public class TabFragment extends Fragment {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
@@ -90,18 +85,12 @@ public class TabFragment extends Fragment {
         followerDB = userDatabase.child(teacherToken).child("follower");
         ischatExist(teacherToken);
         clickanimation = AnimationUtils.loadAnimation(getContext(),R.anim.clickanimaiton);
-
-
         followertext =(TextView)getView().findViewById(R.id.follower_num);
         profile_image = (ImageView) getView().findViewById(R.id.profile_image);
         heart_butt = (ImageButton) getView().findViewById(R.id.user_heart);
         heart_butt_check = (ImageButton) getView().findViewById(R.id.heart_check);
         plus_button = (ImageButton)getView().findViewById(R.id.plus_button);
         user_name=(TextView)getView().findViewById(R.id.user_name);
-//            ImageView imageView_profile = (ImageView)getView().findViewById(R.id.image_profile);
-//            imageView_profile.setAdjustViewBounds(true);
-
-        //프로필 카드 모서리 둥글게 적용
         profile_card =(LinearLayoutCompat)getView().findViewById(R.id.profile_card);
         GradientDrawable drawable = (GradientDrawable)getContext().getResources().getDrawable(R.drawable.rounded);
         profile_card.setBackground(drawable);
@@ -130,7 +119,6 @@ public class TabFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-//                view.startAnimation(clickanimation);
                 Intent intent = new Intent(getActivity(), ConnectActivity.class);
                 intent.putExtra("chatroomname", chatRoomname);
                 intent.putExtra("receiverUID", teacherToken);
@@ -139,8 +127,6 @@ public class TabFragment extends Fragment {
 //
 //                intent.putExtra("receivernick", receivernick);
 //                intent.putExtra("receiverphoto", receiverphoto);
-
-
                 startActivity(intent);
             }
         });
@@ -190,8 +176,6 @@ public class TabFragment extends Fragment {
         });
 
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
