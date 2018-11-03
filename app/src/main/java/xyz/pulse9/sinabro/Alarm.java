@@ -18,5 +18,4 @@ public class Alarm {
     public void setDate(Long date) {
         this.date = date;
     }
-
 }
