@@ -76,7 +76,8 @@ public class TimelineFragment extends Fragment {
         clickanimation = AnimationUtils.loadAnimation(getContext(), R.anim.clickanimaiton);
 
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.timeline_recyclerview);
-        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(false);
+//        mRecyclerView.scrollBy(0,-3000);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -111,6 +112,17 @@ public class TimelineFragment extends Fragment {
         });
 
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mRecyclerView.scrollBy(0,-3000);
     }
 
     @Override

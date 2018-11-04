@@ -104,7 +104,6 @@ public class ConnectActivity extends AppCompatActivity {
             }
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                 if(charSequence.toString().trim().length()==0){
                     sendBtn.setEnabled(false);
                 } else {
@@ -113,7 +112,6 @@ public class ConnectActivity extends AppCompatActivity {
             }
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
         backBtn = findViewById(R.id.backBtn);
@@ -147,7 +145,6 @@ public class ConnectActivity extends AppCompatActivity {
 
                 }
             });
-
         }
         else
         {

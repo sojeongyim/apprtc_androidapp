@@ -21,6 +21,12 @@ public class ChatRoom {
 
     }
 
+    public ChatRoom(String Roomname, String Receiver)
+    {
+        this.RoomName = Roomname;
+        this.receiver = Receiver;
+    }
+
     public ChatRoom(String roomName, String receiver, String nickname, String photo, String lastcontents, String time) {
         this.RoomName = roomName;
         this.receiver = receiver;

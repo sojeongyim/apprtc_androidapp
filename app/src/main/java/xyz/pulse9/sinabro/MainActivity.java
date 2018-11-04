@@ -11,20 +11,31 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import xyz.pulse9.sinabro.util.BottomNavigationViewHelper;
 
-public class MainActivity extends AppCompatActivity implements ChatRoomListFragment.OnFragmentInteractionListener, TeacherlistFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements TeacherlistFragment.OnFragmentInteractionListener {
     final String TAG = "MainActivity";
     private FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference("users");
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -78,9 +89,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         setRoomSharedPref("");
         setUserSharedPref();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("users");
-
         if(curuser !=null) {
             String uid = curuser.getUid();
             String photo = curuser.getPhotoUrl().toString();
@@ -101,16 +109,10 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_timeline);
     }
-
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.flContainer, fragment);
         transaction.commit();
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
     private void showDialog()
     {
@@ -134,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
                 });
         builder.show();
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -156,11 +157,48 @@ public class MainActivity extends AppCompatActivity implements ChatRoomListFragm
         String email = curuser.getEmail();
         String nickname = curuser.getDisplayName();
         String token = FirebaseInstanceId.getInstance().getToken();
+
         editor.putString("uid", uid);
         editor.putString("photo", photo);
         editor.putString("email", email);
         editor.putString("nickname", nickname);
         editor.putString("token", token);
+        editor.commit();
+    }
+    public void setRoomListSharedPref()
+    {
+        DatabaseReference temp = ref.child(curuser.getUid()).child("rooms");
+        temp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Set<ChatRoom> tmpset = new HashSet<>();
+                for(DataSnapshot t : dataSnapshot.getChildren())
+                {
+                    String tmp_receiver;
+                    String tmp_roomName;
+                    tmp_receiver = t.child("receiver").getValue().toString();
+                    tmp_roomName = t.child("roomName").getValue().toString();
+                    ChatRoom tmp_Room = new ChatRoom(tmp_roomName, tmp_receiver);
+                    for(Iterator<ChatRoom> k = tmpset.iterator();k.hasNext();)
+                    {
+                        if(!k.next().getNickname().equals(tmp_receiver))
+                        {
+                            tmpset.add(tmp_Room);
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    public void setSharedPrefRoomList(HashSet<String> k)
+    {
+        SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putStringSet("roomList", k);
         editor.commit();
     }
 }

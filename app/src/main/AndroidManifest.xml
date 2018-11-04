@@ -102,7 +102,6 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".RegisterActivity" />
         <activity android:name=".MySettingsActivity">
         </activity>
     </application>

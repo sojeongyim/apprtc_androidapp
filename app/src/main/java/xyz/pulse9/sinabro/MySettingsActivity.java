@@ -13,6 +13,8 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.HashSet;
+
 public class MySettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ToggleButton notiCheck;

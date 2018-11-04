@@ -57,21 +57,23 @@ public class TabFragment extends Fragment {
         this.teacherToken=teacherToken;
     }
     public void ischatExist(final String Userid) {
-        chatRoomname = "none";
         DatabaseReference myDB = FirebaseDatabase.getInstance().getReference("users").child(uid).child("rooms");
         myDB.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Boolean chk = false;
                 for(DataSnapshot data : dataSnapshot.getChildren())
                 {
                     targetUID = data.child("receiver").getValue().toString();
                     if(targetUID.equals(Userid))
                     {
-                        receiverphoto = data.child("photo").getValue().toString();
-                        receivernick = data.child("nickname").getValue().toString();
+                        chk = true;
                         chatRoomname = data.getKey().toString();
-                        Log.d("LISTOFTARGET", "it is Room name" + chatRoomname);
                     }
+                }
+                if(!chk)
+                {
+                    chatRoomname = "none";
                 }
             }
             @Override
@@ -88,6 +90,7 @@ public class TabFragment extends Fragment {
         uid = curuser.getUid();
         userDatabase = FirebaseDatabase.getInstance().getReference("users");
         followerDB = userDatabase.child(teacherToken).child("follower");
+        chatRoomname = "null";
         ischatExist(teacherToken);
         clickanimation = AnimationUtils.loadAnimation(getContext(),R.anim.clickanimaiton);
 
@@ -130,18 +133,13 @@ public class TabFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-//                view.startAnimation(clickanimation);
-                Intent intent = new Intent(getActivity(), ConnectActivity.class);
-                intent.putExtra("chatroomname", chatRoomname);
-                intent.putExtra("receiverUID", teacherToken);
-//                intent.putExtra("receiveruid", teacherToken);
-//                intent.putExtra("uid", uid);
-//
-//                intent.putExtra("receivernick", receivernick);
-//                intent.putExtra("receiverphoto", receiverphoto);
+                if(!chatRoomname.equals("null")) {
+                    Intent intent = new Intent(getActivity(), ConnectActivity.class);
+                    intent.putExtra("chatroomname", chatRoomname);
+                    intent.putExtra("receiverUID", teacherToken);
 
-
-                startActivity(intent);
+                    startActivity(intent);
+                }
             }
         });
 
