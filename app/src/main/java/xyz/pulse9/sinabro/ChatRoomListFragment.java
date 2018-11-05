@@ -183,7 +183,6 @@ public class ChatRoomListFragment extends Fragment{
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 userDatabase= FirebaseDatabase.getInstance().getReference("users").child(curuser.getUid()).child("rooms");
-//                FirebaseDatabase.getInstance().getReference("message").child(chatRoomAdapter.getItem(position).getRoomName()).removeValue();
                 userDatabase.child(chatRoomAdapter.getItem(position).getRoomName()).removeValue();
                 chatRoomAdapter.delete(chatRoomAdapter.getItem(position));
                 return false;

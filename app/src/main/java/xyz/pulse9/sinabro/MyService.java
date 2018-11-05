@@ -17,7 +17,6 @@ public class MyService extends FirebaseMessagingService {
     public MyService() {
     }
 
-
     private final String TAG = "jangmin";
 
     @Override

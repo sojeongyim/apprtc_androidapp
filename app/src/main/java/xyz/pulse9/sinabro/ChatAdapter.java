@@ -153,7 +153,6 @@ public class ChatAdapter extends ArrayAdapter {
                 chatMessageContainer = convertView.findViewById(R.id.video_layout);
                 chatMessageContainer.setGravity(align);
 
-                final DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference("users");
                 final Button acceptBtn = convertView.findViewById(R.id.acceptBtn);
                 final Button denyBtn = convertView.findViewById(R.id.denyBtn);
                 final Button resultBtn = convertView.findViewById(R.id.resultBtn);
@@ -194,7 +193,11 @@ public class ChatAdapter extends ArrayAdapter {
                         Long tmp_time = Long.parseLong(msg.getDate());
                         final DatabaseReference alarmDatabase = FirebaseDatabase.getInstance().getReference("alarm");
                         Alarm tmp_alarm = new Alarm(tmp_time, msg.getChatroomname(), msg.getReceiver(), msg.getSender());
-                        alarmDatabase.push().setValue(tmp_alarm);
+                        Log.d("JANGMIN", msg.getChatroomname());
+                        Log.d("JANGMIN", msg.getReceiver());
+                        Log.d("JANGMIN", msg.getSender());
+                        String k = alarmDatabase.push().getKey();
+                        alarmDatabase.child(k).setValue(tmp_alarm);
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference ref;

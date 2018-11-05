@@ -12,10 +12,39 @@ public class Alarm {
         this.receiverUID = receiverUID;
         this.senderUID = senderUID;
     }
+    public Alarm()
+    {
+    }
+
     public Long getDate() {
         return date;
     }
+
     public void setDate(Long date) {
         this.date = date;
+    }
+
+    public String getRoomname() {
+        return roomname;
+    }
+
+    public void setRoomname(String roomname) {
+        this.roomname = roomname;
+    }
+
+    public String getReceiverUID() {
+        return receiverUID;
+    }
+
+    public void setReceiverUID(String receiverUID) {
+        this.receiverUID = receiverUID;
+    }
+
+    public String getSenderUID() {
+        return senderUID;
+    }
+
+    public void setSenderUID(String senderUID) {
+        this.senderUID = senderUID;
     }
 }
