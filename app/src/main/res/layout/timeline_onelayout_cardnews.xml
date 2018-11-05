@@ -87,9 +87,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="30dp"
             android:layout_margin="5dp"
-            android:layout_weight="1"
             android:orientation="horizontal">
 
             <FrameLayout
@@ -106,8 +105,8 @@
                     android:layout_gravity="center_vertical"
                     android:background="#00ffffff"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/heart"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible"
+                    app:srcCompat="@drawable/heart" />
 
                 <ImageButton
                     android:id="@+id/heart_check"
@@ -125,8 +124,8 @@
                 android:id="@+id/likeCount"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="3dp"
-                android:layout_weight="20"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="10"
                 android:fontFamily="@font/aarial"
                 android:gravity="center_vertical"
                 android:textColor="@color/sianbro_black_color"

@@ -28,7 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-public class TabFragment extends Fragment {
+public class TeacherTabFrg extends Fragment {
     private String teacherToken;
     private DatabaseReference userDatabase;
     DatabaseReference followerDB;

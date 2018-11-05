@@ -56,8 +56,6 @@
         <activity android:name=".mDatePicker" />
         <activity android:name=".mTimePicker" />
 
-        <receiver android:name=".PushInAppReceiver" />
-
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="adjustPan">
@@ -66,7 +64,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AppSettingActivity" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

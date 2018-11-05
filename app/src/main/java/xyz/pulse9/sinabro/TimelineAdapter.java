@@ -1,6 +1,7 @@
 package xyz.pulse9.sinabro;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -43,12 +44,12 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    List<Data> youtubeVideoList;
+class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    List<TimelineData> youtubeVideoList;
     private NetworkInfo activeNetwork;
-    public VideoAdapter() {
+    public TimelineAdapter() {
     }
-    public VideoAdapter(List<Data> youtubeVideoList) {
+    public TimelineAdapter(List<TimelineData> youtubeVideoList) {
         this.youtubeVideoList = youtubeVideoList;
     }
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -297,6 +298,8 @@ class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             heart_check = (ImageButton)itemView.findViewById(R.id.heart_check);
             timeline_tab=(ImageButton)itemView.findViewById(R.id.timeline_tab);
             cardnewspager = (ViewPager)itemView.findViewById(R.id.cardnews_pager);
+            videoWeb.setHorizontalScrollBarEnabled(false);
+            videoWeb.setVerticalScrollBarEnabled(false);
 //            cardimage=(ImageView)itemView.findViewById(R.id.cardnews);
 
         }
@@ -379,6 +382,8 @@ class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
             makeTextViewResizable(holder.descriptionText, 3, "More", true);
+            makeTextViewResizable(holder.tagText, 1, "More", true);
+
         }
 
         @Override
@@ -524,6 +529,8 @@ class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //                        makeTextViewResizable(tv, -1, "", false);
                     } else {
                         makeTextViewResizable(tv, 3, "More", true);
+//                        tv.setTextColor(Color.parseColor("#c7c7c7"));
+
                     }
 
                 }
