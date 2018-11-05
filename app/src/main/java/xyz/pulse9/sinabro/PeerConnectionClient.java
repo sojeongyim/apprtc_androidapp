@@ -1239,19 +1239,19 @@ public class PeerConnectionClient {
 
     @Override
     public void onDataChannel(final DataChannel dc) {
-      Log.d(TAG, "New Data channel " + dc.label());
+      Log.d(TAG, "New TimelineData channel " + dc.label());
 
       if (!dataChannelEnabled)
         return;
 
       dc.registerObserver(new DataChannel.Observer() {
         public void onBufferedAmountChange(long previousAmount) {
-          Log.d(TAG, "Data channel buffered amount changed: " + dc.label() + ": " + dc.state());
+          Log.d(TAG, "TimelineData channel buffered amount changed: " + dc.label() + ": " + dc.state());
         }
 
         @Override
         public void onStateChange() {
-          Log.d(TAG, "Data channel state changed: " + dc.label() + ": " + dc.state());
+          Log.d(TAG, "TimelineData channel state changed: " + dc.label() + ": " + dc.state());
         }
 
         @Override

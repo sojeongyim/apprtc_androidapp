@@ -1,59 +1,20 @@
 package xyz.pulse9.sinabro;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.List;
 import java.util.Vector;
 
 public class TimelineFragment extends Fragment {
@@ -63,7 +24,7 @@ public class TimelineFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private static Animation clickanimation;
-    private Vector<Data> youtubeVideos = new Vector<Data>();
+    private Vector<TimelineData> youtubeVideos = new Vector<TimelineData>();
 
     // TODO: Rename and change types of parameters
     public TimelineFragment() {
@@ -78,20 +39,20 @@ public class TimelineFragment extends Fragment {
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.timeline_recyclerview);
         mRecyclerView.setHasFixedSize(false);
 //        mRecyclerView.scrollBy(0,-3000);
-
+//        mRecyclerView.scrollTo(0,0);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         Resources res = getResources();
         String[] youtubeCodes = res.getStringArray(R.array.youtubeCode);
         int[] drawabb = {R.drawable.kr1, R.drawable.kr2};
-        youtubeVideos.add(new Data(drawabb));
+        youtubeVideos.add(new TimelineData(drawabb));
 
         for (int i = 0; i < youtubeCodes.length; i++) {
-            youtubeVideos.add(new Data(youtubeCodes[i]));
+            youtubeVideos.add(new TimelineData(youtubeCodes[i]));
         }
-        VideoAdapter videoAdapter = new VideoAdapter(youtubeVideos);
-        mRecyclerView.setAdapter(videoAdapter);
+        TimelineAdapter timelineAdapter = new TimelineAdapter(youtubeVideos);
+        mRecyclerView.setAdapter(timelineAdapter);
         ImageButton setting_butt = (ImageButton) getView().findViewById(R.id.setting);
         ImageButton notice_butt = (ImageButton) getView().findViewById(R.id.notice);
         setting_butt.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +83,7 @@ public class TimelineFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mRecyclerView.scrollBy(0,-3000);
+//        mRecyclerView.scrollBy(0,-3000);
     }
 
     @Override

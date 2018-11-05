@@ -2,7 +2,7 @@ package xyz.pulse9.sinabro;
 
 import java.util.Random;
 
-class Data {
+class TimelineData {
     String videoUrl=null;
     String videoCode=null;
     // List Draw
@@ -10,7 +10,7 @@ class Data {
     int type=0;
     String cardnewsCode;
 
-    public Data(int[] drawables ) {
+    public TimelineData(int[] drawables ) {
         this.drawables=drawables;
         Random rand = new Random();
         this.cardnewsCode= Integer.toString(rand.nextInt(899999) + 100000);
@@ -19,7 +19,7 @@ class Data {
 
     public String getCardnewsCode(){return cardnewsCode;}
 
-    public Data(String videoCode) {
+    public TimelineData(String videoCode) {
         this.videoCode=videoCode;
         this.videoUrl = "<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/"+videoCode+"\" frameborder=\"0\" allowfullscreen></iframe>";
     }

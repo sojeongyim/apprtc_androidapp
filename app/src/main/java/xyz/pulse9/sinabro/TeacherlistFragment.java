@@ -1,16 +1,10 @@
 package xyz.pulse9.sinabro;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,18 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.provider.FirebaseInitProvider;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
@@ -59,7 +47,7 @@ public class TeacherlistFragment extends Fragment {
         left_arrow = getView().findViewById(R.id.left_arrow);
         right_arrow = getView().findViewById(R.id.right_arrow);
 
-        final mPagerAdapter adapter = new mPagerAdapter(getFragmentManager(), TEACHER_NUM);
+        final TeacherAdapter adapter = new TeacherAdapter(getFragmentManager(), TEACHER_NUM);
 
         ArrayList<View> views =new ArrayList<>();
         for(int i=0;i<TEACHER_NUM;i++) {
