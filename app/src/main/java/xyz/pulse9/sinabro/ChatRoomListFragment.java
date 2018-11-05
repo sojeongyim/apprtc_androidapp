@@ -74,6 +74,7 @@ public class ChatRoomListFragment extends Fragment{
                 Intent intent = new Intent(getActivity(), ConnectActivity.class);
                 intent.putExtra("chatroomname", roomname);
                 intent.putExtra("receiverUID", chatRoomAdapter.getItem(i).getReceiver());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
             }
         });

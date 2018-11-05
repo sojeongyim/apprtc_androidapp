@@ -12,9 +12,11 @@ package xyz.pulse9.sinabro;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.DataSetObserver;
@@ -88,9 +90,23 @@ public class ConnectActivity extends AppCompatActivity {
     private String senderphoto;
     private ListView listView;
 
+
+
+    BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            onResume();
+        }
+
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        registerReceiver(mMessageReceiver, new IntentFilter("fgsdgdfgg"));
 
         database = FirebaseDatabase.getInstance();
         setContentView(R.layout.activity_chatting);
@@ -129,7 +145,6 @@ public class ConnectActivity extends AppCompatActivity {
         senderphoto = curuser.getPhotoUrl().toString();
         chatroomname = intent2.getStringExtra("chatroomname");
         receiveruid = intent2.getStringExtra("receiverUID");
-
         if (chatroomname.equals("none"))
         {
             userDatabase = database.getReference("users").child(receiveruid);
@@ -162,35 +177,9 @@ public class ConnectActivity extends AppCompatActivity {
                 }
             });
         }
-        initDB(chatroomname);
 
         setSharedPref(chatroomname);
 
-        chatAdapter = new ChatAdapter(this.getApplicationContext(), R.layout.chat_message);
-        listView = findViewById(R.id.chatListview);
-        listView.setAdapter(chatAdapter);
-        listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL); // 이게 필수
-
-        // When message is added, it makes listview to scroll last message
-        chatAdapter.registerDataSetObserver(new DataSetObserver() {
-            @Override
-
-            public void onChanged() {
-                super.onChanged();
-                listView.setSelection(chatAdapter.getCount() - 1);
-            }
-        });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                if(chatAdapter.getItem(i).getType().equals("3"))
-                {
-                    connectToRoom(chatAdapter.getItem(i).getVidRoomName(), chatAdapter.getItem(i).getMessageName());
-                }
-            }
-        });
         vidBtn = (ImageButton) findViewById(R.id.vidBtn);
         vidBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -288,11 +277,33 @@ public class ConnectActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         setSharedPref(chatroomname);
+        initDB(chatroomname);
+        chatAdapter = new ChatAdapter(this.getApplicationContext(), R.layout.chat_message);
+        listView = findViewById(R.id.chatListview);
+        listView.setAdapter(chatAdapter);
+        listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL); // 이게 필수
+
+// When message is added, it makes listview to scroll last message
+        chatAdapter.registerDataSetObserver(new DataSetObserver() {
+            @Override
+
+            public void onChanged() {
+                super.onChanged();
+                listView.setSelection(chatAdapter.getCount() - 1);
+            }
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                if(chatAdapter.getItem(i).getType().equals("3"))
+                {
+                    connectToRoom(chatAdapter.getItem(i).getVidRoomName(), chatAdapter.getItem(i).getMessageName());
+                }
+            }
+        });
     }
-    /**
-     * Get a value from the shared preference or from the intent, if it does not
-     * exist the default is used.
-     */
     private String sharedPrefGetString(int attributeId, String intentName, int defaultId, boolean useFromIntent) {
         String defaultValue = getString(defaultId);
         if (useFromIntent) {
@@ -306,10 +317,6 @@ public class ConnectActivity extends AppCompatActivity {
             return sharedPref.getString(attributeName, defaultValue);
         }
     }
-    /**
-     * Get a value from the shared preference or from the intent, if it does not
-     * exist the default is used.
-     */
     private boolean sharedPrefGetBoolean(int attributeId, String intentName, int defaultId, boolean useFromIntent) {
         boolean defaultValue = Boolean.valueOf(getString(defaultId));
         if (useFromIntent) {
@@ -319,10 +326,6 @@ public class ConnectActivity extends AppCompatActivity {
             return sharedPref.getBoolean(attributeName, defaultValue);
         }
     }
-    /**
-     * Get a value from the shared preference or from the intent, if it does not
-     * exist the default is used.
-     */
     private int sharedPrefGetInteger(int attributeId, String intentName, int defaultId, boolean useFromIntent) {
         String defaultString = getString(defaultId);
         int defaultValue = Integer.parseInt(defaultString);
@@ -631,6 +634,7 @@ public class ConnectActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         setSharedPref("");
+        unregisterReceiver(mMessageReceiver);
     }
     public void setSharedPref(String roomname) {
         SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);

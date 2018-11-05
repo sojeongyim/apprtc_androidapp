@@ -1,9 +1,12 @@
 package xyz.pulse9.sinabro;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,13 +37,23 @@ public class MyService extends FirebaseMessagingService {
             }
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channelId);
 
+
+            Intent intent1 = new Intent("fgsdgdfgg");
+            sendBroadcast(intent1);
+
             Intent notificationIntent = new Intent(getApplicationContext(), ConnectActivity.class);
             notificationIntent.putExtra("chatroomname", remoteMessage.getData().get("roomname"));
             notificationIntent.putExtra("receiverUID", remoteMessage.getData().get("senderUID"));
+//            sendBroadcast(notificationIntent);
 
+            ActivityManager am = (ActivityManager)getBaseContext().getSystemService(Context.ACTIVITY_SERVICE);
+            ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+            Log.d("JANGMIN", cn.getClassName());
+//            ((Activity)getBaseContext()).finish();
 
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                     Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             int requestID = (int) System.currentTimeMillis();
 

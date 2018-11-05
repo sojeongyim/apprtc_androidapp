@@ -126,7 +126,6 @@ public class TabFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), ConnectActivity.class);
                     intent.putExtra("chatroomname", chatRoomname);
                     intent.putExtra("receiverUID", teacherToken);
-
                     startActivity(intent);
                 }
 
