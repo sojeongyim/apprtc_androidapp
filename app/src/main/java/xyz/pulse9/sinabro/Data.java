@@ -36,6 +36,22 @@ class Data {
 
     public int getType(){return type;}
 
+    public void setVideoCode(String videoCode) {
+        this.videoCode = videoCode;
+    }
+
+    public void setDrawables(int[] drawables) {
+        this.drawables = drawables;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public void setCardnewsCode(String cardnewsCode) {
+        this.cardnewsCode = cardnewsCode;
+    }
+
     public String getVideoCode() {
         return videoCode;
     }

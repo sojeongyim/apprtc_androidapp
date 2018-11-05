@@ -638,8 +638,7 @@ public class ConnectActivity extends AppCompatActivity {
         editor.putString("cur_roomname", roomname);
         editor.commit();
     }
-    public void setChatRoom(ChatRoom temp)
-    {
+    public void setChatRoom(ChatRoom temp) {
         receiveruid = temp.getReceiver();
         receivernick = temp.getNickname();
         receiverphoto = temp.getPhoto();

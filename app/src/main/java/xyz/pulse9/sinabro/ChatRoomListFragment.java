@@ -33,10 +33,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import static android.app.Activity.RESULT_OK;
 
+
 public class ChatRoomListFragment extends Fragment{
     private DatabaseReference userDatabase;
 
     final String TAG = "ChatRoomListFrag";
+
 
     FirebaseUser curuser;
     public SwipeMenuListView listView;
@@ -53,7 +55,6 @@ public class ChatRoomListFragment extends Fragment{
         super.onActivityCreated(savedInstanceState);
         chatRoomAdapter = new ChatRoomAdapter(this.getActivity().getApplicationContext(),R.layout.chat_room);
         curuser = FirebaseAuth.getInstance().getCurrentUser();
-
         listView = getView().findViewById(R.id.chat_list);
         noTxt = getView().findViewById(R.id.noTxt);
         listView.setAdapter(chatRoomAdapter);
