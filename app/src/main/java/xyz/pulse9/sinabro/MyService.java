@@ -81,8 +81,9 @@ public class MyService extends FirebaseMessagingService {
     }
     private boolean inRoomCheck(String roomname)
     {
-        SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);
-        String cur_room = pref.getString("cur_roomname", "");
-        return !cur_room.equals(roomname);
+        Log.d("JANGMIN", "this is chat name :" + ConnectActivity.chatroomname);
+//        SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);
+//        String cur_room = pref.getString("cur_roomname", "");
+        return !ConnectActivity.chatroomname.equals(roomname);
     }
 }

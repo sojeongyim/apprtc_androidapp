@@ -67,7 +67,7 @@ public class ConnectActivity extends AppCompatActivity {
     }
     private final static String TAG = "ConnectActivity";
     ChatAdapter chatAdapter;
-    String chatroomname = "none";
+    public static String chatroomname = "none";
     FirebaseDatabase database;
     private String uid;
     private String receiveruid;
@@ -89,7 +89,6 @@ public class ConnectActivity extends AppCompatActivity {
     private String receiverphoto;
     private String senderphoto;
     private ListView listView;
-
 
 //
 //    BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -205,11 +204,6 @@ public class ConnectActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
-
-        setSharedPref(chatroomname);
 
         vidBtn = (ImageButton) findViewById(R.id.vidBtn);
         vidBtn.setOnClickListener(new View.OnClickListener() {
@@ -641,6 +635,7 @@ public class ConnectActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("cur_roomname", roomname);
         editor.commit();
+        chatroomname = roomname;
     }
     public void setChatRoom(ChatRoom temp) {
         receiveruid = temp.getReceiver();

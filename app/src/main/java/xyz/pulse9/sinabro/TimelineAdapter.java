@@ -68,7 +68,6 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.youtubeVideoList = youtubeVideoList;
     }
 
-
     public TimelineAdapter(List<TimelineData> youtubeVideoList, RecyclerView recyclerView) {
         this.youtubeVideoList = youtubeVideoList;
         if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
@@ -117,7 +116,6 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         final Animation clickanimation=AnimationUtils.loadAnimation(holder.itemView.getContext(),R.anim.clickanimaiton);
-
         if(holder instanceof VideoViewHolder)
         {
             final String current_videoCode = youtubeVideoList.get(position).getVideoCode();
@@ -128,7 +126,6 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     Toast.makeText( ((VideoViewHolder)holder).itemView.getContext(),"Coming Soon...",Toast.LENGTH_SHORT).show();
                 }
             });
-
             ConnectivityManager cm = (ConnectivityManager)holder.itemView.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             activeNetwork = cm.getActiveNetworkInfo();
             if(activeNetwork!=null) {
@@ -139,7 +136,6 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     getVideoInfo.execute();
                     ((VideoViewHolder) holder).videoWeb.setVisibility(View.VISIBLE);
                     ((VideoViewHolder) holder).videoWeb.loadData(youtubeVideoList.get(position).getVideoUrl(), "text/html", "utf-8");
-
                     ((VideoViewHolder) holder).timeLineDB.child(current_videoCode).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -162,7 +158,6 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                         }
                     });
-
                     ((VideoViewHolder) holder).heart.setOnClickListener(new View.OnClickListener() {
 
                         @Override
@@ -414,7 +409,6 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         String channelImgUrl="";
         String likeCount="";
         VideoViewHolder holder;
-
         GetYoutubeInfo(String VideoUrl,VideoViewHolder holder){
             this.videocode=VideoUrl;
             this.holder=holder;
@@ -424,25 +418,12 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super.onPostExecute(result);
             holder.TitleText.setText(Title);
             holder.descriptionText.setText(description + "\n" + "\n" + "\n" + newtag);
-//            holder.tagText.setText(newtag);
             holder.channel_name.setText(channelName);
-//            holder.likeCountText.setText(likeCount);
-
-
-
-
-//            holder.channel_img.setImageBitmap(UrlBitmap);
-
             Picasso.get().load(channelImgUrl)
                     .transform(new CropCircleTransformation())
                     .into(holder.channel_img);
-
-
             makeTextViewResizable(holder.descriptionText, 3, "More", true);
-//            makeTextViewResizable(holder.tagText, 1, "More", true);
-
         }
-
         @Override
         protected String doInBackground(String... params) {
 
