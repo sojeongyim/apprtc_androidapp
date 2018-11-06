@@ -3,7 +3,9 @@ package xyz.pulse9.sinabro;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -20,12 +22,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import xyz.pulse9.sinabro.util.BottomNavigationViewHelper;
@@ -36,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements TeacherlistFragme
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference ref = database.getReference("users");
+    String currentVersion;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -82,10 +94,94 @@ public class MainActivity extends AppCompatActivity implements TeacherlistFragme
         }
     };
 
+
+
+
+    class GetVersionCode extends AsyncTask<Void, String, String> {
+
+        @Override
+
+        protected String doInBackground(Void... voids) {
+
+            String newVersion = null;
+
+            try {
+                Document document = Jsoup.connect("https://play.google.com/store/apps/details?id=" + MainActivity.this.getPackageName()  + "&hl=en")
+                        .timeout(30000)
+                        .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+                        .referrer("http://www.google.com")
+                        .get();
+                if (document != null) {
+                    Elements element = document.getElementsContainingOwnText("Current Version");
+                    for (Element ele : element) {
+                        if (ele.siblingElements() != null) {
+                            Elements sibElemets = ele.siblingElements();
+                            for (Element sibElemet : sibElemets) {
+                                newVersion = sibElemet.text();
+                            }
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return newVersion;
+
+        }
+
+
+        @Override
+
+        protected void onPostExecute(String onlineVersion) {
+
+            super.onPostExecute(onlineVersion);
+
+            if (onlineVersion != null && !onlineVersion.isEmpty()) {
+
+                if (Float.valueOf(currentVersion) < Float.valueOf(onlineVersion)) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                    alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();     //닫기
+                        }
+                    });
+                    alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            finish();
+                        }
+                    });
+                    alert.setTitle("Sinabro");
+                    alert.setMessage("Please Update The App");
+                    alert.show();
+                }
+
+            }
+
+
+            Log.d("update", "Current version " + currentVersion + "playstore version " + onlineVersion);
+
+        }
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        try {
+            currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        new GetVersionCode().execute();
+
+
         setRoomSharedPref("");
         setUserSharedPref();
 
@@ -105,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements TeacherlistFragme
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(navigation);
+
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_timeline);

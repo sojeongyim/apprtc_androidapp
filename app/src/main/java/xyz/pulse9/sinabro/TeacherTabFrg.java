@@ -79,13 +79,18 @@ public class TeacherTabFrg extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        chatRoomname = "null";
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         curuser = FirebaseAuth.getInstance().getCurrentUser();
         uid = curuser.getUid();
         userDatabase = FirebaseDatabase.getInstance().getReference("users");
         followerDB = userDatabase.child(teacherToken).child("follower");
-        chatRoomname = "null";
         ischatExist(teacherToken);
         clickanimation = AnimationUtils.loadAnimation(getContext(),R.anim.clickanimaiton);
         followertext =(TextView)getView().findViewById(R.id.follower_num);
@@ -122,6 +127,7 @@ public class TeacherTabFrg extends Fragment {
 
             @Override
             public void onClick(View view) {
+                ischatExist(teacherToken);
                 if(!chatRoomname.equals("null")) {
                     Intent intent = new Intent(getActivity(), ConnectActivity.class);
                     intent.putExtra("chatroomname", chatRoomname);

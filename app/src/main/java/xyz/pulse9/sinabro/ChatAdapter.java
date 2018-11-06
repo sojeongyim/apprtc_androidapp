@@ -116,6 +116,8 @@ public class ChatAdapter extends ArrayAdapter {
                 Date confDate2 = new Date(Long.parseLong(msg.getSendDate())*1000L);
                 String t2 = sdf2.format(confDate2); // I assume your timestamp is in seconds and you're converting to milliseconds?
 
+
+
                 if(!message_left) {
                     Picasso.get().load(msg.getPhoto())
                             .transform(new CropCircleTransformation())

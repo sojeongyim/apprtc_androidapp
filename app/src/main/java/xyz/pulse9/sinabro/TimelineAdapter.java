@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
@@ -26,6 +27,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+//import com.rd.PageIndicatorView;
+import com.rd.PageIndicatorView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -45,21 +49,69 @@ import org.json.JSONObject;
 import java.util.List;
 
 class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private final int VIEW_VID = 1;
+    private final int VIEW_PIC = 2;
+    private final int VIEW_PROG = 0;
     List<TimelineData> youtubeVideoList;
+
     private NetworkInfo activeNetwork;
+
+    private int visibleThreshold = 5;
+    private int lastVisibleItem, totalItemCount;
+    private boolean loading;
+    private OnLoadMoreListener onLoadMoreListener;
+
     public TimelineAdapter() {
     }
     public TimelineAdapter(List<TimelineData> youtubeVideoList) {
         this.youtubeVideoList = youtubeVideoList;
     }
+
+
+    public TimelineAdapter(List<TimelineData> youtubeVideoList, RecyclerView recyclerView) {
+        this.youtubeVideoList = youtubeVideoList;
+        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView
+                    .getLayoutManager();
+            recyclerView
+                    .addOnScrollListener(new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrolled(RecyclerView recyclerView,
+                                               int dx, int dy) {
+                            super.onScrolled(recyclerView, dx, dy);
+
+                            totalItemCount = linearLayoutManager.getItemCount();
+                            lastVisibleItem = linearLayoutManager
+                                    .findLastVisibleItemPosition();
+                            if (!loading
+                                    && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                                // End has been reached
+                                // Do something
+                                if (onLoadMoreListener != null) {
+                                    onLoadMoreListener.onLoadMore();
+                                }
+                                loading = true;
+                            }
+                        }
+                    });
+        }
+    }
+
+
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if(viewType==1){
+        if(viewType==VIEW_PIC){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_onelayout_cardnews, parent, false);
             return new ImageViewHolder(view);
-        }else {
+        }else if(viewType==VIEW_VID){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_onelayout_youtube, parent, false);
             return new VideoViewHolder(view);
+        }
+        else
+        {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.progresslayout, parent, false);
+            return new ProgressViewHolder(v);
         }
     }
     @Override
@@ -167,9 +219,8 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
 
         }
-        else    //cardnews
+        else if (holder instanceof ImageViewHolder)    //cardnews
         {
-
             final String current_cardnewsCode = youtubeVideoList.get(position).getCardnewsCode();
             ((ImageViewHolder)holder).timeline_tab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -184,6 +235,7 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((ImageViewHolder)holder).cardnewspager.setAdapter(adapter);
 //                holder.cardimage.setImageResource(youtubeVideoList.get(position).getDrawables());
             ((ImageViewHolder)holder).cardnewspager.setVisibility(View.VISIBLE);
+//            ((ImageViewHolder)holder).pageIndicatorView.setCount(3);
 
 
             ((ImageViewHolder) holder).timeLineDB.child(current_cardnewsCode).addValueEventListener(new ValueEventListener() {
@@ -239,22 +291,31 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
         }
-
-
-
-
-
-
+        else if (holder instanceof ProgressViewHolder){
+            ((ProgressViewHolder)holder).progressBar.setIndeterminate(true);
+        }
     }
 
+    public void setLoaded() {
+        loading = false;
+    }
     @Override
     public int getItemViewType(int position) {
-        return youtubeVideoList.get(position).getType();
+        if(youtubeVideoList.get(position)==null)
+        {
+            return 0;
+        }
+        else {
+            return youtubeVideoList.get(position).getType();
+        }
     }
-
     @Override
     public int getItemCount() {
         return youtubeVideoList.size();
+    }
+
+    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+        this.onLoadMoreListener = onLoadMoreListener;
     }
 
     class VideoViewHolder extends RecyclerView.ViewHolder{
@@ -283,8 +344,7 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if(curuser!=null) {
                 uid = curuser.getUid();
             }
-            Log.e("sojeong","curser: "+curuser);
-            Log.e("sojeong","uid: "+uid);
+
             timeLineDB= FirebaseDatabase.getInstance().getReference("timeline");
 
             videoWeb = (WebView) itemView.findViewById(R.id.youtubeView);
@@ -312,6 +372,8 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ImageButton heart;
         ImageButton heart_check;
         ImageButton timeline_tab;
+        PageIndicatorView pageIndicatorView;
+
 
         String uid="";
         FirebaseUser curuser;
@@ -328,6 +390,7 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
             Log.e("sojeong","curser: "+curuser);
             Log.e("sojeong","uid: "+uid);
+//            pageIndicatorView = itemView.findViewById(R.id.pageIndicatorView);
             timeLineDB= FirebaseDatabase.getInstance().getReference("timeline");
             channel_img=(ImageView)itemView.findViewById(R.id.channel_img);
             channel_name=(TextView)itemView.findViewById(R.id.channel_name);
@@ -357,17 +420,11 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.holder=holder;
         }
         @Override
-        protected void onPreExecute() {
-
-            super.onPreExecute();
-        }
-
-        @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             holder.TitleText.setText(Title);
-            holder.descriptionText.setText(description);
-            holder.tagText.setText(newtag);
+            holder.descriptionText.setText(description + "\n" + "\n" + "\n" + newtag);
+//            holder.tagText.setText(newtag);
             holder.channel_name.setText(channelName);
 //            holder.likeCountText.setText(likeCount);
 
@@ -382,7 +439,7 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
             makeTextViewResizable(holder.descriptionText, 3, "More", true);
-            makeTextViewResizable(holder.tagText, 1, "More", true);
+//            makeTextViewResizable(holder.tagText, 1, "More", true);
 
         }
 
@@ -475,6 +532,14 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             return null;
 
+        }
+    }
+    class ProgressViewHolder extends RecyclerView.ViewHolder {
+        public ProgressBar progressBar;
+
+        public ProgressViewHolder(View v) {
+            super(v);
+            progressBar = (ProgressBar) v.findViewById(R.id.progressBar1);
         }
     }
 

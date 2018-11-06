@@ -1,4 +1,11 @@
 package xyz.pulse9.sinabro;
+import com.google.firebase.database.ServerValue;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.net.URL;
 import java.util.Calendar;
 
 //General Message
@@ -44,12 +51,33 @@ public class Message {
     private String callTime;
     private String roomCnt;
 
+
+
+    private String getTime() throws Exception {
+        String url = "https://time.is/Unix_time_now";
+        Document doc = Jsoup.parse(new URL(url).openStream(), "UTF-8", url);
+        String[] tags = new String[] {
+                "div[id=time_section]",
+                "div[id=clock0_bg]"
+        };
+        Elements elements= doc.select(tags[0]);
+        for (int i = 0; i <tags.length; i++) {
+            elements = elements.select(tags[i]);
+        }
+        return elements.text();
+    }
+
     public Message(String type, String sender, String receiver)
     {
         this.type=type;
         this.sender=sender;
         this.receiver=receiver;
         this.sendDate = String.valueOf(System.currentTimeMillis() / 1000L);
+        try {
+            this.sendDate = getTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public Message()
     {

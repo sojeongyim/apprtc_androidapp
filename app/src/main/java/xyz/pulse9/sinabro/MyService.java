@@ -37,9 +37,9 @@ public class MyService extends FirebaseMessagingService {
             }
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channelId);
 
-
-            Intent intent1 = new Intent("fgsdgdfgg");
-            sendBroadcast(intent1);
+//
+//            Intent intent1 = new Intent("fgsdgdfgg");
+//            sendBroadcast(intent1);
 
             Intent notificationIntent = new Intent(getApplicationContext(), ConnectActivity.class);
             notificationIntent.putExtra("chatroomname", remoteMessage.getData().get("roomname"));

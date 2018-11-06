@@ -7,14 +7,14 @@ class TimelineData {
     String videoCode=null;
     // List Draw
     int[] drawables;
-    int type=0;
+    int type=1;
     String cardnewsCode;
 
     public TimelineData(int[] drawables ) {
         this.drawables=drawables;
         Random rand = new Random();
         this.cardnewsCode= Integer.toString(rand.nextInt(899999) + 100000);
-        this.type=1;
+        this.type=2;
     }
 
     public String getCardnewsCode(){return cardnewsCode;}
