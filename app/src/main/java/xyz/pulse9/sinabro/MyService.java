@@ -28,6 +28,7 @@ public class MyService extends FirebaseMessagingService {
         {
             String channelId = "channel";
             String channelName = "sinabro";
+            ConnectActivity.chatroomname = remoteMessage.getData().get("roomname");
 
             NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -36,24 +37,18 @@ public class MyService extends FirebaseMessagingService {
                 notifManager.createNotificationChannel(mChannel);
             }
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channelId);
-
-//
-//            Intent intent1 = new Intent("fgsdgdfgg");
-//            sendBroadcast(intent1);
-
             Intent notificationIntent = new Intent(getApplicationContext(), ConnectActivity.class);
+
             notificationIntent.putExtra("chatroomname", remoteMessage.getData().get("roomname"));
             notificationIntent.putExtra("receiverUID", remoteMessage.getData().get("senderUID"));
-//            sendBroadcast(notificationIntent);
 
             ActivityManager am = (ActivityManager)getBaseContext().getSystemService(Context.ACTIVITY_SERVICE);
             ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
             Log.d("JANGMIN", cn.getClassName());
-//            ((Activity)getBaseContext()).finish();
 
-            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                    Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
             int requestID = (int) System.currentTimeMillis();
 
@@ -82,8 +77,6 @@ public class MyService extends FirebaseMessagingService {
     private boolean inRoomCheck(String roomname)
     {
         Log.d("JANGMIN", "this is chat name :" + ConnectActivity.chatroomname);
-//        SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);
-//        String cur_room = pref.getString("cur_roomname", "");
         return !ConnectActivity.chatroomname.equals(roomname);
     }
 }

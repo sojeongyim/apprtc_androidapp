@@ -73,11 +73,11 @@ public class Message {
         this.sender=sender;
         this.receiver=receiver;
         this.sendDate = String.valueOf(System.currentTimeMillis() / 1000L);
-        try {
-            this.sendDate = getTime();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            this.sendDate = getTime();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
     public Message()
     {
@@ -87,7 +87,12 @@ public class Message {
     {
         this.type=type;
         this.callTime=callTime;
-        this.sendDate = String.valueOf(System.currentTimeMillis() / 1000L);
+//        this.sendDate = String.valueOf(System.currentTimeMillis() / 1000L);
+        try {
+            this.sendDate = getTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.contents = "Video Call End";
     }
 

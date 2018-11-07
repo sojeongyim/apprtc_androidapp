@@ -91,7 +91,7 @@ public class TeacherTabFrg extends Fragment {
         uid = curuser.getUid();
         userDatabase = FirebaseDatabase.getInstance().getReference("users");
         followerDB = userDatabase.child(teacherToken).child("follower");
-        ischatExist(teacherToken);
+//        ischatExist(teacherToken);
         clickanimation = AnimationUtils.loadAnimation(getContext(),R.anim.clickanimaiton);
         followertext =(TextView)getView().findViewById(R.id.follower_num);
         profile_image = (ImageView) getView().findViewById(R.id.profile_image);
@@ -127,14 +127,22 @@ public class TeacherTabFrg extends Fragment {
 
             @Override
             public void onClick(View view) {
-                ischatExist(teacherToken);
-                if(!chatRoomname.equals("null")) {
-                    Intent intent = new Intent(getActivity(), ConnectActivity.class);
-                    intent.putExtra("chatroomname", chatRoomname);
-                    intent.putExtra("receiverUID", teacherToken);
-                    startActivity(intent);
+                if(teacherToken.equals(curuser.getUid()))
+                {
+                    Toast toast = Toast.makeText(getActivity(),"You can't send it to yourself", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
-
+                else
+                {
+                    ischatExist(teacherToken);
+                    if(!chatRoomname.equals("null")) {
+                        Intent intent = new Intent(getActivity(), ConnectActivity.class);
+                        intent.putExtra("chatroomname", chatRoomname);
+                        intent.putExtra("receiverUID", teacherToken);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        startActivity(intent);
+                    }
+                }
             }
         });
 

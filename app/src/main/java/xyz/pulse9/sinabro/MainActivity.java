@@ -181,8 +181,6 @@ public class MainActivity extends AppCompatActivity implements TeacherlistFragme
 
         new GetVersionCode().execute();
 
-
-        setRoomSharedPref("");
         setUserSharedPref();
 
         if(curuser !=null) {
@@ -236,15 +234,9 @@ public class MainActivity extends AppCompatActivity implements TeacherlistFragme
     @Override
     protected void onResume() {
         super.onResume();
-        setRoomSharedPref("");
+        ConnectActivity.chatroomname = "null";
     }
 
-    public void setRoomSharedPref(String roomname) {
-        SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("cur_roomname", roomname);
-        editor.commit();
-    }
     public void setUserSharedPref() {
         SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
@@ -260,42 +252,6 @@ public class MainActivity extends AppCompatActivity implements TeacherlistFragme
         editor.putString("email", email);
         editor.putString("nickname", nickname);
         editor.putString("token", token);
-        editor.commit();
-    }
-    public void setRoomListSharedPref()
-    {
-        DatabaseReference temp = ref.child(curuser.getUid()).child("rooms");
-        temp.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Set<ChatRoom> tmpset = new HashSet<>();
-                for(DataSnapshot t : dataSnapshot.getChildren())
-                {
-                    String tmp_receiver;
-                    String tmp_roomName;
-                    tmp_receiver = t.child("receiver").getValue().toString();
-                    tmp_roomName = t.child("roomName").getValue().toString();
-                    ChatRoom tmp_Room = new ChatRoom(tmp_roomName, tmp_receiver);
-                    for(Iterator<ChatRoom> k = tmpset.iterator();k.hasNext();)
-                    {
-                        if(!k.next().getNickname().equals(tmp_receiver))
-                        {
-                            tmpset.add(tmp_Room);
-                        }
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-    public void setSharedPrefRoomList(HashSet<String> k)
-    {
-        SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putStringSet("roomList", k);
         editor.commit();
     }
 }

@@ -18,6 +18,8 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="10dp"
+        android:descendantFocusability="blocksDescendants"
+
         android:orientation="vertical">
 
 
@@ -80,7 +82,7 @@
                 android:id="@+id/youtubeView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="invisible">
+                android:visibility="visible">
 
             </WebView>
 
@@ -110,18 +112,8 @@
                     android:layout_gravity="center_vertical"
                     android:background="#00ffffff"
                     android:scaleType="fitCenter"
-                    android:visibility="invisible"
+                    android:visibility="visible"
                     app:srcCompat="@drawable/heart" />
-
-                <ImageButton
-                    android:id="@+id/heart_check"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:background="#00ffffff"
-                    android:scaleType="fitCenter"
-                    android:visibility="invisible"
-                    app:srcCompat="@drawable/heart_check" />
 
             </FrameLayout>
 

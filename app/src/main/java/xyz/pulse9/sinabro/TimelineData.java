@@ -10,10 +10,9 @@ class TimelineData {
     int type=1;
     String cardnewsCode;
 
-    public TimelineData(int[] drawables ) {
+    public TimelineData(int[] drawables, String cardnewsCode ) {
         this.drawables=drawables;
-        Random rand = new Random();
-        this.cardnewsCode= Integer.toString(rand.nextInt(899999) + 100000);
+        this.cardnewsCode= cardnewsCode;
         this.type=2;
     }
 

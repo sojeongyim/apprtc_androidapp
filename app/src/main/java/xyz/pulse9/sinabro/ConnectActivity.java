@@ -89,7 +89,6 @@ public class ConnectActivity extends AppCompatActivity {
     private String receiverphoto;
     private String senderphoto;
     private ListView listView;
-
 //
 //    BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
 //
@@ -100,13 +99,10 @@ public class ConnectActivity extends AppCompatActivity {
 //        }
 //
 //    };
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 //        registerReceiver(mMessageReceiver, new IntentFilter("fgsdgdfgg"));
-
         database = FirebaseDatabase.getInstance();
         setContentView(R.layout.activity_chatting);
         friendsid = findViewById(R.id.friendId);
@@ -177,7 +173,6 @@ public class ConnectActivity extends AppCompatActivity {
             });
         }
 
-        setSharedPref(chatroomname);
         initDB(chatroomname);
         chatAdapter = new ChatAdapter(this.getApplicationContext(), R.layout.chat_message);
         listView = findViewById(R.id.chatListview);
@@ -292,11 +287,6 @@ public class ConnectActivity extends AppCompatActivity {
                 ref.child(data.getStringExtra("MsgName")+"1").setValue(tmpMessage);
             }
         }
-    }
-    @Override
-    public void onPause() {
-        super.onPause();
-        setSharedPref("");
     }
     private String sharedPrefGetString(int attributeId, String intentName, int defaultId, boolean useFromIntent) {
         String defaultValue = getString(defaultId);
@@ -622,20 +612,14 @@ public class ConnectActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        setSharedPref("");
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        setSharedPref("");
-//        unregisterReceiver(mMessageReceiver);
     }
-    public void setSharedPref(String roomname) {
-        SharedPreferences pref = getSharedPreferences("sina_set", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("cur_roomname", roomname);
-        editor.commit();
-        chatroomname = roomname;
+    @Override
+    public void onPause() {
+        super.onPause();
     }
     public void setChatRoom(ChatRoom temp) {
         receiveruid = temp.getReceiver();

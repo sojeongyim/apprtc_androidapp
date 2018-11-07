@@ -106,7 +106,7 @@ public class TimelineFragment extends Fragment {
         Resources res = getResources();
         String[] youtubeCodes = res.getStringArray(R.array.youtubeCode);
         int[] drawabb = {R.drawable.kr1, R.drawable.kr2};
-        youtubeVideos.add(new TimelineData(drawabb));
+        youtubeVideos.add(new TimelineData(drawabb,"AFXER"));
         for (int i = 0; i < 5; i++) {
             youtubeVideos.add(new TimelineData(youtubeCodes[i]));
         }
