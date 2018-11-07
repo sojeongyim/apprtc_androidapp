@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +115,34 @@ public class TimelineFragment extends Fragment {
         String[] youtubeCodes = res.getStringArray(R.array.youtubeCode);
         int[] drawabb = {R.drawable.kr1, R.drawable.kr2};
         youtubeVideos.add(new TimelineData(drawabb,"AFXER"));
+
+
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference ref = database.getReference("video");
+//
+//        final int cnt = 3;
+//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                int cnt = 0;
+//                for(DataSnapshot tmp : dataSnapshot.getChildren())
+//                {
+//                    if(cnt <3) {
+//                        cnt++;
+//                        youtubeVideos.add(new TimelineData(tmp.getValue().toString()));
+//                        Log.d("JANGMIN", " Youtube Added");
+//                    }
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+
         for (int i = 0; i < 5; i++) {
             youtubeVideos.add(new TimelineData(youtubeCodes[i]));
         }

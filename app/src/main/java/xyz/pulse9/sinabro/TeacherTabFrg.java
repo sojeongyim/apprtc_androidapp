@@ -77,13 +77,11 @@ public class TeacherTabFrg extends Fragment {
             }
         });
     }
-
     @Override
     public void onResume() {
         super.onResume();
         chatRoomname = "null";
     }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -127,13 +125,13 @@ public class TeacherTabFrg extends Fragment {
 
             @Override
             public void onClick(View view) {
-                if(teacherToken.equals(curuser.getUid()))
-                {
-                    Toast toast = Toast.makeText(getActivity(),"You can't send it to yourself", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else
-                {
+//                if(teacherToken.equals(curuser.getUid()))
+//                {
+//                    Toast toast = Toast.makeText(getActivity(),"You can't send it to yourself", Toast.LENGTH_SHORT);
+//                    toast.show();
+//                }
+//                else
+//                {
                     ischatExist(teacherToken);
                     if(!chatRoomname.equals("null")) {
                         Intent intent = new Intent(getActivity(), ConnectActivity.class);
@@ -142,7 +140,7 @@ public class TeacherTabFrg extends Fragment {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         startActivity(intent);
                     }
-                }
+//                }
             }
         });
 
@@ -197,5 +195,4 @@ public class TeacherTabFrg extends Fragment {
         return inflater.inflate(R.layout.teacher_one, container, false);
 
     }
-
 }

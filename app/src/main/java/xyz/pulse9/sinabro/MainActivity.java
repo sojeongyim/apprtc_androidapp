@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,8 +34,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -180,7 +183,6 @@ public class MainActivity extends AppCompatActivity implements TeacherlistFragme
         }
 
         new GetVersionCode().execute();
-
         setUserSharedPref();
 
         if(curuser !=null) {
@@ -254,5 +256,17 @@ public class MainActivity extends AppCompatActivity implements TeacherlistFragme
         editor.putString("token", token);
         editor.commit();
     }
-}
+    public void pushVideoLink()
+    {
+        FirebaseDatabase database2 = FirebaseDatabase.getInstance();
+        DatabaseReference ref2 = database2.getReference("video");
 
+
+        Resources res = getResources();
+        String[] youtubeCodes = res.getStringArray(R.array.youtubeCode);
+        int[] drawabb = {R.drawable.kr1, R.drawable.kr2};
+        for (int i = 0; i < youtubeCodes.length; i++) {
+            ref2.child(String.valueOf(i)).setValue(youtubeCodes[i]);
+        }
+    }
+}
