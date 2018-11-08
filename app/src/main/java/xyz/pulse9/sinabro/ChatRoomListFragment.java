@@ -106,7 +106,6 @@ public class ChatRoomListFragment extends Fragment{
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
         userDatabase.addChildEventListener(new ChildEventListener() {
             String chatroomname;
             String lastcontents;

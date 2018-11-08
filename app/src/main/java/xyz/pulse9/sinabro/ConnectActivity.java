@@ -58,7 +58,10 @@ public class ConnectActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("choice", 1);
+        startActivity(intent);
     }
     private final static String TAG = "ConnectActivity";
     ChatAdapter chatAdapter;
@@ -567,6 +570,31 @@ public class ConnectActivity extends AppCompatActivity {
         ref.push().setValue(tmpM);
         sendMsg.setText("");
     }
+
+    private void incRoomCnt(String receiveruid, String roomname) {
+        final DatabaseReference tmp = userDatabase.child(receiveruid).child("rooms").child(roomname);
+        tmp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild("cnt"))
+                {
+                    Log.d("JANGMIN", "haschild");
+                    tmp.child("cnt").setValue((int)dataSnapshot.child("cnt").getValue()+1);
+                }
+                else
+                {
+                    Log.d("JANGMIN", dataSnapshot.getKey());
+                    Log.d("JANGMIN", "NoChild");
+                    tmp.child("cnt").setValue((int)1);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+    }
+
     public void initDB(final String rommname) {
         myDatabase = database.getReference("message").child(rommname);
         userDatabase = database.getReference("users");

@@ -182,6 +182,9 @@ public class MainActivity extends AppCompatActivity implements TeacherlistFragme
             e.printStackTrace();
         }
 
+        Intent intent = getIntent();
+        int current_choice= intent.getIntExtra("choice", 0);
+
         new GetVersionCode().execute();
         setUserSharedPref();
 
@@ -203,8 +206,16 @@ public class MainActivity extends AppCompatActivity implements TeacherlistFragme
         BottomNavigationViewHelper.disableShiftMode(navigation);
 
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_timeline);
+        if(current_choice==0)
+        {
+            navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+            navigation.setSelectedItemId(R.id.navigation_timeline);
+        }
+        else
+        {
+            navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+            navigation.setSelectedItemId(R.id.navigation_chatings);
+        }
     }
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

@@ -47,7 +47,7 @@ public class MyService extends FirebaseMessagingService {
 
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
             int requestID = (int) System.currentTimeMillis();
 

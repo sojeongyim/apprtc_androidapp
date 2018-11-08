@@ -3,6 +3,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="android:windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+
     </style>
 
     <style name="EditTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -13,12 +15,16 @@
         <item name="android:textColor">@color/sianbro_gray_color</item>
         <item name="android:textColorHint">@color/sianbro_gray_color</item>
         <item name="android:textColorHighlight">@color/lineOnTouch</item>
+        <item name="android:windowDisablePreview">true</item>
+
     </style>
 
     <style name="CallActivityTheme" parent="android:Theme.Black">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+
     </style>
 
     <!--<style name="splashTheme" parent="android:Theme.Black">-->
