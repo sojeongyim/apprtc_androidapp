@@ -88,7 +88,8 @@ public class ConnectActivity extends AppCompatActivity {
     private String receiverphoto;
     private String senderphoto;
     private ListView listView;
-//
+    FirebaseUser curuser;
+    //
 //    BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
 //
 //        @Override
@@ -131,7 +132,7 @@ public class ConnectActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        final FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
+        curuser = FirebaseAuth.getInstance().getCurrentUser();
 
         Intent intent2 = getIntent();
         uid = curuser.getUid();
@@ -140,6 +141,10 @@ public class ConnectActivity extends AppCompatActivity {
         chatroomname = intent2.getStringExtra("chatroomname");
         receiveruid = intent2.getStringExtra("receiverUID");
         userDatabase = database.getReference("users").child(receiveruid);
+
+        onRead();
+
+
         userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -273,7 +278,7 @@ public class ConnectActivity extends AppCompatActivity {
                 ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, tmp.getContents(), tmp.getSenddate());
                 ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, tmp.getContents(), tmp.getSenddate());
                 userDatabase.child(uid).child("rooms").child(chatroomname).setValue(updateChatRoom);
-                userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(updateChatRoom2);
+                incRoomCnt(receiveruid, chatroomname, updateChatRoom2);
             }
             else if(requestCode==VIDCALL)
             {
@@ -565,13 +570,12 @@ public class ConnectActivity extends AppCompatActivity {
         ref = database.getReference("message").child(chatroomname);
         ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, tmpM.getContents(), tmpM.getSenddate());
         ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, tmpM.getContents(), tmpM.getSenddate());
+        incRoomCnt(receiveruid, chatroomname, updateChatRoom2);
         userDatabase.child(uid).child("rooms").child(chatroomname).setValue(updateChatRoom);
-        userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(updateChatRoom2);
         ref.push().setValue(tmpM);
         sendMsg.setText("");
     }
-
-    private void incRoomCnt(String receiveruid, String roomname) {
+    private void incRoomCnt(final String receiveruid, String roomname, final ChatRoom chatRoom) {
         final DatabaseReference tmp = userDatabase.child(receiveruid).child("rooms").child(roomname);
         tmp.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -579,20 +583,19 @@ public class ConnectActivity extends AppCompatActivity {
                 if(dataSnapshot.hasChild("cnt"))
                 {
                     Log.d("JANGMIN", "haschild");
-                    tmp.child("cnt").setValue((int)dataSnapshot.child("cnt").getValue()+1);
+                    chatRoom.setCnt((long)dataSnapshot.child("cnt").getValue()+1);
+                    userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(chatRoom);
                 }
                 else
                 {
-                    Log.d("JANGMIN", dataSnapshot.getKey());
-                    Log.d("JANGMIN", "NoChild");
-                    tmp.child("cnt").setValue((int)1);
+                    chatRoom.setCnt((long)1);
+                    userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(chatRoom);
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
     }
 
     public void initDB(final String rommname) {
@@ -650,5 +653,10 @@ public class ConnectActivity extends AppCompatActivity {
         receivernick = temp.getNickname();
         receiverphoto = temp.getPhoto();
         friendsid.setText(receivernick.toUpperCase());
+    }
+    public void onRead()
+    {
+        DatabaseReference tmp = database.getReference("users").child(curuser.getUid()).child("rooms").child(chatroomname).child("cnt");
+        tmp.setValue(0);
     }
 }

@@ -15,6 +15,7 @@ public class ChatRoom {
     private String photo;
     private String lastcontents;
     private String time;
+    private long cnt;
 
     public ChatRoom()
     {
@@ -34,6 +35,7 @@ public class ChatRoom {
         this.photo = photo;
         this.lastcontents = lastcontents;
         this.time = time;
+        this.cnt = 0;
     }
 
     public String getRoomName() {
@@ -81,5 +83,13 @@ public class ChatRoom {
     }
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public long getCnt() {
+        return cnt;
+    }
+
+    public void setCnt(long cnt) {
+        this.cnt = cnt;
     }
 }

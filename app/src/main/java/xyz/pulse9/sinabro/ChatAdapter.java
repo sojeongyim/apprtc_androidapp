@@ -85,6 +85,8 @@ public class ChatAdapter extends ArrayAdapter {
         sdf.setTimeZone(tz);
         sdf2.setTimeZone(tz);
 
+        Log.d("JANGMIN","Message is loaded");
+
         final String curuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final Message msg = msgs.get(position);
         String viewType = msg.getType();

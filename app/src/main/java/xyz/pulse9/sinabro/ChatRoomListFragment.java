@@ -49,7 +49,6 @@ public class ChatRoomListFragment extends Fragment{
     public ChatRoomListFragment() {
         // Required empty public constructor
     }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -82,7 +81,6 @@ public class ChatRoomListFragment extends Fragment{
         setRoomDB();
         setSwipeMenu();
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -110,6 +108,7 @@ public class ChatRoomListFragment extends Fragment{
             String chatroomname;
             String lastcontents;
             String lastTime;
+            Long cnt;
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 ChatRoom chatRoom;
@@ -133,7 +132,8 @@ public class ChatRoomListFragment extends Fragment{
                 chatroomname = dataSnapshot.getRef().getKey();
                 lastcontents = dataSnapshot.child("lastcontents").getValue().toString();
                 lastTime = dataSnapshot.child("time").getValue().toString();
-                chatRoomAdapter.refresh(chatroomname, lastcontents, lastTime);
+                cnt = (long)dataSnapshot.child("cnt").getValue();
+                chatRoomAdapter.refresh(chatroomname, lastcontents, lastTime, cnt);
                 chatRoomAdapter.sortList();
                 chatRoomAdapter.notifyDataSetChanged();
                 if(dataSnapshot.getChildrenCount()==0)

@@ -13,6 +13,10 @@ import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -24,6 +28,13 @@ public class MyService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        if(!inRoomCheck(remoteMessage.getData().get("roomname")))
+        {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            FirebaseUser curuser = FirebaseAuth.getInstance().getCurrentUser();
+            DatabaseReference tmp = database.getReference("users").child(curuser.getUid()).child("rooms").child(ConnectActivity.chatroomname).child("cnt");
+            tmp.setValue(0);
+        }
         if(SettingsCheck() && inRoomCheck(remoteMessage.getData().get("roomname")))
         {
             String channelId = "channel";

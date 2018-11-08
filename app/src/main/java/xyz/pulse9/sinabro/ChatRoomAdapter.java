@@ -33,13 +33,14 @@ public class ChatRoomAdapter extends ArrayAdapter {
         ChatRooms.remove(object);
         super.remove(object);
     }
-    public void refresh(String roomName, String title, String Time) {
+    public void refresh(String roomName, String title, String Time, Long cnt) {
         for(ChatRoom k : ChatRooms)
         {
             if(k.getRoomName().equals(roomName))
             {
                 k.setLastcontents(title);
                 k.setTime(Time);
+                k.setCnt(cnt);
             }
         }
     }
@@ -78,6 +79,12 @@ public class ChatRoomAdapter extends ArrayAdapter {
                 .into(userpic);
         TextView msgText2 = (TextView) row.findViewById(R.id.secondLine);
         TextView msgText3 = (TextView) row.findViewById(R.id.thirdLine);
+        TextView noti_num = (TextView)row.findViewById(R.id.badge);
+        if(chatRoom.getCnt()==0)
+        {
+            noti_num.setVisibility(View.GONE);
+        }
+        noti_num.setText(String.valueOf(chatRoom.getCnt()));
         msgText.setText(chatRoom.getNickname());
         msgText2.setText(chatRoom.getLastcontents());
         String time = chatRoom.getTime();
