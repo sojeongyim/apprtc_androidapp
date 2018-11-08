@@ -12,17 +12,13 @@ package xyz.pulse9.sinabro;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.DataSetObserver;
-import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -33,7 +29,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
@@ -85,6 +80,7 @@ public class ConnectActivity extends AppCompatActivity {
     private String keyprefAudioBitrateValue;
     private String keyprefRoomServerUrl;
     private String receivernick;
+    private String receivertoken;
     private String sendernick;
     private String receiverphoto;
     private String senderphoto;
@@ -140,24 +136,21 @@ public class ConnectActivity extends AppCompatActivity {
         senderphoto = curuser.getPhotoUrl().toString();
         chatroomname = intent2.getStringExtra("chatroomname");
         receiveruid = intent2.getStringExtra("receiverUID");
-        if (chatroomname.equals("none"))
-        {
-            userDatabase = database.getReference("users").child(receiveruid);
-            userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    receiverphoto = dataSnapshot.child("photo").getValue().toString();
-                    receivernick = dataSnapshot.child("nickname").getValue().toString();
-                    friendsid.setText(receivernick.toUpperCase());
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+        userDatabase = database.getReference("users").child(receiveruid);
+        userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                receiverphoto = dataSnapshot.child("photo").getValue().toString();
+                receivernick = dataSnapshot.child("nickname").getValue().toString();
+                receivertoken = dataSnapshot.child("token").getValue().toString();
+                friendsid.setText(receivernick.toUpperCase());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            });
-        }
-        else
-        {
+            }
+        });
+        if(!chatroomname.equals("none")) {
             userDatabase = database.getReference("users").child(uid).child("rooms").child(chatroomname);
             userDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -171,6 +164,7 @@ public class ConnectActivity extends AppCompatActivity {
 
                 }
             });
+//        }
         }
 
         initDB(chatroomname);
@@ -195,7 +189,7 @@ public class ConnectActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 if(chatAdapter.getItem(i).getType().equals("3"))
                 {
-                    connectToRoom(chatAdapter.getItem(i).getVidRoomName(), chatAdapter.getItem(i).getMessageName());
+                    connectToRoom(chatAdapter.getItem(i).getVidroomname(), chatAdapter.getItem(i).getMessagename());
                 }
             }
         });
@@ -249,6 +243,7 @@ public class ConnectActivity extends AppCompatActivity {
         if (resultCode==RESULT_OK) {
             if (requestCode == 1) {
                 long result = data.getLongExtra("result", 0);
+                Log.d("JANGMIN", "OnActivity Result");
                 Intent intent = new Intent(ConnectActivity.this, mTimePicker.class);
                 intent.putExtra("result",result);
                 startActivityForResult(intent, 2);
@@ -262,9 +257,9 @@ public class ConnectActivity extends AppCompatActivity {
                 }
                 ref = database.getReference("message").child(chatroomname);
                 long result2 = data.getLongExtra("result", 0);
-                Message tmp = new Message("1", uid, receiveruid);   //test
+                Message tmp = new Message("1", uid, receiveruid, receivertoken);   //test
                 String tmp_name = ref.push().getKey();
-                tmp.setMessageName(tmp_name);
+                tmp.setMessagename(tmp_name);
                 tmp.setContents("Planing Conference");
                 tmp.setPhoto(senderphoto);
                 tmp.setDate(String.valueOf(result2));
@@ -272,8 +267,8 @@ public class ConnectActivity extends AppCompatActivity {
                 tmp.setChatroomname(chatroomname);
                 ref.child(tmp_name).setValue(tmp);
 
-                ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, tmp.getContents(), tmp.getSendDate());
-                ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, tmp.getContents(), tmp.getSendDate());
+                ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, tmp.getContents(), tmp.getSenddate());
+                ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, tmp.getContents(), tmp.getSenddate());
                 userDatabase.child(uid).child("rooms").child(chatroomname).setValue(updateChatRoom);
                 userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(updateChatRoom2);
             }
@@ -552,23 +547,24 @@ public class ConnectActivity extends AppCompatActivity {
         return false;
     }
     public void sendMessage(View view) {
-        Message mMessage = new Message("0", uid, receiveruid);
-        mMessage.setPhoto(senderphoto);
-        mMessage.setContents(sendMsg.getText().toString());
+        // Nick(Sender), Token(Receiver))
+        Message tmpM = new Message("0", uid, receiveruid,receivertoken);
+        tmpM.setPhoto(senderphoto);
+        tmpM.setSendernick(sendernick);
+        tmpM.setContents(sendMsg.getText().toString());
         DatabaseReference ref;
         if (chatroomname.equals("none")) {
             ref = database.getReference("message").push();
             chatroomname = ref.getKey();
             initDB(chatroomname);
         }
-        ref = database.getReference("message").child(chatroomname);
 
-        ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, mMessage.getContents(), mMessage.getSendDate());
-        ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, mMessage.getContents(), mMessage.getSendDate());
+        ref = database.getReference("message").child(chatroomname);
+        ChatRoom updateChatRoom = new ChatRoom(chatroomname, receiveruid, receivernick, receiverphoto, tmpM.getContents(), tmpM.getSenddate());
+        ChatRoom updateChatRoom2 = new ChatRoom(chatroomname, uid, sendernick, senderphoto, tmpM.getContents(), tmpM.getSenddate());
         userDatabase.child(uid).child("rooms").child(chatroomname).setValue(updateChatRoom);
         userDatabase.child(receiveruid).child("rooms").child(chatroomname).setValue(updateChatRoom2);
-
-        ref.push().setValue(mMessage);
+        ref.push().setValue(tmpM);
         sendMsg.setText("");
     }
     public void initDB(final String rommname) {
@@ -591,7 +587,7 @@ public class ConnectActivity extends AppCompatActivity {
                 Message mMessage;
                 mMessage = dataSnapshot.getValue(Message.class);
                 if(mMessage.getType().equals("1")) {
-                    chatAdapter.getItemByName(mMessage.getMessageName()).setChk(mMessage.getChk());
+                    chatAdapter.getItemByName(mMessage.getMessagename()).setChk(mMessage.getChk());
                     chatAdapter.notifyDataSetChanged();
                 }
             }

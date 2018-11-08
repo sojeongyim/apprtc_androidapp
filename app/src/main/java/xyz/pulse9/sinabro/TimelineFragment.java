@@ -2,6 +2,7 @@ package xyz.pulse9.sinabro;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -91,7 +92,8 @@ public class TimelineFragment extends Fragment {
     }
 
     private void addMore(int i ) {
-        youtubeVideos.add(youtubeVideos.get(1));
+//        youtubeVideos.add(youtubeVideos.get(1));
+        Log.d("JANGMIN", "Something is added here");
     }
 
     @Override
@@ -115,40 +117,14 @@ public class TimelineFragment extends Fragment {
         String[] youtubeCodes = res.getStringArray(R.array.youtubeCode);
         int[] drawabb = {R.drawable.kr1, R.drawable.kr2};
         youtubeVideos.add(new TimelineData(drawabb,"AFXER"));
+//        new getYoutubeData().execute();
 
-
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference ref = database.getReference("video");
-//
-//        final int cnt = 3;
-//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                int cnt = 0;
-//                for(DataSnapshot tmp : dataSnapshot.getChildren())
-//                {
-//                    if(cnt <3) {
-//                        cnt++;
-//                        youtubeVideos.add(new TimelineData(tmp.getValue().toString()));
-//                        Log.d("JANGMIN", " Youtube Added");
-//                    }
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
 
         for (int i = 0; i < 5; i++) {
             youtubeVideos.add(new TimelineData(youtubeCodes[i]));
         }
     }
-    public void setButtons()
-    {
+    public void setButtons() {
         ImageButton setting_butt = (ImageButton) getView().findViewById(R.id.setting);
         ImageButton notice_butt = (ImageButton) getView().findViewById(R.id.notice);
         setting_butt.setOnClickListener(new View.OnClickListener() {
@@ -168,4 +144,46 @@ public class TimelineFragment extends Fragment {
             }
         });
     }
+
+    private class getYoutubeData extends AsyncTask {
+        @Override
+        protected void onPostExecute(Object o) {
+
+            super.onPostExecute(o);
+            Log.d("JANGMIN", "AsyncTask Ended");
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("video");
+
+            final int cnt = 3;
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    int cnt = 0;
+                    Log.d("JANGMIN", " Youtube is Loaded");
+                    for(DataSnapshot tmp : dataSnapshot.getChildren())
+                    {
+                        if(cnt <3) {
+                            cnt++;
+                            youtubeVideos.add(new TimelineData(tmp.getValue().toString()));
+                            Log.d("JANGMIN", " Youtube Added");
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            return null;
+        }
+    }
+
 }

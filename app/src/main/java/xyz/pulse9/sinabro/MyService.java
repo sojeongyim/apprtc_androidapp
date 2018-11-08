@@ -28,7 +28,6 @@ public class MyService extends FirebaseMessagingService {
         {
             String channelId = "channel";
             String channelName = "sinabro";
-            ConnectActivity.chatroomname = remoteMessage.getData().get("roomname");
 
             NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

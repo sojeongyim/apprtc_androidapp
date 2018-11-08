@@ -66,7 +66,7 @@ public class ChatAdapter extends ArrayAdapter {
         for(Message k : msgs)
         {
             if(k.getType().equals("1")) {
-                if (k.getMessageName().equals(Name)) {
+                if (k.getMessagename().equals(Name)) {
                     return k;
                 }
             }
@@ -113,7 +113,7 @@ public class ChatAdapter extends ArrayAdapter {
                 chatMessageContainer = convertView.findViewById(R.id.textLinear);
                 rightchatPhoto.setVisibility(View.GONE);
 
-                Date confDate2 = new Date(Long.parseLong(msg.getSendDate())*1000L);
+                Date confDate2 = new Date(Long.parseLong(msg.getSenddate())*1000L);
                 String t2 = sdf2.format(confDate2); // I assume your timestamp is in seconds and you're converting to milliseconds?
 
 
@@ -204,7 +204,7 @@ public class ChatAdapter extends ArrayAdapter {
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference ref;
                         ref = database.getReference("message").child(msg.getChatroomname());
-                        ref.child(msg.getMessageName()).child("chk").setValue("1");
+                        ref.child(msg.getMessagename()).child("chk").setValue("1");
                     }
                 });
                 denyBtn.setOnClickListener(new View.OnClickListener() {
@@ -218,7 +218,7 @@ public class ChatAdapter extends ArrayAdapter {
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference ref;
                         ref = database.getReference("message").child(msg.getChatroomname());
-                        ref.child(msg.getMessageName()).child("chk").setValue("2");
+                        ref.child(msg.getMessagename()).child("chk").setValue("2");
                     }
                 });
                 TextView date = convertView.findViewById(R.id.dataTime);
@@ -228,7 +228,7 @@ public class ChatAdapter extends ArrayAdapter {
             case ITEM_VIEW_TYPE_DATE:
                 convertView = inflater.inflate(R.layout.chat_date,parent, false);
                 TextView dateText = convertView.findViewById(R.id.lastDate);
-                dateText.setText(msg.getSendDate());
+                dateText.setText(msg.getSenddate());
                 break;
             case ITEM_VIEW_TYPE_CONF:
                 convertView = inflater.inflate(R.layout.chat_startconf,parent, false);
