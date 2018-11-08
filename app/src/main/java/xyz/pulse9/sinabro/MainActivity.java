@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,14 +16,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -32,15 +28,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import xyz.pulse9.sinabro.util.BottomNavigationViewHelper;
 
 public class MainActivity extends AppCompatActivity implements TeacherlistFragment.OnFragmentInteractionListener {
@@ -186,9 +174,9 @@ public class MainActivity extends AppCompatActivity implements TeacherlistFragme
         int current_choice= intent.getIntExtra("choice", 0);
 
         new GetVersionCode().execute();
-        setUserSharedPref();
 
         if(curuser !=null) {
+            setUserSharedPref();
             String uid = curuser.getUid();
             String photo = curuser.getPhotoUrl().toString();
             String email = curuser.getEmail();

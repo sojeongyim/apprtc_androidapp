@@ -136,15 +136,14 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         ((VideoViewHolder) holder).likeCountText.setText(String.valueOf(dataSnapshot.getChildrenCount()));
-                        if(dataSnapshot.hasChild(curuser.getUid()))
-                        {
-                            setHeart(((VideoViewHolder) holder).heart, true);
-                            ((VideoViewHolder) holder).chk = true;
-                        }
-                        else
-                        {
-                            setHeart(((VideoViewHolder) holder).heart, false);
-                            ((VideoViewHolder) holder).chk = false;
+                        if(curuser !=null) {
+                            if (dataSnapshot.hasChild(curuser.getUid())) {
+                                setHeart(((VideoViewHolder) holder).heart, true);
+                                ((VideoViewHolder) holder).chk = true;
+                            } else {
+                                setHeart(((VideoViewHolder) holder).heart, false);
+                                ((VideoViewHolder) holder).chk = false;
+                            }
                         }
                     }
                     @Override
@@ -164,14 +163,16 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
                 ((VideoViewHolder) holder).heart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (((VideoViewHolder) holder).chk) {
-                            timeLineDB.child(current_videoCode).child(curuser.getUid()).removeValue();
-                            setHeart(((VideoViewHolder) holder).heart, false);
-                            ((VideoViewHolder) holder).chk = false;
-                        } else {
-                            timeLineDB.child(current_videoCode).child(curuser.getUid()).setValue(1);
-                            setHeart(((VideoViewHolder) holder).heart, true);
-                            ((VideoViewHolder) holder).chk = true;
+                        if(curuser!=null) {
+                            if (((VideoViewHolder) holder).chk) {
+                                timeLineDB.child(current_videoCode).child(curuser.getUid()).removeValue();
+                                setHeart(((VideoViewHolder) holder).heart, false);
+                                ((VideoViewHolder) holder).chk = false;
+                            } else {
+                                timeLineDB.child(current_videoCode).child(curuser.getUid()).setValue(1);
+                                setHeart(((VideoViewHolder) holder).heart, true);
+                                ((VideoViewHolder) holder).chk = true;
+                            }
                         }
                     }
                 });
@@ -187,16 +188,16 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         ((ImageViewHolder) holder).likeCountText.setText(String.valueOf(dataSnapshot.getChildrenCount()));
-                        if(dataSnapshot.hasChild(curuser.getUid()))
-                        {
-                            setHeart(((ImageViewHolder) holder).heart, true);
-                            ((ImageViewHolder) holder).chk = true;
+                        if(curuser !=null) {
+                            if (dataSnapshot.hasChild(curuser.getUid())) {
+                                setHeart(((ImageViewHolder) holder).heart, true);
+                                ((ImageViewHolder) holder).chk = true;
+                            } else {
+                                setHeart(((ImageViewHolder) holder).heart, false);
+                                ((ImageViewHolder) holder).chk = false;
+                            }
                         }
-                        else
-                        {
-                            setHeart(((ImageViewHolder) holder).heart, false);
-                            ((ImageViewHolder) holder).chk = false;
-                        }
+
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -216,14 +217,16 @@ class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
                 ((ImageViewHolder) holder).heart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (((ImageViewHolder) holder).chk) {
-                            timeLineDB.child(current_cardnewsCode).child(curuser.getUid()).removeValue();
-                            setHeart(((ImageViewHolder) holder).heart, false);
-                            ((ImageViewHolder) holder).chk = false;
-                        } else {
-                            timeLineDB.child(current_cardnewsCode).child(curuser.getUid()).setValue(1);
-                            setHeart(((ImageViewHolder) holder).heart, true);
-                            ((ImageViewHolder) holder).chk = true;
+                        if(curuser!=null) {
+                            if (((ImageViewHolder) holder).chk) {
+                                timeLineDB.child(current_cardnewsCode).child(curuser.getUid()).removeValue();
+                                setHeart(((ImageViewHolder) holder).heart, false);
+                                ((ImageViewHolder) holder).chk = false;
+                            } else {
+                                timeLineDB.child(current_cardnewsCode).child(curuser.getUid()).setValue(1);
+                                setHeart(((ImageViewHolder) holder).heart, true);
+                                ((ImageViewHolder) holder).chk = true;
+                            }
                         }
                     }
                 });

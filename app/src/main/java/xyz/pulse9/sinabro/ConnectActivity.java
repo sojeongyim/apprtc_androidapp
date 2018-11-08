@@ -89,16 +89,7 @@ public class ConnectActivity extends AppCompatActivity {
     private String senderphoto;
     private ListView listView;
     FirebaseUser curuser;
-    //
-//    BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-//
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//
-//            onResume();
-//        }
-//
-//    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -656,7 +647,20 @@ public class ConnectActivity extends AppCompatActivity {
     }
     public void onRead()
     {
-        DatabaseReference tmp = database.getReference("users").child(curuser.getUid()).child("rooms").child(chatroomname).child("cnt");
-        tmp.setValue(0);
+        final DatabaseReference tmp = database.getReference("users").child(curuser.getUid()).child("rooms").child(chatroomname);
+        tmp.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild("cnt"))
+                {
+                    dataSnapshot.child("cnt").getRef().setValue(0);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

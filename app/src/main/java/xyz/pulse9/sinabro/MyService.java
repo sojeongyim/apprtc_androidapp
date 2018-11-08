@@ -56,8 +56,9 @@ public class MyService extends FirebaseMessagingService {
             ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
             Log.d("JANGMIN", cn.getClassName());
 
-            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
 //            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
             int requestID = (int) System.currentTimeMillis();

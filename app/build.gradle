@@ -20,8 +20,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 26
 
-        versionCode 15665
-        versionName "1.2"
+        versionCode 15667
+        versionName "1.31"
 
         testApplicationId "xyz.pulse9.sinabro.test"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"

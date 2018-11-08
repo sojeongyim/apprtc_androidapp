@@ -19,6 +19,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +40,11 @@ public class TimelineFragment extends Fragment {
     private List<TimelineData> youtubeVideos;
     private TimelineAdapter timelineAdapter;
     protected Handler handler;
+    private FirebaseUser curuser;
+
+    private ImageButton setting_butt;
+    private ImageButton notice_butt;
+
     // TODO: Rename and change types of parameters
     public TimelineFragment() {
         // Required empty public constructor
@@ -47,16 +54,18 @@ public class TimelineFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         clickanimation = AnimationUtils.loadAnimation(getContext(), R.anim.clickanimaiton);
-
+        curuser = FirebaseAuth.getInstance().getCurrentUser();
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.timeline_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-
         youtubeVideos = new ArrayList<TimelineData>();
         loadData();
         setButtons();
+        if(curuser==null)
+        {
+            setting_butt.setVisibility(View.GONE);
+        }
         handler = new Handler();
         timelineAdapter = new TimelineAdapter(youtubeVideos, mRecyclerView);
         mRecyclerView.setAdapter(timelineAdapter);
@@ -125,11 +134,12 @@ public class TimelineFragment extends Fragment {
         }
     }
     public void setButtons() {
-        ImageButton setting_butt = (ImageButton) getView().findViewById(R.id.setting);
-        ImageButton notice_butt = (ImageButton) getView().findViewById(R.id.notice);
+        setting_butt = (ImageButton) getView().findViewById(R.id.setting);
+        notice_butt = (ImageButton) getView().findViewById(R.id.notice);
         setting_butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 view.startAnimation(clickanimation);
                 Intent intent = new Intent(getActivity(), MySettingsActivity.class);
                 startActivity(intent);

@@ -11,6 +11,7 @@ import android.widget.ToggleButton;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashSet;
@@ -19,14 +20,12 @@ public class MySettingsActivity extends AppCompatActivity implements View.OnClic
 
     private ToggleButton notiCheck;
     private Button lgoutBtn;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_settings);
         notiCheck = findViewById(R.id.notiToggle);
         lgoutBtn = findViewById(R.id.lgoutBtn);
-
 
         if(getCheck())
         {
